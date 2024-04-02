@@ -24,14 +24,9 @@ return {
                 local out = AngleRand( min, max )
                 local p, y, r = out[1], out[2], out[3]
 
-                expect( p ).to.beGreaterThan( min )
-                expect( p ).to.beLessThan( max )
-
-                expect( y ).to.beGreaterThan( min )
-                expect( y ).to.beLessThan( max )
-
-                expect( r ).to.beGreaterThan( min )
-                expect( r ).to.beLessThan( max )
+                expect( p ).to.beBetween( min, max )
+                expect( y ).to.beBetween( min, max )
+                expect( r ).to.beBetween( min, max )
             end
         }
     }
