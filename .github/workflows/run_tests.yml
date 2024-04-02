@@ -4,5 +4,10 @@ on:
   pull_request:
 
 jobs:
-  run-tests:
+  run-mainbranch-tests:
     uses: CFC-Servers/GLuaTest/.github/workflows/run_tests.yml@main
+
+  run-64bit-tests:
+    uses: CFC-Servers/GLuaTest/.github/workflows/run_tests.yml@main
+    with:
+      branch: x86-64
