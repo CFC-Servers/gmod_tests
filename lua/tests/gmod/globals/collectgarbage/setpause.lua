@@ -57,13 +57,25 @@ return {
         },
 
         {
-            name = "Accepts floats, and rounds up",
+            name = "Accepts floats, and rounds up (base branch)",
+            when = jit.version == "LuaJIT 2.0.4",
             func = function()
                 local newValue = 100.6
                 expect( collectgarbage, "setpause", newValue ).to.succeed()
 
                 local lastValue = collectgarbage( "setpause", 200 )
                 expect( lastValue ).to.equal( 101 )
+            end,
+        },
+        {
+            name = "Accepts floats, and rounds down (x86-64)",
+            when = jit.version == "LuaJIT 2.1.0-beta3",
+            func = function()
+                local newValue = 100.6
+                expect( collectgarbage, "setpause", newValue ).to.succeed()
+
+                local lastValue = collectgarbage( "setpause", 200 )
+                expect( lastValue ).to.equal( 100 )
             end,
         },
 
