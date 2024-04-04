@@ -9,7 +9,7 @@ return {
         },
 
         {
-            name = "Returns a Color object",
+            name = "Returns a table with the Color metatable",
             func = function()
                 local color = Color( 1, 2, 3, 4 )
                 expect( color ).to.beA( "table" )
