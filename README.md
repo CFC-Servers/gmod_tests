@@ -1,8 +1,11 @@
 # GMod Test Suite
 
-This is a community driven effort to provide automated tests for all basic Garry's Mod functions.
+This is a community driven best-effort initiative to create a suite of automated tests for all basic Garry's Mod functionality.
 
 This project uses [GLuaTest](https://github.com/CFC-Servers/GLuaTest) to run the test suite.
+
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/CFC-Servers/gmod_tests/run_tests.yml?event=push&style=for-the-badge&label=GLuaTest&link=https%3A%2F%2Fgithub.com%2FCFC-Servers%2FGLuaTest&link=https%3A%2F%2Fgithub.com%2FCFC-Servers%2Fgmod_tests%2Factions%2Fworkflows%2Frun_tests.yml)
+
 
 ## Contributing
 Anyone can contribute test cases!
@@ -27,7 +30,6 @@ It's scoped into three Sections right now:
 Inside each Section, we create new directories for each sub-object.
 
 For example, if you were going to write tests for the [`File`](https://gmodwiki.com/file_class) class, you would:
-- Make a new directory: `lua/tests/classes/file/`
 - Create a new file: `lua/tests/classes/file/file.lua` and begin writing the meta-level tests for this class
 - Decide if all Class tests can go in a single file.
   - If so, write them all in `lua/tests/classes/file/file.lua`
