@@ -24,6 +24,7 @@ return{
             name = "Pitch equivalents match input",
             func = function()
                 local angle = Angle( 1, 2, 3 )
+                expect( angle[1] ).to.equal( 1 )
                 expect( angle.x ).to.equal( 1 )
                 expect( angle.p ).to.equal( 1 )
                 expect( angle.pitch ).to.equal( 1 )
@@ -32,6 +33,7 @@ return{
             name = "Yaw equivalents match input",
             func = function()
                 local angle = Angle( 1, 2, 3 )
+                expect( angle[2] ).to.equal( 2 )
                 expect( angle.y ).to.equal( 2 )
                 expect( angle.yaw ).to.equal( 2 )
             end
@@ -39,6 +41,7 @@ return{
             name = "Roll equivalents match input",
             func = function()
                 local angle = Angle( 1, 2, 3 )
+                expect( angle[3] ).to.equal( 3 )
                 expect( angle.z ).to.equal( 3 )
                 expect( angle.r ).to.equal( 3 )
                 expect( angle.roll ).to.equal( 3 )
