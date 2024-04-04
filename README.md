@@ -4,8 +4,9 @@ This is a community driven best-effort initiative to create a suite of automated
 
 This project uses [GLuaTest](https://github.com/CFC-Servers/GLuaTest) to run the test suite.
 
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/CFC-Servers/gmod_tests/run_tests.yml?event=push&style=for-the-badge&label=GLuaTest&link=https%3A%2F%2Fgithub.com%2FCFC-Servers%2FGLuaTest&link=https%3A%2F%2Fgithub.com%2FCFC-Servers%2Fgmod_tests%2Factions%2Fworkflows%2Frun_tests.yml)
-
+<p align="left">
+    <a href="https://github.com/CFC-Servers/gmod_tests/actions/workflows/run_tests.yml" alt="GLuaTest Status"><img src="https://img.shields.io/github/actions/workflow/status/CFC-Servers/gmod_tests/run_tests.yml?event=push&style=for-the-badge&label=GLuaTest" /></a>
+</p>
 
 ## Contributing
 Anyone can contribute test cases!
