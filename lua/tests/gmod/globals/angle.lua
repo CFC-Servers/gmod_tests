@@ -78,7 +78,7 @@ return{
         },{
             -- https://github.com/Facepunch/garrysmod-issues/issues/5922#issuecomment-2194156039
             name = "Nil pitch returns 0, 0, 0 (base)",
-            when = BRANCH == "unknown",
+            when = IS_BASE_BRANCH,
             func = function()
                 local angle = Angle( nil, 10, 22 )
                 expect( angle.pitch ).to.equal( 0 )
@@ -88,7 +88,7 @@ return{
         },{
             -- https://github.com/Facepunch/garrysmod-issues/issues/5922#issuecomment-2194156039
             name = "Nil pitch falls back to 0 (x86-64)",
-            when = BRANCH == "x86-64",
+            when = IS_64BIT_BRANCH,
             func = function()
                 local angle = Angle( nil, 10, 22 )
                 expect( angle.pitch ).to.equal( 0 )
@@ -98,7 +98,7 @@ return{
         },{
             -- https://github.com/Facepunch/garrysmod-issues/issues/5922#issuecomment-2194156039
             name = "Table pitch returns 0, 0, 0 (base)",
-            when = BRANCH == "unknown",
+            when = IS_BASE_BRANCH,
             func = function()
                 local angle = Angle( { "test" }, 10, 22 )
                 expect( angle.pitch ).to.equal( 0 )
@@ -108,6 +108,7 @@ return{
         },{
             -- https://github.com/Facepunch/garrysmod-issues/issues/5922#issuecomment-2194156039
             name = "Table pitch falls back to 0 (x86-64)",
+            when = IS_64BIT_BRANCH,
             func = function()
                 local angle = Angle( { "test" }, 10, 22 )
                 expect( angle.pitch ).to.equal( 0 )
@@ -189,6 +190,5 @@ return{
             end
         },
         --#endregion
-
     }
 }
