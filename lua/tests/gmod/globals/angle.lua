@@ -17,7 +17,7 @@ return{
             end
         },
         --#endregion
-        
+
         --[[ Pitch/Yaw/Roll Variable Equivalents ]]--
         --#region
         {
@@ -48,7 +48,7 @@ return{
             end
         },
         --#endregion
-        
+
         --[[ Pitch/Yaw/Roll Constructor ]]--
         --#region
         {
@@ -76,7 +76,9 @@ return{
                 expect( angle.roll  ).to.equal( 15 )
             end
         },{
-            name = "Nil pitch returns 0, 0, 0",
+            -- https://github.com/Facepunch/garrysmod-issues/issues/5922#issuecomment-2194156039
+            name = "Nil pitch returns 0, 0, 0 (base)",
+            when = BRANCH == "unknown",
             func = function()
                 local angle = Angle( nil, 10, 22 )
                 expect( angle.pitch ).to.equal( 0 )
@@ -84,12 +86,33 @@ return{
                 expect( angle.roll  ).to.equal( 0 )
             end
         },{
-            name = "Table pitch returns 0, 0, 0",
+            -- https://github.com/Facepunch/garrysmod-issues/issues/5922#issuecomment-2194156039
+            name = "Nil pitch falls back to 0 (x86-64)",
+            when = BRANCH == "x86-64",
+            func = function()
+                local angle = Angle( nil, 10, 22 )
+                expect( angle.pitch ).to.equal( 0 )
+                expect( angle.yaw   ).to.equal( 10 )
+                expect( angle.roll  ).to.equal( 22 )
+            end
+        },{
+            -- https://github.com/Facepunch/garrysmod-issues/issues/5922#issuecomment-2194156039
+            name = "Table pitch returns 0, 0, 0 (base)",
+            when = BRANCH == "unknown",
             func = function()
                 local angle = Angle( { "test" }, 10, 22 )
                 expect( angle.pitch ).to.equal( 0 )
                 expect( angle.yaw   ).to.equal( 0 )
                 expect( angle.roll  ).to.equal( 0 )
+            end
+        },{
+            -- https://github.com/Facepunch/garrysmod-issues/issues/5922#issuecomment-2194156039
+            name = "Table pitch falls back to 0 (x86-64)",
+            func = function()
+                local angle = Angle( { "test" }, 10, 22 )
+                expect( angle.pitch ).to.equal( 0 )
+                expect( angle.yaw   ).to.equal( 10 )
+                expect( angle.roll  ).to.equal( 22 )
             end
         },{
             name = "Yaw falls back to 0",
@@ -129,7 +152,7 @@ return{
             end
         },
         --#endregion
-        
+
          --[[ Angle Copying Constructor ]]--
          --#region
          {
@@ -166,6 +189,6 @@ return{
             end
         },
         --#endregion
-        
+
     }
 }
