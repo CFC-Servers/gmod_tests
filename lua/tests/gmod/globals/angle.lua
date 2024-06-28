@@ -1,6 +1,5 @@
-return{
-    groupName = "Angle",
-
+return {
+    groupName = "Global:Angle",
     cases = {
         --[[ Function Signature ]]--
         --#region
