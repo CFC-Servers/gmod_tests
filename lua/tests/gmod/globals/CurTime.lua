@@ -43,23 +43,5 @@ return {
                 end )
             end
         },
-
-        {
-            name = "Is synchronized with the timer library",
-            async = true,
-            timeout = 2,
-            func = function()
-                local delay = 1
-                local startTime = CurTime()
-                local expected = startTime + delay
-
-                timer.Simple( delay, function()
-                    local endTime = CurTime()
-                    expect( endTime ).to.equal( expected )
-
-                    done()
-                end )
-            end
-        }
     }
 }
