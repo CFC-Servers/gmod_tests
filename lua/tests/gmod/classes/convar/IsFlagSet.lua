@@ -15,10 +15,6 @@ return {
             func = function()
                 local a = GetTestConVar()
 
-                expect( a:IsFlagSet( FCVAR_GAMEDLL ) ).to.equal( true )
-                expect( a:IsFlagSet( FCVAR_LUA_SERVER ) ).to.equal( true )
-                expect( a:IsFlagSet( FCVAR_DEMO ) ).to.equal( true )
-
                 -- NOTE: The names could be wrong. I took them from here: https://github.com/RaphaelIT7/obsolete-source-engine/blob/gmod/public/tier1/iconvar.h#L41
                 local FCVAR_DEVELOPMENTONLY = bit.lshift(1, 1)
                 local FCVAR_HIDDEN = bit.lshift(1, 4)
@@ -29,6 +25,17 @@ return {
                 local FCVAR_ACCESSIBLE_FROM_THREADS = bit.lshift(1, 25)
                 local FCVAR_AVAILABLE1 = bit.lshift(1, 26)
                 local FCVAR_AVAILABLE2 = bit.lshift(1, 27)
+
+                expect( a:IsFlagSet( FCVAR_GAMEDLL ) ).to.equal( true )
+                expect( a:IsFlagSet( FCVAR_LUA_SERVER ) ).to.equal( true )
+                expect( a:IsFlagSet( FCVAR_DEMO ) ).to.equal( true )
+
+                if IS_64BIT_BRANCH then
+                	expect( a:IsFlagSet( FCVAR_AVAILABLE2 ) ).to.equal( true )
+                else
+                	expect( a:IsFlagSet( FCVAR_AVAILABLE2 ) ).to.equal( false )
+                end
+
                 expect( a:IsFlagSet( FCVAR_UNREGISTERED ) ).to.equal( false )
                 expect( a:IsFlagSet( FCVAR_DEVELOPMENTONLY ) ).to.equal( false )
                 expect( a:IsFlagSet( FCVAR_CLIENTDLL ) ).to.equal( false )

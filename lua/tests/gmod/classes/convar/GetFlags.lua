@@ -16,10 +16,6 @@ return {
                 local a = GetTestConVar()
                 local flags = a:GetFlags()
 
-                expect( bit.band( flags, FCVAR_GAMEDLL ) ).to.equal( FCVAR_GAMEDLL )
-                expect( bit.band( flags, FCVAR_LUA_SERVER ) ).to.equal( FCVAR_LUA_SERVER )
-                expect( bit.band( flags, FCVAR_DEMO ) ).to.equal( FCVAR_DEMO )
-
                 -- NOTE: The names could be wrong. I took them from here: https://github.com/RaphaelIT7/obsolete-source-engine/blob/gmod/public/tier1/iconvar.h#L41
                 local FCVAR_DEVELOPMENTONLY = bit.lshift(1, 1)
                 local FCVAR_HIDDEN = bit.lshift(1, 4)
@@ -30,6 +26,17 @@ return {
                 local FCVAR_ACCESSIBLE_FROM_THREADS = bit.lshift(1, 25)
                 local FCVAR_AVAILABLE1 = bit.lshift(1, 26)
                 local FCVAR_AVAILABLE2 = bit.lshift(1, 27)
+
+                expect( bit.band( flags, FCVAR_GAMEDLL ) ).to.equal( FCVAR_GAMEDLL )
+                expect( bit.band( flags, FCVAR_LUA_SERVER ) ).to.equal( FCVAR_LUA_SERVER )
+                expect( bit.band( flags, FCVAR_DEMO ) ).to.equal( FCVAR_DEMO )
+
+                if IS_64BIT_BRANCH then
+                	expect( bit.band( flags, FCVAR_AVAILABLE2 ) ).to.equal( FCVAR_AVAILABLE2 )
+                else
+                	expect( bit.band( flags, FCVAR_AVAILABLE2 ) ).toNot.equal( FCVAR_AVAILABLE2 )
+                end
+
                 expect( bit.band( flags, FCVAR_UNREGISTERED ) ).toNot.equal( FCVAR_UNREGISTERED )
                 expect( bit.band( flags, FCVAR_DEVELOPMENTONLY ) ).toNot.equal( FCVAR_DEVELOPMENTONLY )
                 expect( bit.band( flags, FCVAR_CLIENTDLL ) ).toNot.equal( FCVAR_CLIENTDLL )
@@ -55,7 +62,6 @@ return {
                 expect( bit.band( flags, FCVAR_ARCHIVE_XBOX ) ).toNot.equal( FCVAR_ARCHIVE_XBOX )
                 expect( bit.band( flags, FCVAR_ACCESSIBLE_FROM_THREADS ) ).toNot.equal( FCVAR_ACCESSIBLE_FROM_THREADS )
                 expect( bit.band( flags, FCVAR_AVAILABLE1 ) ).toNot.equal( FCVAR_AVAILABLE1 )
-                expect( bit.band( flags, FCVAR_AVAILABLE2 ) ).toNot.equal( FCVAR_AVAILABLE2 )
                 expect( bit.band( flags, FCVAR_SERVER_CAN_EXECUTE ) ).toNot.equal( FCVAR_SERVER_CAN_EXECUTE )
                 expect( bit.band( flags, FCVAR_SERVER_CANNOT_QUERY ) ).toNot.equal( FCVAR_SERVER_CANNOT_QUERY )
                 expect( bit.band( flags, FCVAR_CLIENTCMD_CAN_EXECUTE ) ).toNot.equal( FCVAR_CLIENTCMD_CAN_EXECUTE )
