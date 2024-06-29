@@ -1,11 +1,11 @@
 return {
-    groupName = "Angle:__eq",
+    groupName = "Vector:__eq",
 
     cases = {
         {
-            name = "Exists on the Angle meta table",
+            name = "Exists on the Vector meta table",
             func = function()
-                local meta = FindMetaTable( "Angle" )
+                local meta = FindMetaTable( "Vector" )
                 expect( meta.__eq ).to.beA( "function" )
             end
         },
@@ -13,10 +13,10 @@ return {
         {
             name = "Returns the right value",
             func = function()
-                local a = Angle( 1, 2, 3 )
-                local b = Angle( 1, 2, 3 )
-                local c = Angle( 4, 5, 6 )
-                local d = Vector( 1, 2, 3 )
+                local a = Vector( 1, 2, 3 )
+                local b = Vector( 1, 2, 3 )
+                local c = Vector( 4, 5, 6 )
+                local d = Angle( 1, 2, 3 )
 
                 expect( a ).to.equal( b )
                 expect( a ).toNot.equal( c )
