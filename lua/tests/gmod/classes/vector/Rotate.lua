@@ -15,11 +15,11 @@ return {
             func = function()
                 local a = Vector( 1, 2, 3 )
                 local b = Angle( 90, 0, 0 )
-                local c = a:Rotate( b )
+                a:Rotate( b )
 
-                expect( c[1] ).to.equal( 3 )
-                expect( c[2] ).to.equal( 2 )
-                expect( c[3] ).to.equal( -1.0000001192092895507812 )
+                expect( a[1] ).to.equal( 3 )
+                expect( a[2] ).to.equal( 2 )
+                expect( a[3] ).to.equal( -1.0000001192092895507812 )
             end
         },
     }

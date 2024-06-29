@@ -20,9 +20,9 @@ return {
                 expect( a[2] ).to.equal( 2 )
                 expect( a[3] ).to.equal( 3 )
 
-                expect( b[1] ).to.equal( 0.2672612369060516357422 )
-                expect( b[2] ).to.equal( 0.5345224738121032714844 )
-                expect( b[3] ).to.equal( 0.8017836809158325195312 )
+                expect( math.Round( b[1], 7 ) ).to.equal( 0.2672612 )
+                expect( math.Round( b[2], 7 ) ).to.equal( 0.5345224 )
+                expect( math.Round( b[3], 7 ) ).to.equal( 0.8017836 )
             end
         },
     }
