@@ -20,7 +20,7 @@ return {
 
                 expect( c[1] ).to.equal( 2 )
                 expect( c[2] ).to.equal( 3 )
-                expect( c[2] ).to.equal( 4 )
+                expect( c[3] ).to.equal( 4 )
             end
         },
     }

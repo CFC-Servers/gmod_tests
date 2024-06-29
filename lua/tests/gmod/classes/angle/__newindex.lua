@@ -54,8 +54,8 @@ return {
                 local a = Angle( 1, 2, 3 )
 
                 a.p = 4
-                a.y = 4
-                a.r = 4
+                a.y = 5
+                a.r = 6
                 expect( a[1] ).to.equal( 4 )
                 expect( a[2] ).to.equal( 5 )
                 expect( a[3] ).to.equal( 6 )
@@ -68,8 +68,8 @@ return {
                 local a = Angle( 1, 2, 3 )
 
                 a.pitch = 4
-                a.yaw = 4
-                a.roll = 4
+                a.yaw = 5
+                a.roll = 6
                 expect( a[1] ).to.equal( 4 )
                 expect( a[2] ).to.equal( 5 )
                 expect( a[3] ).to.equal( 6 )
@@ -82,8 +82,8 @@ return {
                 local a = Angle( 1, 2, 3 )
 
                 a.x = 4
-                a.y = 4
-                a.z = 4
+                a.y = 5
+                a.z = 6
                 expect( a[1] ).to.equal( 4 )
                 expect( a[2] ).to.equal( 5 )
                 expect( a[3] ).to.equal( 6 )

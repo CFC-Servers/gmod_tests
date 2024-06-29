@@ -19,7 +19,7 @@ return {
 
                 expect( b[1] ).to.equal( -1 )
                 expect( b[2] ).to.equal( -2 )
-                expect( b[2] ).to.equal( -3 )
+                expect( b[3] ).to.equal( -3 )
             end
         },
     }

@@ -19,7 +19,7 @@ return {
 
                 expect( b[1] ).to.equal( 0.5 )
                 expect( b[2] ).to.equal( 1 )
-                expect( b[2] ).to.equal( 1.5 )
+                expect( b[3] ).to.equal( 1.5 )
             end
         },
     }
