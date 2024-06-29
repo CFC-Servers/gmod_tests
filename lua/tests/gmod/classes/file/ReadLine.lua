@@ -1,0 +1,26 @@
+return {
+    groupName = "File:ReadLine",
+
+    cases = {
+        {
+            name = "Exists on the File meta table",
+            func = function()
+                local meta = FindMetaTable( "File" )
+                expect( meta.ReadLine ).to.beA( "function" )
+            end
+        },
+
+        {
+            name = "Returns the right value",
+            func = function()
+                local a = GetTestFile( "Write" )
+
+                local str1 = a:ReadLine()
+                local str2 = a:ReadLine()
+
+                expect( str ).to.equal( "Hello World\n" )
+                expect( str ).to.equal( "Hello World2" )
+            end
+        },
+    }
+}
