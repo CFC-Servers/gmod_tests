@@ -11,7 +11,7 @@ return {
         {
             name = "Returns the right table",
             func = function()
-                local tbl = HSLToColor( 60, 1, 1 )
+                local tbl = HSVToColor( 60, 1, 1 )
                 expect( tbl.r ).to.equal( 255 )
                 expect( tbl.g ).to.equal( 255 )
                 expect( tbl.b ).to.equal( 0 )
