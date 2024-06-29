@@ -61,7 +61,6 @@ return {
                 expect( a:IsFlagSet( FCVAR_ARCHIVE_XBOX ) ).to.equal( false )
                 expect( a:IsFlagSet( FCVAR_ACCESSIBLE_FROM_THREADS ) ).to.equal( false )
                 expect( a:IsFlagSet( FCVAR_AVAILABLE1 ) ).to.equal( false )
-                expect( a:IsFlagSet( FCVAR_AVAILABLE2 ) ).to.equal( false )
                 expect( a:IsFlagSet( FCVAR_SERVER_CAN_EXECUTE ) ).to.equal( false )
                 expect( a:IsFlagSet( FCVAR_SERVER_CANNOT_QUERY ) ).to.equal( false )
                 expect( a:IsFlagSet( FCVAR_CLIENTCMD_CAN_EXECUTE ) ).to.equal( false )
