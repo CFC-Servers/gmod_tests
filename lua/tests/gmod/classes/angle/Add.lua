@@ -1,5 +1,5 @@
 return {
-    group = "Angle:Add",
+    groupName = "Angle:Add",
 
     cases = {
         {

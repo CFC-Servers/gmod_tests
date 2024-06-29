@@ -1,6 +1,6 @@
 
 return {
-    group = "Angle:__sub",
+    groupName = "Angle:__sub",
 
     cases = {
         {

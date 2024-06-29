@@ -1,5 +1,5 @@
 return {
-    group = "Angle:__tostring",
+    groupName = "Angle:__tostring",
 
     cases = {
         {

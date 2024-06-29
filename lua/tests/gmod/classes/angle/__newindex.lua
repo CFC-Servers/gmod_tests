@@ -1,5 +1,5 @@
 return {
-    group = "Angle:__newindex",
+    groupName = "Angle:__newindex",
 
     cases = {
         {
