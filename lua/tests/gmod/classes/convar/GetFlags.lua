@@ -18,6 +18,7 @@ return {
 
                 expect( bit.band( flags, FCVAR_GAMEDLL ) ).to.equal( FCVAR_GAMEDLL )
                 expect( bit.band( flags, FCVAR_LUA_SERVER ) ).to.equal( FCVAR_LUA_SERVER )
+                expect( bit.band( flags, FCVAR_DEMO ) ).to.equal( FCVAR_DEMO )
 
                 -- NOTE: The names could be wrong. I took them from here: https://github.com/RaphaelIT7/obsolete-source-engine/blob/gmod/public/tier1/iconvar.h#L41
                 local FCVAR_DEVELOPMENTONLY = bit.lshift(1, 1)
@@ -44,7 +45,6 @@ return {
                 expect( bit.band( flags, FCVAR_REPLICATED ) ).toNot.equal( FCVAR_REPLICATED )
                 expect( bit.band( flags, FCVAR_CHEAT ) ).toNot.equal( FCVAR_CHEAT )
                 expect( bit.band( flags, FCVAR_INTERNAL_USE ) ).toNot.equal( FCVAR_INTERNAL_USE )
-                expect( bit.band( flags, FCVAR_DEMO ) ).toNot.equal( FCVAR_DEMO )
                 expect( bit.band( flags, FCVAR_DONTRECORD ) ).toNot.equal( FCVAR_DONTRECORD )
                 expect( bit.band( flags, FCVAR_LUA_CLIENT ) ).toNot.equal( FCVAR_LUA_CLIENT )
                 expect( bit.band( flags, FCVAR_UNREGISTERED ) ).toNot.equal( FCVAR_UNREGISTERED )

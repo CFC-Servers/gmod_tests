@@ -17,6 +17,7 @@ return {
 
                 expect( a:IsFlagSet( FCVAR_GAMEDLL ) ).to.equal( true )
                 expect( a:IsFlagSet( FCVAR_LUA_SERVER ) ).to.equal( true )
+                expect( a:IsFlagSet( FCVAR_DEMO ) ).to.equal( true )
 
                 -- NOTE: The names could be wrong. I took them from here: https://github.com/RaphaelIT7/obsolete-source-engine/blob/gmod/public/tier1/iconvar.h#L41
                 local FCVAR_DEVELOPMENTONLY = bit.lshift(1, 1)
@@ -43,7 +44,6 @@ return {
                 expect( a:IsFlagSet( FCVAR_REPLICATED ) ).to.equal( false )
                 expect( a:IsFlagSet( FCVAR_CHEAT ) ).to.equal( false )
                 expect( a:IsFlagSet( FCVAR_INTERNAL_USE ) ).to.equal( false )
-                expect( a:IsFlagSet( FCVAR_DEMO ) ).to.equal( false )
                 expect( a:IsFlagSet( FCVAR_DONTRECORD ) ).to.equal( false )
                 expect( a:IsFlagSet( FCVAR_LUA_CLIENT ) ).to.equal( false )
                 expect( a:IsFlagSet( FCVAR_UNREGISTERED ) ).to.equal( false )
