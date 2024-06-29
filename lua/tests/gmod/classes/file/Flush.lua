@@ -15,20 +15,19 @@ return {
             func = function()
                 local a = GetTestFile( "Flush", true )
                 a:Write("Test123")
-                a:Close()
+                a:Flush()
+                a:Write("Test456")
+                
+                local b = GetTestFile( "Flush" )
+                expect( b:Read(7) ).to.equal( "Test123" )
+                expect( b:Read(7) ).to.equal( nil )
+                b:Close()
 
-                local b = GetTestFile( "Flush", true )
-                b:Write("Test456")
+                a:Flush()
                 
                 local c = GetTestFile( "Flush" )
-                expect( c:Read() ).to.equal( "Test123" )
-                c:Close()
-
-                b:Flush()
-                
-                local d = GetTestFile( "Flush" )
-                expect( d:Read() ).to.equal( "Test456" )
-                d:Close()
+                expect( c:Read(7) ).to.equal( "Test123" )
+                expect( c:Read(7) ).to.equal( "Test456" )
             end
         },
     }

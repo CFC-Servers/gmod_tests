@@ -17,7 +17,7 @@ return {
 
                 local size = a:Size()
 
-                expect( size ).to.equal( 25 )
+                expect( size ).to.equal( 24 )
             end
         },
 

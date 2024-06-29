@@ -18,8 +18,8 @@ return {
                 local str1 = a:ReadLine()
                 local str2 = a:ReadLine()
 
-                expect( str ).to.equal( "Hello World\n" )
-                expect( str ).to.equal( "Hello World2" )
+                expect( str1 ).to.equal( "Hello World\n" )
+                expect( str2 ).to.equal( "Hello World2" )
             end
         },
     }

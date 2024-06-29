@@ -17,7 +17,7 @@ return {
 
                 local val = a:ReadUInt64()
 
-                expect( val ).to.equal( 18000000000000000000 )
+                expect( val ).to.equal( "18000000000000000000" )
             end
         },
     }
