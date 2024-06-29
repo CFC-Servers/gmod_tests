@@ -20,9 +20,15 @@ return {
                 expect( a[2] ).to.equal( 2 )
                 expect( a[3] ).to.equal( 3 )
 
-                expect( math.Round( b[1], 7 ) ).to.equal( 0.2672612 )
-                expect( math.Round( b[2], 7 ) ).to.equal( 0.5345224 )
-                expect( math.Round( b[3], 7 ) ).to.equal( 0.8017836 )
+                if IS_64BIT_BRANCH then
+                	expect( b[1] ).to.equal( 0.2672612071037292480469 )
+                   	expect( b[2] ).to.equal( 0.5345224142074584960938 )
+                   	expect( b[3] ).to.equal( 0.8017836213111877441406 )
+                else
+               	   	expect( b[1] ).to.equal( 0.2672612369060516357422 )
+                   	expect( b[2] ).to.equal( 0.5345224738121032714844 )
+                   	expect( b[3] ).to.equal( 0.8017836809158325195312 )
+                end
             end
         },
     }
