@@ -21,10 +21,14 @@ return {
                 b:Write("Test456")
                 
                 local c = GetTestFile( "Flush" )
-
                 expect( c:Read() ).to.equal( "Test123" )
+                c:Close()
+
                 b:Flush()
-                expect( c:Read() ).to.equal( "Test456" )
+                
+                local d = GetTestFile( "Flush" )
+                expect( d:Read() ).to.equal( "Test456" )
+                d:Close()
             end
         },
     }

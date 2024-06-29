@@ -15,12 +15,12 @@ return {
             func = function()
                 local a = GetTestFile( "Write", true )
 
-                a:Write("Hello World3")
+                a:Write("Hello World\nHello World2")
                 a:Close()
 
                 local b = GetTestFile( "Write" )
 
-                expect( b:Read() ).to.equal( "Hello World3" )
+                expect( b:Read() ).to.equal( "Hello World\nHello World2" )
             end
         },
     }

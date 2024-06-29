@@ -14,12 +14,12 @@ return {
             name = "Returns the right value",
             func = function()
                 local a = GetTestFile( "WriteULong", true )
-                a:WriteULong( 4100000000 )
+                a:WriteULong( 4200000000 )
                 a:Close()
 
                 local b = GetTestFile( "WriteULong" )
 
-                expect( b:ReadULong() ).to.equal( 4100000000 )
+                expect( b:ReadULong() ).to.equal( 4200000000 )
             end
         },
     }

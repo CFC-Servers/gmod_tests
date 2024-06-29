@@ -14,12 +14,12 @@ return {
             name = "Returns the right value",
             func = function()
                 local a = GetTestFile( "WriteDouble", true )
-                a:WriteDouble( 1.0000000000002 )
+                a:WriteDouble( 1.0000000000001 )
                 a:Close()
 
                 local b = GetTestFile( "WriteDouble" )
 
-                expect( b:ReadDouble() ).to.equal( 1.0000000000002 ) -- Lua can't handle too much xd Full number: 1.0000000000002000621890374532085843384265899658203125
+                expect( b:ReadDouble() ).to.equal( 1.0000000000001 )
             end
         },
     }

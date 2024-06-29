@@ -14,12 +14,12 @@ return {
             name = "Returns the right value",
             func = function()
                 local a = GetTestFile( "WriteUInt64", true )
-                a:WriteUInt64( 17000000000000000000 )
+                a:WriteUInt64( 18000000000000000000 )
                 a:Close()
 
                 local b = GetTestFile( "WriteUInt64" )
 
-                expect( b:ReadUInt64() ).to.equal( 17000000000000000000 )
+                expect( b:ReadUInt64() ).to.equal( 18000000000000000000 )
             end
         },
     }
