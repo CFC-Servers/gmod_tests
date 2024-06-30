@@ -16,7 +16,7 @@ return {
                 expect( tbl.g ).to.equal( 255 )
                 expect( tbl.b ).to.equal( 0 )
                 expect( tbl.a ).to.equal( 255 )
-                --expect( IsColor(tbl) ).to.equal( true ) -- NOTE: https://github.com/Facepunch/garrysmod-issues/issues/2407
+                --expect( IsColor(tbl) ).to.beTrue() -- NOTE: https://github.com/Facepunch/garrysmod-issues/issues/2407
             end
         },
     }

@@ -15,9 +15,9 @@ return {
             func = function()
                 local a = GetTestFile( "WriteBool" )
 
-                expect( a:ReadBool() ).to.equal( true )
-                expect( a:ReadBool() ).to.equal( false )
-                expect( a:ReadBool() ).to.equal( true )
+                expect( a:ReadBool() ).to.beTrue()
+                expect( a:ReadBool() ).to.beFalse()
+                expect( a:ReadBool() ).to.beTrue()
             end
         },
     }

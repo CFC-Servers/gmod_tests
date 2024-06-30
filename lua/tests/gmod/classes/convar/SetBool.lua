@@ -17,7 +17,7 @@ return {
 
                 a:SetBool( false )
 
-                expect( a:GetBool() ).to.equal( false )
+                expect( a:GetBool() ).to.beFalse()
                 a:Revert() -- Reset for next tests
             end
         },
@@ -29,7 +29,7 @@ return {
 
                 a:SetBool( "" ) -- Giving it anything that isn't false or nil will set it to true
 
-                expect( a:GetBool() ).to.equal( true )
+                expect( a:GetBool() ).to.beTrue()
                 a:Revert() -- Reset for next tests
             end
         },

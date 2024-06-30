@@ -21,9 +21,9 @@ return {
 
                 local b = GetTestFile( "WriteBool" )
 
-                expect( b:ReadBool() ).to.equal( true )
-                expect( b:ReadBool() ).to.equal( false )
-                expect( b:ReadBool() ).to.equal( true )
+                expect( b:ReadBool() ).to.beTrue()
+                expect( b:ReadBool() ).to.beFalse()
+                expect( b:ReadBool() ).to.beTrue()
             end
         },
     }

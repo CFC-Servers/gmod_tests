@@ -14,8 +14,8 @@ return {
                 local a = Color( 1, 2, 3 )
                 local b = Vector( 1, 2, 3 )
 
-                expect( IsColor( a ) ).to.equal( true )
-                expect( IsColor( b ) ).to.equal( false )
+                expect( IsColor( a ) ).to.beTrue()
+                expect( IsColor( b ) ).to.beFalse()
             end
         },
     }

@@ -17,7 +17,7 @@ return {
 
                 a:Read()
 
-                expect( a:EndOfFile() ).to.equal( true )
+                expect( a:EndOfFile() ).to.beTrue()
             end
         },
     }

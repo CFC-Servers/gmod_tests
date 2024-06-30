@@ -18,8 +18,8 @@ return {
                 local c = Vector( 5, 5, 5 )
                 local d = Vector( -5, -5, -5 )
 
-                expect( c:WithinAABox( a, b ) ).to.equal( true )
-                expect( d:WithinAABox( a, b ) ).to.equal( false )
+                expect( c:WithinAABox( a, b ) ).to.beTrue()
+                expect( d:WithinAABox( a, b ) ).to.beFalse()
             end
         },
     }

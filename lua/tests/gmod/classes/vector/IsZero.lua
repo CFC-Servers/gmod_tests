@@ -15,13 +15,13 @@ return {
             func = function()
                 local a = Vector( 1, 2, 3 )
 
-                expect( a:IsZero() ).to.equal( false )
+                expect( a:IsZero() ).to.beFalse()
 
                 a[1] = 0
                 a[2] = 0
                 a[3] = 0
 
-                expect( a:IsZero() ).to.equal( true )
+                expect( a:IsZero() ).to.beTrue()
             end
         },
     }

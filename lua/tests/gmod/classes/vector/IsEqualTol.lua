@@ -16,9 +16,9 @@ return {
                 local a = Vector( 1.0, 2.0, 3.0 )
                 local b = Vector( 1.1, 2.1, 3.1 )
 
-                expect( a:IsEqualTol( b, 0.11 ) ).to.equal( true )
-                expect( a:IsEqualTol( b, 0.10 ) ).to.equal( false )
-                expect( a:IsEqualTol( b, 0.09 ) ).to.equal( false )
+                expect( a:IsEqualTol( b, 0.11 ) ).to.beTrue()
+                expect( a:IsEqualTol( b, 0.10 ) ).to.beFalse()
+                expect( a:IsEqualTol( b, 0.09 ) ).to.beFalse()
             end
         },
 
@@ -28,9 +28,9 @@ return {
                 local a = Vector( 2.0, 3.0, 4.0 )
                 local b = Vector( 2.1, 3.1, 4.1 )
 
-                expect( a:IsEqualTol( b, 0.11 ) ).to.equal( true )
-                expect( a:IsEqualTol( b, 0.10 ) ).to.equal( true ) -- Here it's true?
-                expect( a:IsEqualTol( b, 0.09 ) ).to.equal( false )
+                expect( a:IsEqualTol( b, 0.11 ) ).to.beTrue()
+                expect( a:IsEqualTol( b, 0.10 ) ).to.beTrue() -- Here it's true?
+                expect( a:IsEqualTol( b, 0.09 ) ).to.beFalse()
             end
         },
     }

@@ -16,7 +16,7 @@ return {
                 local a = GetTestConVar()
 
                 expect( a:GetDefault() ).to.equal( "1.2" )
-                expect( a:GetDefault() ).toNot.equal( 1 )
+                expect( a:GetDefault() ).toNot.equal( 1.2 )
             end
         },
     }

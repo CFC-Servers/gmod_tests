@@ -16,8 +16,8 @@ return {
                 local a = GetTestConVar()
                 local b = CreateConVar( "ConVarTest2", "0.9", 0, "This is a Test 2" )
 
-                expect( a:GetBool() ).to.equal( true ) -- It will always return true if the value is 1 or higher
-                expect( b:GetBool() ).to.equal( false )
+                expect( a:GetBool() ).to.beTrue() -- It will always return true if the value is 1 or higher
+                expect( b:GetBool() ).to.beFalse()
             end
         },
     }
