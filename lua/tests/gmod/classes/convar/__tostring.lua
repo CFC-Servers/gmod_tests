@@ -19,7 +19,11 @@ return {
             func = function()
                 local __tostring = FindMetaTable( "ConVar" ).__tostring
 
-                expect( __tostring( nil ) ).to.errWith( [[bad argument #1 to '__tostring' (ConVar expected, got nil)]] )
+                local function test()
+                    __tostring( nil )
+                end
+
+                expect( test ).to.errWith( [[bad argument #1 to '__tostring' (ConVar expected, got nil)]] )
             end
         },
 
