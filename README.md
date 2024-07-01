@@ -2,8 +2,13 @@
 
 This is a community driven best-effort initiative to create a suite of automated tests for all basic Garry's Mod functionality.
 
-This project uses [GLuaTest](https://github.com/CFC-Servers/GLuaTest) to run the test suite.
+Here are some of our primary goals with this project:
+- Help catch GLua regressions as soon as an update is released _(and someday, we can test the `dev` branch and catch them before they're released!)_.
+- Help contributors in the [official Garry's Mod repo](https://github.com/Facepunch/garrysmod) increase confidence in their PRs
+- Improve the Wiki with knowledge gained from writing tests
 
+This project uses [GLuaTest](https://github.com/CFC-Servers/GLuaTest) to run the test suite.
+    
 <p align="left">
     <a href="https://github.com/CFC-Servers/gmod_tests/actions/workflows/run_tests.yml" alt="GLuaTest Status"><img src="https://img.shields.io/github/actions/workflow/status/CFC-Servers/gmod_tests/run_tests.yml?event=push&style=for-the-badge&label=GLuaTest" /></a>
 </p>
