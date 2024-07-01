@@ -1,6 +1,15 @@
-file.CreateDir("file_tests")
+local testPath = "file_tests"
+file.CreateDir(testPath)
+
+--- Returns a new File object for use in the gmod_tests test suite
+--- @param name string The name of the file in the test directory
+--- @param write boolean Whether or not to open the File in "write" mode
+--- @returns File
 function GetTestFile( name, write )
-	local f = file.Open( "file_tests/" .. name .. ".txt", write and "wb" or "rb", "DATA" )
+	local path = testPath .. "/" .. name .. ".txt"
+	local mode = write and "wb" or "rb"
+
+	local f = file.Open( path, mode, "DATA" )
 	if !f then error( "Missing test file! (" .. name .. ")" ) end
 
 	return f

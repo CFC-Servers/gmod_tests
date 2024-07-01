@@ -1,5 +1,5 @@
-function GetTestConVar() -- Abusing the loading order :>
-	return CreateConVar( "ConVarTest", "1.2", 0, "This is a Test", -10, 10 )
+function GetTestConVar( name, value, description ) -- Abusing the loading order :>
+	return CreateConVar( "ConVarTest" .. ( name or "" ), value or "1.2", 0, description or "This is a Test", -10, 10 )
 end
 
 return {
@@ -14,21 +14,22 @@ return {
             end
         },
 
-        --[[{ -- NOTE: __tostring will error if given nil self? :/ (Try it again but in a shutdown hook which maybe runs after Lua created ConVars were destroyed?)
-            name = "Returns the right value",
+        {
+            name = "Errors when called with a nil self",
             func = function()
-                local a = ConVar( "NoneExistentConVar" )
+                local __tostring = FindMetaTable( "ConVar" ).__tostring
 
-                expect( a:__tostring() ).to.equal( "ConVar [NULL]" )
+                expect( __tostring( nil ) ).to.errWith( [[bad argument #1 to '__tostring' (ConVar expected, got nil)]] )
             end
-        },]]
+        },
 
         {
             name = "Returns the right value",
             func = function()
                 local a = GetTestConVar()
 
-                expect( a:__tostring() ).to.equal( string.format("ConVar [%s]", "ConVarTest" ) )
+                local expected = string.format("ConVar [%s]", "ConVarTest" )
+                expect( a:__tostring() ).to.equal( expected )
             end
         },
     }

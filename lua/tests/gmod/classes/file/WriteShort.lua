@@ -11,15 +11,16 @@ return {
         },
 
         {
-            name = "Returns the right value",
+            name = "Writes a short correctly",
             func = function()
                 local a = GetTestFile( "WriteShort", true )
-                a:WriteShort( 32000 )
+                local value = 32000
+
+                a:WriteShort( value )
                 a:Close()
 
                 local b = GetTestFile( "WriteShort" )
-
-                expect( b:ReadShort() ).to.equal( 32000 )
+                expect( b:ReadShort() ).to.equal( value )
             end
         },
     }

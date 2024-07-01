@@ -11,7 +11,7 @@ return {
         },
 
         {
-            name = "Returns the right value",
+            name = "Reads the byte correctly",
             func = function()
                 local a = GetTestFile( "WriteByte" )
 

@@ -11,7 +11,7 @@ return {
         },
 
         {
-            name = "Returns the right value",
+            name = "Reads the string correctly",
             func = function()
                 local a = GetTestFile( "Write" )
 
@@ -22,7 +22,7 @@ return {
         },
 
         {
-            name = "Returns the right value",
+            name = "Reads the entire file correctly",
             func = function()
                 local a = GetTestFile( "Write" )
 

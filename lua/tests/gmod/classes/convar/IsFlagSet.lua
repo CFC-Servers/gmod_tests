@@ -15,26 +15,9 @@ return {
             func = function()
                 local a = GetTestConVar()
 
-                -- NOTE: The names could be wrong. I took them from here: https://github.com/RaphaelIT7/obsolete-source-engine/blob/gmod/public/tier1/iconvar.h#L41
-                local FCVAR_DEVELOPMENTONLY = bit.lshift(1, 1)
-                local FCVAR_HIDDEN = bit.lshift(1, 4)
-                local FCVAR_INTERNAL_USE = bit.lshift(1, 15)
-                local FCVAR_RELOAD_MATERIALS = bit.lshift(1, 20)
-                local FCVAR_RELOAD_TEXTURES = bit.lshift(1, 21)
-                local FCVAR_MATERIAL_SYSTEM_THREAD = bit.lshift(1, 23)
-                local FCVAR_ACCESSIBLE_FROM_THREADS = bit.lshift(1, 25)
-                local FCVAR_AVAILABLE1 = bit.lshift(1, 26)
-                local FCVAR_AVAILABLE2 = bit.lshift(1, 27)
-
                 expect( a:IsFlagSet( FCVAR_GAMEDLL ) ).to.beTrue()
                 expect( a:IsFlagSet( FCVAR_LUA_SERVER ) ).to.beTrue()
                 expect( a:IsFlagSet( FCVAR_DEMO ) ).to.beTrue()
-
-                if IS_64BIT_BRANCH then
-                	expect( a:IsFlagSet( FCVAR_AVAILABLE2 ) ).to.beTrue()
-                else
-                	expect( a:IsFlagSet( FCVAR_AVAILABLE2 ) ).to.beFalse()
-                end
 
                 expect( a:IsFlagSet( FCVAR_UNREGISTERED ) ).to.beFalse()
                 expect( a:IsFlagSet( FCVAR_DEVELOPMENTONLY ) ).to.beFalse()
@@ -64,6 +47,28 @@ return {
                 expect( a:IsFlagSet( FCVAR_SERVER_CAN_EXECUTE ) ).to.beFalse()
                 expect( a:IsFlagSet( FCVAR_SERVER_CANNOT_QUERY ) ).to.beFalse()
                 expect( a:IsFlagSet( FCVAR_CLIENTCMD_CAN_EXECUTE ) ).to.beFalse()
+            end
+        },
+
+        {
+            name = "FCVAR_AVAILABLE2 is present (x86-64)",
+            when = IS_64BIT_BRANCH,
+            func = function()
+                local = GetTestConVar()
+                local flags = a:Flags()
+
+                expect( bit.band( flags, FCVAR_AVAILABLE2 ) ).to.equal( FCVAR_AVAILABLE2 )
+            end
+        },
+
+        {
+            name = "FCVAR_AVAILABLE2 is not present (base)",
+            when = IS_BASE_BRANCH,
+            func = function()
+                local = GetTestConVar()
+                local flags = a:Flags()
+
+                expect( bit.band( flags, FCVAR_AVAILABLE2 ) ).toNot.equal( FCVAR_AVAILABLE2 )
             end
         },
     }

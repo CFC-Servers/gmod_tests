@@ -11,7 +11,7 @@ return {
         },
 
         {
-            name = "Returns the right value",
+            name = "Sets booleans correctly",
             func = function()
                 local a = GetTestConVar()
 
@@ -23,11 +23,35 @@ return {
         },
 
         {
-            name = "Returns the right value",
+            name = "Defaults to `true` if given anything other than false or nil",
             func = function()
                 local a = GetTestConVar()
 
                 a:SetBool( "" ) -- Giving it anything that isn't false or nil will set it to true
+
+                expect( a:GetBool() ).to.beTrue()
+                a:Revert() -- Reset for next tests
+            end
+        },
+
+        {
+            name = "Defaults to `true` if given anything other than false or nil",
+            func = function()
+                local a = GetTestConVar()
+
+                a:SetBool( {} ) -- Giving it anything that isn't false or nil will set it to true
+
+                expect( a:GetBool() ).to.beTrue()
+                a:Revert() -- Reset for next tests
+            end
+        },
+
+        {
+            name = "Defaults to `true` if given anything other than false or nil",
+            func = function()
+                local a = GetTestConVar()
+
+                a:SetBool( Vector( 1, 2, 3 ) ) -- Giving it anything that isn't false or nil will set it to true
 
                 expect( a:GetBool() ).to.beTrue()
                 a:Revert() -- Reset for next tests

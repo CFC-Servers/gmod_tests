@@ -23,11 +23,11 @@ return {
         },
 
         {
-            name = "Returns the right value",
+            name = "Takes a Vector as the divisor argument",
             func = function()
                 local a = Vector( 1, 2, 3.0 )
                 local b = Vector( 2, 4, 0.5 )
-                a:Div( b ) -- Undocumented that Vector:Div can take a Vector
+                a:Div( b )
 
                 expect( a[1] ).to.equal( 0.5 )
                 expect( a[2] ).to.equal( 0.5 )

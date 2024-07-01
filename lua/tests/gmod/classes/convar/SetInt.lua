@@ -11,11 +11,11 @@ return {
         },
 
         {
-            name = "Returns the right value",
+            name = "Ignores decimals when given a float",
             func = function()
                 local a = GetTestConVar()
 
-                a:SetInt( 2.2 ) -- Will ignore all decimals
+                a:SetInt( 2.2 )
 
                 expect( a:GetInt() ).to.equal( 2 )
                 a:Revert() -- Reset for next tests
@@ -23,11 +23,11 @@ return {
         },
 
         {
-            name = "Returns the right value",
+            name = "Ignores decimals when given a string",
             func = function()
                 local a = GetTestConVar()
 
-                a:SetInt( "3.3" ) -- Undocument: Allows a string as an arg. This will also ignore all decimals
+                a:SetInt( "3.3" )
 
                 expect( a:GetInt() ).to.equal( 3 )
                 a:Revert() -- Reset for next tests

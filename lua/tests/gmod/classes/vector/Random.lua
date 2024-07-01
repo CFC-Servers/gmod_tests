@@ -11,7 +11,7 @@ return {
         },
 
         {
-            name = "Returns the right value",
+            name = "Sets the Vectors values to random values within the given range",
             func = function()
                 local a = Vector( 0, 0, 0 )
                 

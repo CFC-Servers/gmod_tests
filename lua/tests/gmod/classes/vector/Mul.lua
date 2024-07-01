@@ -11,10 +11,10 @@ return {
         },
 
         {
-            name = "Returns the right value",
+            name = "Calculates correctly when given a number multiplier argument",
             func = function()
                 local a = Vector( 1, 2, 3 )
-                a:Mul( 2 ) -- Undocumented that Vecotr:Mul can take a number
+                a:Mul( 2 )
 
                 expect( a[1] ).to.equal( 2 )
                 expect( a[2] ).to.equal( 4 )
@@ -23,7 +23,7 @@ return {
         },
 
         {
-            name = "Returns the right value",
+            name = "Calculates correctly when given a number multiplier argument",
             func = function()
                 local a = Vector( 1, 2, 3 )
                 local b = Vector( 2, 3, 4 )

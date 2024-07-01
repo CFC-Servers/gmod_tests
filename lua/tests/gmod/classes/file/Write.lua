@@ -11,7 +11,7 @@ return {
         },
 
         {
-            name = "Returns the right value",
+            name = "Writes a string correctly",
             func = function()
                 local a = GetTestFile( "Write", true )
 

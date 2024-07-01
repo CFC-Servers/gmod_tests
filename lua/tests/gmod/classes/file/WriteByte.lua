@@ -11,15 +11,16 @@ return {
         },
 
         {
-            name = "Returns the right value",
+            name = "Writes a byte correctly",
             func = function()
                 local a = GetTestFile( "WriteByte", true )
-                a:WriteByte( 123 )
+                local value = 123
+
+                a:WriteByte( value )
                 a:Close()
 
                 local b = GetTestFile( "WriteByte" )
-
-                expect( b:ReadByte() ).to.equal( 123 )
+                expect( b:ReadByte() ).to.equal( value )
             end
         },
     }

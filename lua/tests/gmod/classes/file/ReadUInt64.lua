@@ -11,7 +11,7 @@ return {
         },
 
         {
-            name = "Returns the right value",
+            name = "Reads the uint64 correctly",
             func = function()
                 local a = GetTestFile( "WriteUInt64" )
 

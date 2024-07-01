@@ -11,14 +11,14 @@ return {
         },
 
         {
-            name = "Returns the right value",
+            name = "Writes a float correctly",
             func = function()
                 local a = GetTestFile( "WriteFloat", true )
+
                 a:WriteFloat( 1.0000001 )
                 a:Close()
 
                 local b = GetTestFile( "WriteFloat" )
-
                 expect( b:ReadFloat() ).to.equal( 1.0000001192092895507812 )
             end
         },

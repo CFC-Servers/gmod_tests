@@ -11,15 +11,16 @@ return {
         },
 
         {
-            name = "Returns the right value",
+            name = "Writes a long correctly",
             func = function()
                 local a = GetTestFile( "WriteLong", true )
-                a:WriteLong( 2100000000 )
+                local value = 2100000000
+
+                a:WriteLong( value )
                 a:Close()
 
                 local b = GetTestFile( "WriteLong" )
-
-                expect( b:ReadLong() ).to.equal( 2100000000 )
+                expect( b:ReadLong() ).to.equal( value )
             end
         },
     }

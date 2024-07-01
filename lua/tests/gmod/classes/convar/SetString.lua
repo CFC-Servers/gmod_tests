@@ -11,7 +11,7 @@ return {
         },
 
         {
-            name = "Returns the right value",
+            name = "Sets a string value correctly",
             func = function()
                 local a = GetTestConVar()
 
@@ -23,7 +23,7 @@ return {
         },
 
         {
-            name = "Returns the right value",
+            name = "Converts given numbers to strings",
             func = function()
                 local a = GetTestConVar()
 

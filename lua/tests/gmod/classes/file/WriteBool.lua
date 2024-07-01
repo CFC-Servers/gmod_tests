@@ -11,7 +11,7 @@ return {
         },
 
         {
-            name = "Returns the right value",
+            name = "Writes a series of booleans correctly",
             func = function()
                 local a = GetTestFile( "WriteBool", true )
                 a:WriteBool( true )

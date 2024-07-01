@@ -11,15 +11,16 @@ return {
         },
 
         {
-            name = "Returns the right value",
+            name = "Writes a uint64 correctly",
             func = function()
                 local a = GetTestFile( "WriteUInt64", true )
-                a:WriteUInt64( "18000000000000000000" )
+                local value = "18000000000000000000"
+
+                a:WriteUInt64( value )
                 a:Close()
 
                 local b = GetTestFile( "WriteUInt64" )
-
-                expect( b:ReadUInt64() ).to.equal( "18000000000000000000" )
+                expect( b:ReadUInt64() ).to.equal( value )
             end
         },
     }

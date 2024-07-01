@@ -11,15 +11,16 @@ return {
         },
 
         {
-            name = "Returns the right value",
+            name = "Writes a double correctly",
             func = function()
                 local a = GetTestFile( "WriteDouble", true )
-                a:WriteDouble( 1.0000000000001 )
+                local value = 1.0000000000001
+
+                a:WriteDouble( value )
                 a:Close()
 
                 local b = GetTestFile( "WriteDouble" )
-
-                expect( b:ReadDouble() ).to.equal( 1.0000000000001 )
+                expect( b:ReadDouble() ).to.equal( value )
             end
         },
     }

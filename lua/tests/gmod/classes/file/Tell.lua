@@ -14,10 +14,11 @@ return {
             name = "Returns the right value",
             func = function()
                 local a = GetTestFile( "Write" )
+                local skipAmount = 12
 
-                a:Skip( 12 )
+                a:Skip( skipAmount )
 
-                expect( a:Tell() ).to.equal( 12 )
+                expect( a:Tell() ).to.equal( skipAmount )
             end
         },
     }

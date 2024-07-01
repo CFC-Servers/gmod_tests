@@ -11,7 +11,7 @@ return {
         },
 
         {
-            name = "Returns the right value",
+            name = "Reads the short correctly",
             func = function()
                 local a = GetTestFile( "WriteShort" )
 

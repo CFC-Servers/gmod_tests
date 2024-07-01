@@ -11,15 +11,16 @@ return {
         },
 
         {
-            name = "Returns the right value",
+            name = "Writes a unsigned long correctly",
             func = function()
                 local a = GetTestFile( "WriteULong", true )
-                a:WriteULong( 4200000000 )
+                local value = 4200000000
+
+                a:WriteULong( value )
                 a:Close()
 
                 local b = GetTestFile( "WriteULong" )
-
-                expect( b:ReadULong() ).to.equal( 4200000000 )
+                expect( b:ReadULong() ).to.equal( value )
             end
         },
     }

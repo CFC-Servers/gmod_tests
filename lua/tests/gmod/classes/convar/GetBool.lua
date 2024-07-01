@@ -14,7 +14,7 @@ return {
             name = "Returns the right value",
             func = function()
                 local a = GetTestConVar()
-                local b = CreateConVar( "ConVarTest2", "0.9", 0, "This is a Test 2" )
+                local b = GetTestConVar( "2", "0.9" )
 
                 expect( a:GetBool() ).to.beTrue() -- It will always return true if the value is 1 or higher
                 expect( b:GetBool() ).to.beFalse()
