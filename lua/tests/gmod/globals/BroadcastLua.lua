@@ -17,6 +17,7 @@ return {
 
         {
             name = "Succeeds when given invalid lua",
+            when = WHEN_NO_HUMANS, -- Prevent noisy CL lua errors when testing on local server
             func = function()
                 expect( BroadcastLua, "function)( hello!" ).to.succeed()
             end
