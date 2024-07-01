@@ -25,6 +25,7 @@ return {
 
         {
             name = "Succeeds when given empty string",
+            when = WHEN_NO_HUMANS, -- Prevent noisy CL warning print when testing on local server
             func = function()
                 expect( BroadcastLua, "" ).to.succeed()
             end
