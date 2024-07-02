@@ -55,7 +55,6 @@ return {
             when = IS_64BIT_BRANCH,
             func = function()
                 local a = GetTestConVar()
-
                 expect( a:IsFlagSet( FCVAR_AVAILABLE2 ) ).to.beTrue()
             end
         },
@@ -65,7 +64,6 @@ return {
             when = IS_BASE_BRANCH,
             func = function()
                 local a = GetTestConVar()
-
                 expect( a:IsFlagSet( FCVAR_AVAILABLE2 ) ).to.beFalse()
             end
         },
