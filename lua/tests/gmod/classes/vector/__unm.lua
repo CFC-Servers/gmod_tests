@@ -1,11 +1,11 @@
 return {
-    groupName = "Angle:__unm",
+    groupName = "Vector:__unm",
 
     cases = {
         {
-            name = "Exists on the Angle meta table",
+            name = "Exists on the Vector meta table",
             func = function()
-                local meta = FindMetaTable( "Angle" )
+                local meta = FindMetaTable( "Vector" )
                 expect( meta.__unm ).to.beA( "function" )
             end
         },
@@ -13,7 +13,7 @@ return {
         {
             name = "Returns the right value",
             func = function()
-                local a = Angle( 1, 2, 3 )
+                local a = Vector( 1, 2, 3 )
                 local b = a:__unm()
 
                 expect( b[1] ).to.equal( -1 )
