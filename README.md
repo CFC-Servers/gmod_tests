@@ -27,7 +27,7 @@ Simply run `gluatest_run_tests` in the server console to run the test suite. Thi
 
 
 ### Test structure
-All tests go in the `lua/tests/` dir.
+All tests go in the `lua/tests/gmod/` dir.
 
 It's scoped into three Sections right now:
 - Globals _(All global Functions)_
@@ -37,13 +37,13 @@ It's scoped into three Sections right now:
 Inside each Section, we create new directories for each sub-object.
 
 For example, if you were going to write tests for the [`File`](https://gmodwiki.com/file_class) class, you would:
-- Create a new file: `lua/tests/classes/file/file.lua` and begin writing the meta-level tests for this class
+- Create a new file: `lua/tests/gmod/classes/file/file.lua` and begin writing the meta-level tests for this class
 - Decide if all Class tests can go in a single file.
-  - If so, write them all in `lua/tests/classes/file/file.lua`
+  - If so, write them all in `lua/tests/gmod/classes/file/file.lua`
   - If not, we'll make new files for each method or "sets" of methods:
-    - `lua/tests/classes/file/close.lua`
-    - `lua/tests/classes/file/endoffile.lua`
-    - `lua/tests/classes/file/flush.lua`
+    - `lua/tests/gmod/classes/file/close.lua`
+    - `lua/tests/gmod/classes/file/endoffile.lua`
+    - `lua/tests/gmod/classes/file/flush.lua`
 
 In general, we want to keep each test file from getting _way too big_. Given that most methods you test will require 3-5 tests for the "success" cases and at least 1 test for the "failure" case, these can get big quickly.
 
