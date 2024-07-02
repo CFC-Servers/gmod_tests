@@ -1,5 +1,5 @@
 return {
-    groupName = "Entity:AddFlags",
+    groupName = "Entity:AddSolidFlags",
     yes = true,
 
     beforeEach = function( state )
@@ -15,7 +15,7 @@ return {
             name = "Exists on the Entity Metatable",
             func = function()
                 local meta = FindMetaTable( "Entity" )
-                expect( meta.AddFlags ).to.beA( "function" )
+                expect( meta.AddSolidFlags ).to.beA( "function" )
             end
         },
 
@@ -23,12 +23,12 @@ return {
             name = "Sets the given flag on the Entity",
             func = function( state )
                 local ent = state.ent
-                local flag = FL_NOTARGET
+                local flag = FSOLID_NOT_SOLID
 
-                expect( ent:IsFlagSet( flag ) ).to.beFalse()
+                expect( bit.band( ent:GetSolidFlags(), flag ) ).to.equal( 0 )
 
-                ent:AddFlags( flag )
-                expect( ent:IsFlagSet( flag ) ).to.beTrue()
+                ent:AddSolidFlags( flag )
+                expect( bit.band( ent:GetSolidFlags(), flag ) ).to.equal( flag )
             end
         },
 
@@ -38,10 +38,10 @@ return {
                 local ent = state.ent
 
                 local function test()
-                    ent:AddFlags( nil )
+                    ent:AddSolidFlags( nil )
                 end
 
-                expect( test ).to.errWith( [[bad argument #1 to 'AddFlags' (number expected, got nil)]] )
+                expect( test ).to.errWith( [[bad argument #1 to 'AddSolidFlags' (number expected, got nil)]] )
             end
         },
 
@@ -50,8 +50,8 @@ return {
             func = function( state )
                 local ent = state.ent
 
-                ent:AddFlags( "2" )
-                expect( ent:IsFlagSet( 2 ) ).to.beTrue()
+                ent:AddSolidFlags( "2" )
+                expect( bit.band( ent:GetSolidFlags(), 2 ) ).to.equal( 2 )
             end
         },
 
@@ -61,8 +61,8 @@ return {
                 local ent = state.ent
                 local flag = 42
 
-                ent:AddFlags( flag )
-                expect( ent:IsFlagSet( flag ) ).to.beTrue()
+                ent:AddSolidFlags( flag )
+                expect( bit.band( ent:GetSolidFlags(), flag ) ).to.equal( flag )
             end
         },
 
@@ -70,17 +70,17 @@ return {
             name = "Atomically sets the same flag multiple times",
             func = function( state )
                 local ent = state.ent
-                local flag = FL_NOTARGET
+                local flag = FSOLID_NOT_SOLID
 
                 -- Ensure that no flag is set
-                expect( ent:IsFlagSet( flag ) ).to.beFalse()
+                expect( bit.band( ent:GetSolidFlags(), flag ) ).to.equal( 0 )
 
-                ent:AddFlags( flag )
-                local flags = ent:GetFlags()
+                ent:AddSolidFlags( flag )
+                local flags = ent:GetSolidFlags()
 
                 -- Make sure setting it again doesn't change the flag
-                ent:AddFlags( flag )
-                expect( ent:GetFlags() ).to.equal( flags )
+                ent:AddSolidFlags( flag )
+                expect( ent:GetSolidFlags() ).to.equal( flags )
             end
         }
     }
