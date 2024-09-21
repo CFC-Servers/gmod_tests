@@ -54,10 +54,9 @@ return {
             name = "FCVAR_AVAILABLE2 is present (x86-64)",
             when = IS_64BIT_BRANCH,
             func = function()
-                local = GetTestConVar()
-                local flags = a:Flags()
+                local a = GetTestConVar()
 
-                expect( bit.band( flags, FCVAR_AVAILABLE2 ) ).to.equal( FCVAR_AVAILABLE2 )
+                expect( a:IsFlagSet( FCVAR_AVAILABLE2 ) ).to.beTrue()
             end
         },
 
@@ -65,10 +64,9 @@ return {
             name = "FCVAR_AVAILABLE2 is not present (base)",
             when = IS_BASE_BRANCH,
             func = function()
-                local = GetTestConVar()
-                local flags = a:Flags()
+                local a = GetTestConVar()
 
-                expect( bit.band( flags, FCVAR_AVAILABLE2 ) ).toNot.equal( FCVAR_AVAILABLE2 )
+                expect( a:IsFlagSet( FCVAR_AVAILABLE2 ) ).to.beFalse()
             end
         },
     }
