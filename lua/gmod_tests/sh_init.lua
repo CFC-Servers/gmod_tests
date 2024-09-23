@@ -20,3 +20,58 @@ FCVAR_MATERIAL_SYSTEM_THREAD = bit.lshift( 1, 23 )
 FCVAR_ACCESSIBLE_FROM_THREADS = bit.lshift( 1, 25 )
 FCVAR_AVAILABLE1 = bit.lshift( 1, 26 )
 FCVAR_AVAILABLE2 = bit.lshift( 1, 27 )
+
+if SERVER then
+    --- Makes an entity for test purposes
+    --- @param class string? The class of the entity
+    --- @param model string? The model of the entity
+    --- @param shouldSpawn boolean? Whether the entity should be :Spawn()'d
+    MakeTestEntity = function( class, model, shouldSpawn )
+        shouldSpawn = shouldSpawn == true
+
+        local ent = ents.Create( class or "prop_physics" )
+        ent:SetModel( model or "models/props_c17/oildrum001.mdl" )
+
+        if shouldSpawn then
+            ent:Spawn()
+        end
+
+        return ent
+    end
+
+    --- Sets up a testGroup to make a test ent for each test, and remove it after each test
+    WithTestEntity = function( testGroup )
+        testGroup.beforeEach = function( state )
+            state.ent = MakeTestEntity()
+        end
+
+        testGroup.afterEach = function( state )
+            SafeRemoveEntity( state.ent )
+        end
+
+        return testGroup
+    end
+end
+
+hook.Add( "GLuaTest_StartedTestRun", "Yes", function( testGroups )
+    local hasYes = false
+    local groupCount = #testGroups
+
+    local toRemove = {}
+
+    for i = 1, groupCount do
+        local group = testGroups[i]
+
+        if group.yes then
+            hasYes = true
+        else
+            table.insert( toRemove, 1, i )
+        end
+    end
+
+    if not hasYes then return end
+
+    for _, i in ipairs( toRemove ) do
+        table.remove( testGroups, i )
+    end
+end )
