@@ -1,14 +1,5 @@
-return {
+return WithTestEntity( {
     groupName = "Entity:Activate",
-    yes = true,
-
-    beforeEach = function( state )
-        state.ent = MakeTestEntity()
-    end,
-
-    afterEach = function( state )
-        SafeRemoveEntity( state.ent )
-    end,
 
     cases = {
         {
@@ -33,4 +24,4 @@ return {
         -- "Calling this method after Entity:SetModelScale will recreate a new scaled SOLID_VPHYSICS PhysObj on scripted entities"
         -- sent_ball test?
     }
-}
+} )

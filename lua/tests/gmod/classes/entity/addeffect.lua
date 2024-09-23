@@ -1,14 +1,5 @@
-return {
+return WithTestEntity( {
     groupName = "Entity:AddEffects",
-    yes = true,
-
-    beforeEach = function( state )
-        state.ent = MakeTestEntity()
-    end,
-
-    afterEach = function( state )
-        SafeRemoveEntity( state.ent )
-    end,
 
     cases = {
         {
@@ -83,4 +74,4 @@ return {
             end
         },
     }
-}
+} )

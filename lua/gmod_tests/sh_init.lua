@@ -38,6 +38,19 @@ if SERVER then
 
         return ent
     end
+
+    --- Sets up a testGroup to make a test ent for each test, and remove it after each test
+    WithTestEntity = function( testGroup )
+        testGroup.beforeEach = function( state )
+            state.ent = MakeTestEntity()
+        end
+
+        testGroup.afterEach = function( state )
+            SafeRemoveEntity( state.ent )
+        end
+
+        return testGroup
+    end
 end
 
 hook.Add( "GLuaTest_StartedTestRun", "Yes", function( testGroups )
