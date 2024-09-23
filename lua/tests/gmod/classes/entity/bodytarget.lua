@@ -1,14 +1,5 @@
-return {
+return WithTestEntity( {
     groupName = "Entity:BodyTarget",
-    yes = true,
-
-    beforeEach = function( state )
-        state.ent = MakeTestEntity( "npc_gman" )
-    end,
-
-    afterEach = function( state )
-        SafeRemoveEntity( state.ent )
-    end,
 
     -- NOTE:
     -- Using the noise parameter appears to adjust the output by approximately:
@@ -72,4 +63,4 @@ return {
             end
         }
     }
-}
+} )

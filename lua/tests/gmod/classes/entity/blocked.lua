@@ -1,14 +1,5 @@
-return {
+return WithTestEntity( {
     groupName = "Entity:Blocked",
-    yes = true,
-
-    beforeEach = function( state )
-        state.ent = MakeTestEntity()
-    end,
-
-    afterEach = function( state )
-        SafeRemoveEntity( state )
-    end,
 
     cases = {
         {
@@ -65,4 +56,4 @@ return {
         -- TODO:
         -- Test with func_movelinear
     }
-}
+} )
