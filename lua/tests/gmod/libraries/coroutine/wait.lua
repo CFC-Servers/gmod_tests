@@ -9,23 +9,57 @@ return {
         },
 
         {
-            name = "Waits as expected", -- BUG: It doesn't want to work :/
-            when = false, --GetConVar("sv_hibernate_think"):GetBool(), -- We need sv_hibernate_think enabled!
+            name = "Waits as expected",
+            async = true,
+            timeout = 0.75,
             func = function()
-                local ret
-                local co = coroutine.create(function()
-                    coroutine.wait(0) -- Idk if the testing environment allows one to test it. (Update) Apparently we can't test it? or I'm dumb
-                    ret = "Hello World"
-                end)
+                local expected = "Hello World"
 
-                expect( co ).to.beA( "thread" )
+                local co = coroutine.create( function()
+                    coroutine.wait( 0.25 )
+                    coroutine.yield( expected )
+                end )
 
-                while ( ret == nil ) do -- no sv_hibernate_think = a funny test
-                    coroutine.resume( co )
-                end
+                -- When we first start it, it will immediately suspend itself and not yield anything
+                local ran, ret = coroutine.resume( co )
+                expect( ran ).to.beTrue()
+                expect( ret ).to.beNil()
+                expect( coroutine.status( co ) ).to.equal( "suspended" )
 
-                expect( ret ).to.equal( "Hello World" )
+                timer.Simple( 0.5, function()
+                    ran, ret = coroutine.resume( co )
+                    expect( ran ).to.beTrue()
+                    expect( ret ).to.equal( expected )
+                    done()
+                end )
             end
         },
+
+        {
+            name = "Waits one frame when given 0",
+            async = true,
+            timeout = 0.1,
+            func = function()
+                local expected = "Hello World"
+
+                local co = coroutine.create( function()
+                    coroutine.wait( 0 )
+                    coroutine.yield( expected )
+                end )
+
+                -- When we first start it, it will immediately suspend itself and not yield anything
+                local ran, ret = coroutine.resume( co )
+                expect( ran ).to.beTrue()
+                expect( ret ).to.beNil()
+                expect( coroutine.status( co ) ).to.equal( "suspended" )
+
+                timer.Simple( 0, function()
+                    ran, ret = coroutine.resume( co )
+                    expect( ran ).to.beTrue()
+                    expect( ret ).to.equal( expected )
+                    done()
+                end )
+            end
+        }
     }
 }
