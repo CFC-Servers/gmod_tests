@@ -45,6 +45,16 @@ if SERVER then
         return ent
     end
 
+    local botCounter = 0
+    --- Makes a bot for test purposes
+    --- @param name string? The name of the bot
+    MakeTestBot = function( name )
+        botCounter = botCounter + 1
+
+        name = name or ("Bot " .. botCounter)
+        return player.CreateNextBot( name )
+    end
+
     --- @class TestEntityConfig
     --- @field class string? The class of the entity
     --- @field model string? The model of the Entity
@@ -71,8 +81,35 @@ if SERVER then
 
         return testGroup
     end
+
+    --- @class TestBotConfig
+    --- @field name? string The name of the bot
+    --- @field createdCallback fun(ply: Player)? A callback to run after the bot is created
+
+    --- Sets up a testGroup to make a test bot for each test, and remove it after each test
+    --- @param testGroup table The test group to modify
+    --- @param config TestBotConfig? The configuration for the test bot
+    WithTestBot = function( testGroup, config )
+        config = config or {}
+
+        testGroup.beforeEach = function( state )
+            state.bot = MakeTestBot( config.name )
+
+            local cb = config.createdCallback
+            if cb then cb( state.bot ) end
+        end
+
+        testGroup.afterEach = function( state )
+            local bot = state.bot
+
+            if not IsValid( bot ) then return end
+            bot:Kick()
+        end
+    end
 end
 
+-- Helper utility to isolate test groups
+-- If any test group has `yes = true`, then only test groups that have `yes = true` will be run
 hook.Add( "GLuaTest_StartedTestRun", "Yes", function( testGroups )
     local hasYes = false
     local groupCount = #testGroups
