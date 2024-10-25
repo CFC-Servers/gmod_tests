@@ -7,6 +7,8 @@ Here are some of our primary goals with this project:
 - Help contributors in the [official Garry's Mod repo](https://github.com/Facepunch/garrysmod) increase confidence in their PRs
 - Improve the Wiki with knowledge gained from writing tests
 
+You can keep an eye on our progress _(or find somewhere to jump in and contribute!)_ in our [Issues Tab](https://github.com/CFC-Servers/gmod_tests/issues)
+
 This project uses [GLuaTest](https://github.com/CFC-Servers/GLuaTest) to run the test suite.
 A secondary goal is actually to improve GLuaTest based on our experiences writing tests here. Please don't be shy about asking for new features or complaining about GLuaTest!
     
