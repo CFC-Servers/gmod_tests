@@ -202,7 +202,30 @@ return {
                 expect( smallAngle.yaw   ).to.beBetween( -0.00011, -0.00009 )
                 expect( smallAngle.roll  ).to.beBetween( -0.000011, -0.000009 )
             end
-        }
+        },{
+            name = "Combining Large, Positive Angles",
+            func = function()
+                local firstAngle = Angle( 99999999999999999999999999999999999999, 99999999999999999999999999999999999999, 99999999999999999999999999999999999999 )
+                local secondAngle = Angle( 99999999999999999999999999999999999999, 99999999999999999999999999999999999999, 99999999999999999999999999999999999999 )
+                local resultAngle = firstAngle + secondAngle
+
+                expect( resultAngle.pitch ).to.beBetween( 1.9999999360570e+38, 1.9999999360572e+38 )
+                expect( resultAngle.yaw   ).to.beBetween( 1.9999999360570e+38, 1.9999999360572e+38 )
+                expect( resultAngle.roll  ).to.beBetween( 1.9999999360570e+38, 1.9999999360572e+38 )
+            end
+        },{
+            name = "Combining Large, Negative Angles",
+            func = function()
+
+                local firstAngle = Angle( -99999999999999999999999999999999999999, -99999999999999999999999999999999999999, -99999999999999999999999999999999999999 )
+                local secondAngle = Angle( -99999999999999999999999999999999999999, -99999999999999999999999999999999999999, -99999999999999999999999999999999999999 )
+                local resultAngle = firstAngle + secondAngle
+
+                expect( resultAngle.pitch ).to.beBetween( -1.9999999360572e+38, -1.9999999360570e+38 )
+                expect( resultAngle.yaw   ).to.beBetween( -1.9999999360572e+38, -1.9999999360570e+38 )
+                expect( resultAngle.roll  ).to.beBetween( -1.9999999360572e+38, -1.9999999360570e+38 )
+            end
+        },
         --#endregion
     }
 }
