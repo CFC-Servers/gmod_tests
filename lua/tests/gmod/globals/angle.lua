@@ -167,5 +167,42 @@ return {
             end
         },
         --#endregion
+
+        --[[ Large and Small Number Handling ]]--
+        --#region
+        {
+            name = "Accepts Very Large Positive Numbers",
+            func = function()
+                local largeAngle = Angle( math.huge, math.huge, math.huge )
+                expect( largeAngle.pitch ).to.equal( math.huge )
+                expect( largeAngle.yaw   ).to.equal( math.huge )
+                expect( largeAngle.roll  ).to.equal( math.huge )
+            end
+        },{
+            name = "Accepts Very Large Negative Numbers",
+            func = function()
+                local largeAngle = Angle( -math.huge, -math.huge, -math.huge )
+                expect( largeAngle.pitch ).to.equal( -math.huge )
+                expect( largeAngle.yaw   ).to.equal( -math.huge )
+                expect( largeAngle.roll  ).to.equal( -math.huge )
+            end
+        },{
+            name = "Accepts Very Small Positive Numbers",
+            func = function()
+                local smallAngle = Angle( 0.001, 0.0001, 0.00001 )
+                expect( smallAngle.pitch ).to.beBetween( 0.0009, 0.0011 )
+                expect( smallAngle.yaw   ).to.beBetween( 0.00009, 0.00011 )
+                expect( smallAngle.roll  ).to.beBetween( 0.000009, 0.000011 )
+            end
+        },{
+            name = "Accepts Very Small Negative Numbers",
+            func = function()
+                local smallAngle = Angle( -0.001, -0.0001, -0.00001 )
+                expect( smallAngle.pitch ).to.beBetween( -0.0011, -0.0009 )
+                expect( smallAngle.yaw   ).to.beBetween( -0.00011, -0.00009 )
+                expect( smallAngle.roll  ).to.beBetween( -0.000011, -0.000009 )
+            end
+        }
+        --#endregion
     }
 }
