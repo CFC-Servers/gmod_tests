@@ -13,10 +13,10 @@ return WithBotTestTools( {
         {
             name = "Adds all currently connected players",
             async = true,
-            timeout = 1,
+            timeout = 2,
             coroutine = true,
             func = function( state )
-                WaitForTicks( 10 ) -- Wait for the bots to actually disconnect
+                WaitForEmptyServer()
 
                 expect( #player.GetAll() ).to.equal( 0 )
 
@@ -48,7 +48,7 @@ return WithBotTestTools( {
             timeout = 1,
             coroutine = true,
             func = function()
-                WaitForTicks( 10 ) -- Wait for the bots to actually disconnect
+                WaitForEmptyServer()
 
                 expect( #player.GetAll() ).to.equal( 0 )
 

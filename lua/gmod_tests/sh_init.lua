@@ -124,28 +124,37 @@ if SERVER then
 
             function state.kickBot( bot )
                 table.RemoveByValue( state.bots, bot )
-                if not IsValid( bot ) then return end
+                if not IsValid( bot ) then
+                    return
+                end
 
                 game.KickID( bot:UserID() )
             end
-        end
 
-        testGroup.afterEach = function( state )
-            print( "Removing bots" )
-            if not state.bots then return end
+            function state.kickBots()
+                local bots = state.bots
+                local botCount = #bots
 
-            for _, bot in ipairs( state.bots ) do
-                if IsValid( bot ) then
-                    game.KickID( bot:UserID() )
+                for i = botCount, 1, -1 do
+                    local bot = bots[i]
+                    state.kickBot( bot )
                 end
             end
         end
 
+        testGroup.afterEach = function( state )
+            if not state.bots then return end
+            state.kickBots()
+        end
+
         testGroup.beforeAll = function()
-            for _, ply in ipairs( player.GetBots() ) do
-                game.KickID( ply:UserID() )
+            for _, bot in ipairs( player.GetBots() ) do
+                game.KickID( bot:UserID() )
             end
         end
+
+        hook.Add( "SetupPlayerVisibility", "GLuaTest_ClearBots", function( ply, viewEnt )
+        end )
 
         return testGroup
     end
@@ -154,6 +163,21 @@ if SERVER then
     local function getWaitIdentifier()
         waitIdent = waitIdent + 1
         return "GLuaTest_Waiter_" .. waitIdent
+    end
+
+    WaitForEmptyServer = function()
+        local co = coroutine.running()
+        local identifier = getWaitIdentifier()
+
+        hook.Add( "Think", identifier, function()
+            local count = player.GetCount()
+            if count > 0 then return end
+
+            hook.Remove( "Think", identifier )
+            -- coroutine.resume( co )
+        end )
+
+        return coroutine.yield()
     end
 
     WaitForTicks = function( ticks )

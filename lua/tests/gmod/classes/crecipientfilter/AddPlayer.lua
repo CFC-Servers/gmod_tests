@@ -16,7 +16,7 @@ return WithBotTestTools( {
             timeout = 3,
             coroutine = true,
             func = function( state )
-                WaitForTicks( 10 ) -- Wait for the bots to actually disconnect
+                WaitForEmptyServer()
                 expect( #player.GetAll() ).to.equal( 0 )
 
                 local filter = RecipientFilter()
@@ -39,7 +39,7 @@ return WithBotTestTools( {
             timeout = 3,
             coroutine = true,
             func = function()
-                WaitForTicks( 10 ) -- Wait for the bots to actually disconnect
+                WaitForEmptyServer()
                 expect( #player.GetAll() ).to.equal( 0 )
 
                 local filter = RecipientFilter()
@@ -57,7 +57,7 @@ return WithBotTestTools( {
             timeout = 3,
             coroutine = true,
             func = function( state )
-                WaitForTicks( 10 ) -- Wait for the bots to actually disconnect
+                WaitForEmptyServer()
                 expect( #player.GetAll() ).to.equal( 0 )
 
                 local filter = RecipientFilter()
