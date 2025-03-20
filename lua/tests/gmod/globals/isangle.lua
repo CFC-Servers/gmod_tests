@@ -12,7 +12,7 @@ return {
             name = "Returns the right bool",
             func = function()
                 local angle = Angle( 1, 2, 3 )
-                expect( isangle( vector ) ).to.beTrue()
+                expect( isangle( angle ) ).to.beTrue()
 
                 local fake_angle = setmetatable( { p = 1, y = 2, r = 3 }, getmetatable( angle ) )
                 expect( isangle( fake_angle ) ).to.beFalse()
