@@ -5,7 +5,7 @@ return WithBotTestTools( {
         {
             name = "Exists on the CRecipientFilter metatable",
             func = function()
-                local meta = FindMetaTable( "CRecipientFilter" )
+                local meta = assert( FindMetaTable( "CRecipientFilter" ) )
                 expect( meta.AddAllPlayers ).to.beA( "function" )
             end
         },
@@ -17,24 +17,24 @@ return WithBotTestTools( {
             coroutine = true,
             func = function( state )
                 WaitForEmptyServer()
-
                 expect( #player.GetAll() ).to.equal( 0 )
 
+                local botCount = 3
                 local filter = RecipientFilter()
-                local bots = state.addBots( 3 )
+                local bots = state.addBots( botCount )
                 local botLookup = {} do
-                    for i = 1, #bots do
+                    for i = 1, botCount do
                         botLookup[bots[i]] = true
                     end
                 end
 
                 filter:AddAllPlayers()
 
-                local plys = filter:GetPlayers()
-                expect( #plys ).to.equal( 3 )
+                local added = filter:GetPlayers()
+                expect( #added ).to.equal( botCount )
 
-                for i = 1, #plys do
-                    local ply = plys[i]
+                for i = 1, #added do
+                    local ply = added[i]
                     expect( botLookup[ply] ).to.beTrue()
                 end
 

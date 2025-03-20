@@ -174,7 +174,7 @@ if SERVER then
             if count > 0 then return end
 
             hook.Remove( "Think", identifier )
-            -- coroutine.resume( co )
+            coroutine.resume( co )
         end )
 
         return coroutine.yield()

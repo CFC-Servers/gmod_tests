@@ -5,7 +5,7 @@ return WithBotTestTools( {
         {
             name = "Exists on the CRecipientFilter metatable",
             func = function()
-                local meta = FindMetaTable( "CRecipientFilter" )
+                local meta = assert( FindMetaTable( "CRecipientFilter" ) )
                 expect( meta.AddPlayer ).to.beA( "function" )
             end
         },
