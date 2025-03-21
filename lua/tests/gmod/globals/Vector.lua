@@ -19,22 +19,22 @@ return {
         {
             name = "Accepts string-number parameters",
             func = function()
-                local vector = Vector( "1", "2", "3" )
+                local vector = Vector( "1", "100.000", "0.1" )
 
                 expect( vector.x ).to.equal( 1 )
-                expect( vector.y ).to.equal( 2 )
-                expect( vector.z ).to.equal( 3 )
+                expect( vector.y ).to.equal( 100 )
+                expect( vector.z ).to.beBetween( 0.09, 0.11 )
             end
         },
 
         {
             name = "Accepts string parameters",
             func = function()
-                local vector = Vector( "1 2 3" )
+                local vector = Vector( "1 100.000 0.1" )
 
                 expect( vector.x ).to.equal( 1 )
-                expect( vector.y ).to.equal( 2 )
-                expect( vector.z ).to.equal( 3 )
+                expect( vector.y ).to.equal( 100 )
+                expect( vector.z ).to.beBetween( 0.09, 0.11 )
             end
         },
 
