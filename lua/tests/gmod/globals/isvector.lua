@@ -12,10 +12,10 @@ return {
             name = "Returns the right bool",
             func = function()
                 local vector = Vector( 1, 2, 3 )
-                expect( isvector( vector ) ).to.beTrue()
+                local angle = Angle( 1, 2, 3 )
 
-                local fake_vector = setmetatable( { x = 1, y = 2, z = 3 }, getmetatable( vector ) )
-                expect( isvector( fake_vector ) ).to.beFalse()
+                expect( isvector( vector ) ).to.beTrue()
+                expect( isvector( angle ) ).to.beFalse()
             end
         },
     }
