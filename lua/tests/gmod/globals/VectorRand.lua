@@ -11,7 +11,7 @@ return {
         {
             name = "Returns an Vector",
             func = function()
-                expect( VectorRand() ).to.beAn( "Vector" )
+                expect( VectorRand() ).to.beA( "Vector" )
             end
         },
 
