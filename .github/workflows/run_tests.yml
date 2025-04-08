@@ -14,8 +14,14 @@ on:
 jobs:
   run-mainbranch-tests:
     uses: CFC-Servers/GLuaTest/.github/workflows/run_tests.yml@main
+    with:
+      branch: live
+      collection: 3460542547
+      map: gm_glua_tests
 
   run-64bit-tests:
     uses: CFC-Servers/GLuaTest/.github/workflows/run_tests.yml@main
     with:
       branch: x86-64
+      collection: 3460542547
+      map: gm_glua_tests
