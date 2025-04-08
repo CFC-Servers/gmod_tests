@@ -18,6 +18,8 @@ jobs:
       branch: live
       collection: 3460542547
       map: gm_glua_tests
+      extra-startup-args: "-usegh"
+      # download-artifact: "https://github.com/RaphaelIT7/gmod-holytest"
 
   run-64bit-tests:
     uses: CFC-Servers/GLuaTest/.github/workflows/run_tests.yml@main
@@ -25,3 +27,5 @@ jobs:
       branch: x86-64
       collection: 3460542547
       map: gm_glua_tests
+      extra-startup-args: "-usegh"
+      # download-artifact: "https://github.com/RaphaelIT7/gmod-holytest"
