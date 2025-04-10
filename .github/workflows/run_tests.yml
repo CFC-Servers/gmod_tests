@@ -19,6 +19,7 @@ jobs:
       collection: 3460542547
       map: gm_glua_tests
       dockerbuild: true
+      gluatest-ref: "feature/runner-improvement"
 
   run-64bit-tests:
     uses: CFC-Servers/GLuaTest/.github/workflows/run_tests.yml@feature/runner-improvement
@@ -27,3 +28,4 @@ jobs:
       collection: 3460542547
       map: gm_glua_tests
       dockerbuild: true
+      gluatest-ref: "feature/runner-improvement"
