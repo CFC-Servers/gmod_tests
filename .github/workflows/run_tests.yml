@@ -13,19 +13,17 @@ on:
 
 jobs:
   run-mainbranch-tests:
-    uses: CFC-Servers/GLuaTest/.github/workflows/run_tests.yml@main
+    uses: CFC-Servers/GLuaTest/.github/workflows/run_tests.yml@feature/runner-improvements
     with:
       branch: live
       collection: 3460542547
       map: gm_glua_tests
-      extra-startup-args: "-usegh"
-      # download-artifact: "https://github.com/RaphaelIT7/gmod-holytest"
+      dockerbuild: true
 
   run-64bit-tests:
-    uses: CFC-Servers/GLuaTest/.github/workflows/run_tests.yml@main
+    uses: CFC-Servers/GLuaTest/.github/workflows/run_tests.yml@feature/runner-improvements
     with:
       branch: x86-64
       collection: 3460542547
       map: gm_glua_tests
-      extra-startup-args: "-usegh"
-      # download-artifact: "https://github.com/RaphaelIT7/gmod-holytest"
+      dockerbuild: true
