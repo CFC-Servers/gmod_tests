@@ -4,6 +4,10 @@ TestMap = {
     rooms = {},
 }
 
+function TestMap.IsRunningTestMap()
+    return game.GetMap() == "gm_glua_tests"
+end
+
 --- Parses the given node as a Room node
 --- @param name string The name of the node
 --- @param node Entity

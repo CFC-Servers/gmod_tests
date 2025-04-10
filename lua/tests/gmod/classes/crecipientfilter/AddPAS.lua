@@ -12,6 +12,7 @@ return WithBotTestTools( {
 
         {
             name = "Adds targets from the PAS of the given vector",
+            when = TestMap.IsRunningTestMap,
             async = true,
             timeout = 1,
             coroutine = true,
@@ -44,6 +45,7 @@ return WithBotTestTools( {
 
         {
             name = "Adds no targets if none exist in the given PAS",
+            when = TestMap.IsRunningTestMap,
             async = true,
             timeout = 1,
             coroutine = true,
@@ -75,6 +77,7 @@ return WithBotTestTools( {
         -- TODO: Is this map-specific somehow? Seemed to not do this on gm_construct
         {
             name = "Adds no targets if given an out-of-map position",
+            when = TestMap.IsRunningTestMap,
             async = true,
             timeout = 1,
             coroutine = true,

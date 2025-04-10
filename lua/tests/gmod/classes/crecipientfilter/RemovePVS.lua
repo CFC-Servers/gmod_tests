@@ -12,6 +12,7 @@ return WithBotTestTools( {
 
         {
             name = "Removes targets from the PVS of the given vector",
+            when = TestMap.IsRunningTestMap,
             async = true,
             timeout = 1,
             coroutine = true,
@@ -44,6 +45,7 @@ return WithBotTestTools( {
 
         {
             name = "Removes no targets if none exist in the given PVS",
+            when = TestMap.IsRunningTestMap,
             async = true,
             timeout = 1,
             coroutine = true,
@@ -75,6 +77,7 @@ return WithBotTestTools( {
 
         {
             name = "Removes no targets if given an out-of-map position",
+            when = TestMap.IsRunningTestMap,
             async = true,
             timeout = 1,
             coroutine = true,
