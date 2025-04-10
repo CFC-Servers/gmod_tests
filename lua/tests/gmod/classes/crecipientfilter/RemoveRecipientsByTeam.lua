@@ -1,37 +1,38 @@
 return WithBotTestTools( {
-    groupName = "CRecipientFilter:AddRecipientsByTeam",
+    groupName = "CRecipientFilter:RemoveRecipientsByTeam",
 
     cases = {
         {
             name = "Exists on the CRecipientFilter metatable",
             func = function()
                 local meta = assert( FindMetaTable( "CRecipientFilter" ) )
-                expect( meta.AddRecipientsByTeam ).to.beA( "function" )
+                expect( meta.RemoveRecipientsByTeam ).to.beA( "function" )
             end
         },
 
         {
-            name = "Adds all players on the given team to the filter",
+            name = "Removes all players on the given team from the filter",
             async = true,
-            timeout = 1,
+            timeout = 2,
             coroutine = true,
             func = function( state )
                 WaitForEmptyServer()
-                expect( #player.GetAll() ).to.equal( 0 )
 
                 local teamNumber = 69
 
-                local filter = RecipientFilter()
                 local bots = state.addBots( 2 )
+                local filter = RecipientFilter()
+                filter:AddAllPlayers()
+
                 for _, bot in ipairs( bots ) do
                     bot:SetTeam( teamNumber )
                     expect( bot:Team() ).to.equal( teamNumber )
                 end
 
-                filter:AddRecipientsByTeam( teamNumber )
+                filter:RemoveRecipientsByTeam( teamNumber )
 
                 local plys = filter:GetPlayers()
-                expect( #plys ).to.equal( 2 )
+                expect( #plys ).to.equal( 0 )
 
                 done()
             end
@@ -46,13 +47,14 @@ return WithBotTestTools( {
                 WaitForEmptyServer()
                 expect( #player.GetAll() ).to.equal( 0 )
 
+                local bots = state.addBots( 2 )
                 local filter = RecipientFilter()
-                state.addBots( 2 )
+                filter:AddAllPlayers()
 
-                filter:AddRecipientsByTeam( 32000 )
+                filter:RemoveRecipientsByTeam( 32000 )
 
                 local plys = filter:GetPlayers()
-                expect( #plys ).to.equal( 0 )
+                expect( #plys ).to.equal( #bots )
 
                 done()
             end

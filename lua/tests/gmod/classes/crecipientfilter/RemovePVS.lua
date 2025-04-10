@@ -1,17 +1,17 @@
 return WithBotTestTools( {
-    groupName = "CRecipientFilter:AddPAS",
+    groupName = "CRecipientFilter:RemovePVS",
 
     cases = {
         {
             name = "Exists on the CRecipientFilter metatable",
             func = function()
                 local meta = assert( FindMetaTable( "CRecipientFilter" ) )
-                expect( meta.AddPAS ).to.beA( "function" )
+                expect( meta.RemovePVS ).to.beA( "function" )
             end
         },
 
         {
-            name = "Adds targets from the PAS of the given vector",
+            name = "Removes targets from the PVS of the given vector",
             async = true,
             timeout = 1,
             coroutine = true,
@@ -31,19 +31,19 @@ return WithBotTestTools( {
                 firstBot:SetPos( firstRoom:GetPos() )
                 secondBot:SetPos( secondRoom:GetPos() )
 
-                -- Add only bots in the first room
-                filter:AddPAS( firstRoom:GetPos() )
-                local added = filter:GetPlayers()
+                filter:AddAllPlayers()
+                filter:RemovePVS( firstRoom:GetPos() )
+                local remaining = filter:GetPlayers()
 
-                expect( #added ).to.equal( 1 )
-                expect( added[1] ).to.equal( firstBot )
+                expect( #remaining ).to.equal( 1 )
+                expect( remaining[1] ).to.equal( secondBot )
 
                 done()
             end
         },
 
         {
-            name = "Adds no targets if none exist in the given PAS",
+            name = "Removes no targets if none exist in the given PVS",
             async = true,
             timeout = 1,
             coroutine = true,
@@ -63,18 +63,18 @@ return WithBotTestTools( {
                 firstBot:SetPos( firstRoom:GetPos() )
                 secondBot:SetPos( firstRoom:GetPos() )
 
-                filter:AddPAS( secondRoom:GetPos() )
+                filter:AddAllPlayers()
+                filter:RemovePVS( secondRoom:GetPos() )
                 local added = filter:GetPlayers()
 
-                expect( #added ).to.equal( 0 )
+                expect( #added ).to.equal( 2 )
 
                 done()
             end
         },
 
-        -- TODO: Is this map-specific somehow? Seemed to not do this on gm_construct
         {
-            name = "Adds no targets if given an out-of-map position",
+            name = "Removes no targets if given an out-of-map position",
             async = true,
             timeout = 1,
             coroutine = true,
@@ -94,10 +94,11 @@ return WithBotTestTools( {
                 firstBot:SetPos( firstRoom:GetPos() )
                 secondBot:SetPos( secondRoom:GetPos() )
 
-                filter:AddPAS( Vector( 0, 0, -99999 ) )
+                filter:AddAllPlayers()
+                filter:RemovePVS( Vector( 0, 0, -99999 ) )
                 local added = filter:GetPlayers()
 
-                expect( #added ).to.equal( 0 )
+                expect( #added ).to.equal( 2 )
 
                 done()
             end

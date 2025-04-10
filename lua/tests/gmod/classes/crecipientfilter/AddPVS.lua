@@ -1,17 +1,17 @@
 return WithBotTestTools( {
-    groupName = "CRecipientFilter:AddPAS",
+    groupName = "CRecipientFilter:AddPVS",
 
     cases = {
         {
             name = "Exists on the CRecipientFilter metatable",
             func = function()
                 local meta = assert( FindMetaTable( "CRecipientFilter" ) )
-                expect( meta.AddPAS ).to.beA( "function" )
+                expect( meta.AddPVS ).to.beA( "function" )
             end
         },
 
         {
-            name = "Adds targets from the PAS of the given vector",
+            name = "Adds targets from the PVS of the given vector",
             async = true,
             timeout = 1,
             coroutine = true,
@@ -32,7 +32,7 @@ return WithBotTestTools( {
                 secondBot:SetPos( secondRoom:GetPos() )
 
                 -- Add only bots in the first room
-                filter:AddPAS( firstRoom:GetPos() )
+                filter:AddPVS( firstRoom:GetPos() )
                 local added = filter:GetPlayers()
 
                 expect( #added ).to.equal( 1 )
@@ -63,7 +63,7 @@ return WithBotTestTools( {
                 firstBot:SetPos( firstRoom:GetPos() )
                 secondBot:SetPos( firstRoom:GetPos() )
 
-                filter:AddPAS( secondRoom:GetPos() )
+                filter:AddPVS( secondRoom:GetPos() )
                 local added = filter:GetPlayers()
 
                 expect( #added ).to.equal( 0 )
@@ -72,7 +72,6 @@ return WithBotTestTools( {
             end
         },
 
-        -- TODO: Is this map-specific somehow? Seemed to not do this on gm_construct
         {
             name = "Adds no targets if given an out-of-map position",
             async = true,
@@ -94,7 +93,7 @@ return WithBotTestTools( {
                 firstBot:SetPos( firstRoom:GetPos() )
                 secondBot:SetPos( secondRoom:GetPos() )
 
-                filter:AddPAS( Vector( 0, 0, -99999 ) )
+                filter:AddPVS( Vector( 0, 0, -99999 ) )
                 local added = filter:GetPlayers()
 
                 expect( #added ).to.equal( 0 )
