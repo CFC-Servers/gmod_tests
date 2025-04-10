@@ -13,7 +13,7 @@ on:
 
 jobs:
   run-mainbranch-tests:
-    uses: CFC-Servers/GLuaTest/.github/workflows/run_tests.yml@feature/runner-improvements
+    uses: CFC-Servers/GLuaTest/.github/workflows/run_tests.yml@feature/runner-improvement
     with:
       branch: live
       collection: 3460542547
@@ -21,7 +21,7 @@ jobs:
       dockerbuild: true
 
   run-64bit-tests:
-    uses: CFC-Servers/GLuaTest/.github/workflows/run_tests.yml@feature/runner-improvements
+    uses: CFC-Servers/GLuaTest/.github/workflows/run_tests.yml@feature/runner-improvement
     with:
       branch: x86-64
       collection: 3460542547
