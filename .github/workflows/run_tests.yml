@@ -12,10 +12,16 @@ on:
   workflow_dispatch:
 
 jobs:
-  run-mainbranch-tests:
-    uses: CFC-Servers/GLuaTest/.github/workflows/run_tests.yml@main
-
-  run-64bit-tests:
+  run_tests:
     uses: CFC-Servers/GLuaTest/.github/workflows/run_tests.yml@main
     with:
-      branch: x86-64
+      collection: 3460542547
+      map: gm_glua_tests
+    strategy:
+      matrix:
+        branch:
+          - "live"
+          - "x86-64"
+          - "prerelease"
+          - "dev"
+      fail-fast: false

@@ -14,6 +14,7 @@ return {
             timeout = 0.75,
             func = function()
                 local expected = "Hello World"
+                print( "coro", coroutine.running() )
 
                 local co = coroutine.create( function()
                     coroutine.wait( 0.25 )
@@ -38,6 +39,7 @@ return {
         {
             name = "Waits one frame when given 0",
             async = true,
+            coroutine = true,
             timeout = 0.1,
             func = function()
                 local expected = "Hello World"
@@ -53,12 +55,12 @@ return {
                 expect( ret ).to.beNil()
                 expect( coroutine.status( co ) ).to.equal( "suspended" )
 
-                timer.Simple( 0, function()
-                    ran, ret = coroutine.resume( co )
-                    expect( ran ).to.beTrue()
-                    expect( ret ).to.equal( expected )
-                    done()
-                end )
+                WaitForTicks( 2 )
+
+                ran, ret = coroutine.resume( co )
+                expect( ran ).to.beTrue()
+                expect( ret ).to.equal( expected )
+                done()
             end
         }
     }
