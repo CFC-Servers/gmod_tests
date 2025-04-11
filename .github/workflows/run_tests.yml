@@ -15,10 +15,6 @@ on:
 
 jobs:
   run_tests:
-    uses: CFC-Servers/GLuaTest/.github/workflows/run_tests.yml@main
-    with:
-      collection: 3460542547
-      map: gm_glua_tests
     strategy:
       matrix:
         branch:
@@ -27,3 +23,9 @@ jobs:
           - "prerelease"
           - "dev"
       fail-fast: false
+
+    uses: CFC-Servers/GLuaTest/.github/workflows/run_tests.yml@main
+    with:
+      collection: 3460542547
+      map: gm_glua_tests
+      branch: ${{ matrix.branch }}
