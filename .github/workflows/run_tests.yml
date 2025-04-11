@@ -4,11 +4,13 @@ on:
   pull_request:
     paths:
       - lua/**
+      - .github/workflow/run_tests.yml
   push:
     branches:
       - main
     paths:
       - lua/**
+      - .github/workflow/run_tests.yml
   workflow_dispatch:
 
 jobs:
