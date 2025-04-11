@@ -13,12 +13,10 @@ on:
 
 jobs:
   run_tests:
-    uses: CFC-Servers/GLuaTest/.github/workflows/run_tests.yml@feature/runner-improvement
+    uses: CFC-Servers/GLuaTest/.github/workflows/run_tests.yml@main
     with:
       collection: 3460542547
       map: gm_glua_tests
-      dockerbuild: true
-      gluatest-ref: "feature/runner-improvement"
     strategy:
       matrix:
         branch:
