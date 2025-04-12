@@ -1,5 +1,6 @@
 return {
     groupName = "Global:Vector",
+
     cases = {
         {
             name = "Exists in the global table",
@@ -9,7 +10,7 @@ return {
         },
 
         {
-            name = "Returns an Vector object",
+            name = "Returns a Vector object",
             func = function()
                 local vector = Vector( 1, 2, 3 )
                 expect( vector ).to.beA( "Vector" )

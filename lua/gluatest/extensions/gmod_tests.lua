@@ -93,6 +93,7 @@ if SERVER then
     WithBotTestTools = function( testGroup, config )
         config = config or {}
 
+        local _beforeEach = testGroup.beforeEach
         testGroup.beforeEach = function( state )
             --- @type Player[]
             state.bots = {}
@@ -140,21 +141,26 @@ if SERVER then
                     state.kickBot( bot )
                 end
             end
+
+            if _beforeEach then _beforeEach( state ) end
         end
 
+        local _afterEach = testGroup.afterEach
         testGroup.afterEach = function( state )
             if not state.bots then return end
             state.kickBots()
+
+            if _afterEach then _afterEach( state ) end
         end
 
+        local _beforeAll = testGroup.beforeAll
         testGroup.beforeAll = function()
             for _, bot in ipairs( player.GetBots() ) do
-                game.KickID( bot:UserID() )
+                game.KickID( tostring( bot:UserID() ) )
             end
-        end
 
-        hook.Add( "SetupPlayerVisibility", "GLuaTest_ClearBots", function( ply, viewEnt )
-        end )
+            if _beforeAll then _beforeAll() end
+        end
 
         return testGroup
     end
