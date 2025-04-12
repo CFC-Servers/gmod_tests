@@ -106,7 +106,7 @@ return {
             name = "Errors when given a non-numeric string",
             func = function( state )
                 local testFunc = function() state.dmgInfo:SetAmmoType( "invalid" ) end
-                expect( testFunc ).to.errWith( "bad argument #1 to 'SetAmmoType' (number expected, got string)" )
+                expect( testFunc ).to.errWith( [[bad argument #1 to 'SetAmmoType' (number expected, got string)]] )
             end
         },
 
@@ -114,7 +114,7 @@ return {
             name = "Errors when given no argument",
             func = function( state )
                 local testFunc = function() state.dmgInfo:SetAmmoType() end
-                expect( testFunc ).to.errWith( "bad argument #1 to 'SetAmmoType' (number expected, got no value)" )
+                expect( testFunc ).to.errWith( [[bad argument #1 to 'SetAmmoType' (number expected, got no value)]] )
             end
         }
     }

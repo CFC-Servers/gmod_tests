@@ -35,6 +35,7 @@ return {
             func = function( state )
                 local expectedMax = 500
                 state.dmgInfo:SetMaxDamage( expectedMax )
+
                 local actualMax = state.dmgInfo:GetMaxDamage()
                 expect( actualMax ).to.equal( expectedMax )
             end
@@ -45,6 +46,7 @@ return {
             func = function( state )
                 local expectedMax = -1
                 state.dmgInfo:SetMaxDamage( expectedMax )
+
                 local actualMax = state.dmgInfo:GetMaxDamage()
                 expect( actualMax ).to.equal( expectedMax )
             end

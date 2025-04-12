@@ -90,7 +90,7 @@ return {
             name = "Errors when given a non-numeric string",
             func = function( state )
                 local testFunc = function() state.dmgInfo:ScaleDamage( "invalid" ) end
-                expect( testFunc ).to.errWith( "bad argument #1 to 'ScaleDamage' (number expected, got string)" )
+                expect( testFunc ).to.errWith( [[bad argument #1 to 'ScaleDamage' (number expected, got string)]] )
             end
         },
 
@@ -98,7 +98,7 @@ return {
             name = "Errors when given no argument",
             func = function( state )
                 local testFunc = function() state.dmgInfo:ScaleDamage() end
-                expect( testFunc ).to.errWith( "bad argument #1 to 'ScaleDamage' (number expected, got no value)" )
+                expect( testFunc ).to.errWith( [[bad argument #1 to 'ScaleDamage' (number expected, got no value)]] )
             end
         }
     }

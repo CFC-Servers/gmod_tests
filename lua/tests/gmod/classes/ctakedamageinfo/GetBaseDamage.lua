@@ -35,6 +35,7 @@ return {
             func = function( state )
                 local expectedDamage = 50
                 state.dmgInfo:SetBaseDamage( expectedDamage )
+
                 local actualDamage = state.dmgInfo:GetBaseDamage()
                 expect( actualDamage ).to.equal( expectedDamage )
             end

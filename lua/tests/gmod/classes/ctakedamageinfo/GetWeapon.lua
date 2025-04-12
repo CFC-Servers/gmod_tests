@@ -79,11 +79,8 @@ return {
         {
             name = "Errors if setting a NULL Entity",
             func = function( state )
-                local func = function()
-                    state.dmgInfo:SetWeapon( NULL )
-                end
-
-                expect( func ).to.errWith( "Tried to use a NULL entity!" )
+                local func = function() state.dmgInfo:SetWeapon( NULL ) end
+                expect( func ).to.errWith( [[Tried to use a NULL entity!]] )
             end
         }
     }

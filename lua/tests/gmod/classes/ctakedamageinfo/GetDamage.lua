@@ -35,6 +35,7 @@ return {
             func = function( state )
                 local expectedDamage = 60
                 state.dmgInfo:SetDamage( expectedDamage )
+
                 local actualDamage = state.dmgInfo:GetDamage()
                 expect( actualDamage ).to.equal( expectedDamage )
             end
@@ -45,6 +46,7 @@ return {
             func = function( state )
                 state.dmgInfo:SetDamage( 20 )
                 state.dmgInfo:AddDamage( 10 )
+
                 local actualDamage = state.dmgInfo:GetDamage()
                 expect( actualDamage ).to.equal( 30 )
             end
@@ -55,6 +57,7 @@ return {
             func = function( state )
                 state.dmgInfo:SetDamage( 20 )
                 state.dmgInfo:SubtractDamage( 5 )
+
                 local actualDamage = state.dmgInfo:GetDamage()
                 expect( actualDamage ).to.equal( 15 )
             end
@@ -65,6 +68,7 @@ return {
             func = function( state )
                 state.dmgInfo:SetDamage( 20 )
                 state.dmgInfo:ScaleDamage( 1.5 )
+
                 local actualDamage = state.dmgInfo:GetDamage()
                 expect( actualDamage ).to.equal( 30 )
             end

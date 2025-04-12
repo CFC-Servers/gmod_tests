@@ -35,6 +35,7 @@ return {
             func = function( state )
                 local expectedPos = Vector( 100, 200, -50.75 )
                 state.dmgInfo:SetDamagePosition( expectedPos )
+
                 local actualPos = state.dmgInfo:GetDamagePosition()
                 expect( actualPos ).to.equal( expectedPos )
             end

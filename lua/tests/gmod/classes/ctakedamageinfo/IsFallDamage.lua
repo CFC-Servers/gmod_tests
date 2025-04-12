@@ -26,6 +26,7 @@ return {
             name = "Returns false by default (DMG_GENERIC)",
             func = function( state )
                 expect( state.dmgInfo:GetDamageType() ).to.equal( 0 )
+
                 local result = state.dmgInfo:IsFallDamage()
                 expect( result ).to.beFalse()
             end
@@ -35,6 +36,7 @@ return {
             name = "Returns false when damage type does not include DMG_FALL",
             func = function( state )
                 state.dmgInfo:SetDamageType( DMG_BULLET )
+
                 local result = state.dmgInfo:IsFallDamage()
                 expect( result ).to.beFalse()
             end
@@ -44,6 +46,7 @@ return {
             name = "Returns true when damage type is exactly DMG_FALL",
             func = function( state )
                 state.dmgInfo:SetDamageType( DMG_FALL )
+
                 local result = state.dmgInfo:IsFallDamage()
                 expect( result ).to.beTrue()
             end
@@ -53,6 +56,7 @@ return {
             name = "Returns true when damage type includes DMG_FALL among others",
             func = function( state )
                 state.dmgInfo:SetDamageType( DMG_FALL + DMG_CLUB )
+
                 local result = state.dmgInfo:IsFallDamage()
                 expect( result ).to.beTrue()
             end

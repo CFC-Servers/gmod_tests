@@ -35,6 +35,7 @@ return {
             func = function( state )
                 local expectedPos = Vector( 50, -150, 250.25 )
                 state.dmgInfo:SetReportedPosition( expectedPos )
+
                 local actualPos = state.dmgInfo:GetReportedPosition()
                 expect( actualPos ).to.equal( expectedPos )
             end

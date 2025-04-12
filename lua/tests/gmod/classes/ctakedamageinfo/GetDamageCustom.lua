@@ -35,6 +35,7 @@ return {
             func = function( state )
                 local expectedCustom = 42
                 state.dmgInfo:SetDamageCustom( expectedCustom )
+
                 local actualCustom = state.dmgInfo:GetDamageCustom()
                 expect( actualCustom ).to.equal( expectedCustom )
             end
