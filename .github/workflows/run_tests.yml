@@ -4,18 +4,28 @@ on:
   pull_request:
     paths:
       - lua/**
+      - .github/workflow/run_tests.yml
   push:
     branches:
       - main
     paths:
       - lua/**
+      - .github/workflow/run_tests.yml
   workflow_dispatch:
 
 jobs:
-  run-mainbranch-tests:
-    uses: CFC-Servers/GLuaTest/.github/workflows/run_tests.yml@main
+  run_tests:
+    strategy:
+      matrix:
+        branch:
+          - "live"
+          - "x86-64"
+          - "prerelease"
+          - "dev"
+      fail-fast: false
 
-  run-64bit-tests:
     uses: CFC-Servers/GLuaTest/.github/workflows/run_tests.yml@main
     with:
-      branch: x86-64
+      collection: 3460542547
+      map: gm_glua_tests
+      branch: ${{ matrix.branch }}

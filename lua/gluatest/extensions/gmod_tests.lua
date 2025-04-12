@@ -87,24 +87,114 @@ if SERVER then
     --- @field createdCallback fun(ply: Player)? A callback to run after the bot is created
 
     --- Sets up a testGroup to make a test bot for each test, and remove it after each test
+    --- Note: Does not automatically create bots. Use `state:addBot()` or `state:addBots()` to create bots
     --- @param testGroup table The test group to modify
     --- @param config TestBotConfig? The configuration for the test bot
-    WithTestBot = function( testGroup, config )
+    WithBotTestTools = function( testGroup, config )
         config = config or {}
 
         testGroup.beforeEach = function( state )
-            state.bot = MakeTestBot( config.name )
+            --- @type Player[]
+            state.bots = {}
 
-            local cb = config.createdCallback
-            if cb then cb( state.bot ) end
+            function state.addBots( count )
+                local newBots = {}
+
+                for _ = 1, count do
+                    local bot = MakeTestBot( config.name )
+                    table.insert( state.bots, bot )
+                    table.insert( newBots, bot )
+
+                    local cb = config.createdCallback
+                    if cb then cb( bot ) end
+                end
+
+                return newBots
+            end
+
+            function state.addBot( name )
+                local bot = MakeTestBot( name )
+                table.insert( state.bots, bot )
+
+                local cb = config.createdCallback
+                if cb then cb( bot ) end
+
+                return bot
+            end
+
+            function state.kickBot( bot )
+                table.RemoveByValue( state.bots, bot )
+                if not IsValid( bot ) then
+                    return
+                end
+
+                game.KickID( bot:UserID() )
+            end
+
+            function state.kickBots()
+                local bots = state.bots
+                local botCount = #bots
+
+                for i = botCount, 1, -1 do
+                    local bot = bots[i]
+                    state.kickBot( bot )
+                end
+            end
         end
 
         testGroup.afterEach = function( state )
-            local bot = state.bot
-
-            if not IsValid( bot ) then return end
-            bot:Kick()
+            if not state.bots then return end
+            state.kickBots()
         end
+
+        testGroup.beforeAll = function()
+            for _, bot in ipairs( player.GetBots() ) do
+                game.KickID( bot:UserID() )
+            end
+        end
+
+        hook.Add( "SetupPlayerVisibility", "GLuaTest_ClearBots", function( ply, viewEnt )
+        end )
+
+        return testGroup
+    end
+
+    local waitIdent = 0
+    local function getWaitIdentifier()
+        waitIdent = waitIdent + 1
+        return "GLuaTest_Waiter_" .. waitIdent
+    end
+
+    WaitForEmptyServer = function()
+        local co = coroutine.running()
+        local identifier = getWaitIdentifier()
+
+        hook.Add( "Think", identifier, function()
+            local count = player.GetCount()
+            if count > 0 then return end
+
+            hook.Remove( "Think", identifier )
+            coroutine.resume( co )
+        end )
+
+        return coroutine.yield()
+    end
+
+    WaitForTicks = function( ticks )
+        local co = coroutine.running()
+
+        local counter = 0
+        local identifier = getWaitIdentifier()
+        hook.Add( "Think", identifier, function()
+            counter = counter + 1
+
+            if counter >= ticks then
+                hook.Remove( "Think", identifier )
+                coroutine.resume( co )
+            end
+        end )
+
+        return coroutine.yield()
     end
 end
 

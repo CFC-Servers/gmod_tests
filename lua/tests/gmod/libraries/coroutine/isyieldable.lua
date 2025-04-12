@@ -14,9 +14,9 @@ return {
             when = IS_64BIT_BRANCH,
             func = function()
                 local yieldable
-                local co = coroutine.create(function()
+                local co = coroutine.create( function()
                     yieldable = coroutine.isyieldable()
-                end)
+                end )
 
                 expect( co ).to.beA( "thread" )
 

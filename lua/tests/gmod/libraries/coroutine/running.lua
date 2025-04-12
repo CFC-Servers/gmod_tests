@@ -15,12 +15,13 @@ return {
 
                 expect( running ).to.beNil()
             end
-        }, {
+        },
+        {
             name = "Returns the running coroutine",
             func = function()
-                local co = coroutine.create(function()
+                local co = coroutine.create( function()
                     return coroutine.running()
-                end)
+                end )
 
                 expect( co ).to.beA( "thread" )
 
