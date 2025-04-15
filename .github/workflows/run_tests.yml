@@ -14,8 +14,13 @@ on:
 jobs:
   run-mainbranch-tests:
     uses: CFC-Servers/GLuaTest/.github/workflows/run_tests.yml@main
+    with:
+      additional-setup: "wget -q https://github.com/RaphaelIT7/gmod-holytest/releases/latest/download/linux32.tar.gz -O gluatest/docker/_gluatest_artifacts/linux32.tar.gz"
+      dockerbuild: "true" # Workaround until the next GLuaTest release as the artifact code is broken because of docker slim
 
   run-64bit-tests:
     uses: CFC-Servers/GLuaTest/.github/workflows/run_tests.yml@main
     with:
       branch: x86-64
+      additional-setup: "wget -q https://github.com/RaphaelIT7/gmod-holytest/releases/latest/download/linux64.tar.gz -O gluatest/docker/_gluatest_artifacts/linux64.tar.gz"
+      dockerbuild: "true" # Workaround until the next GLuaTest release as the artifact code is broken because of docker slim
