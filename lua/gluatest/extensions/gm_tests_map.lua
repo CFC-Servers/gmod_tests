@@ -1,3 +1,5 @@
+AddCSLuaFile()
+
 --- @class TestMap
 TestMap = {
     --- @type table<string, Entity>
