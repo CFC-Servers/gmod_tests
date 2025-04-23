@@ -20,23 +20,21 @@ return WithBotTestTools( {
                 hook.Add( "StartCommand", "CUserCmd:ClearMovement", function( ply, cmd )
                     if ply ~= bot then return end
 
-                    ProtectedCall( function()
-                        cmd:SetForwardMove( 100 )
-                        cmd:SetSideMove( 100 )
-                        cmd:SetUpMove( 100 )
+                    cmd:SetForwardMove( 100 )
+                    cmd:SetSideMove( 100 )
+                    cmd:SetUpMove( 100 )
 
-                        expect( cmd:GetForwardMove() ).to.equal( 100 )
-                        expect( cmd:GetSideMove() ).to.equal( 100 )
-                        expect( cmd:GetUpMove() ).to.equal( 100 )
+                    expect( cmd:GetForwardMove() ).to.equal( 100 )
+                    expect( cmd:GetSideMove() ).to.equal( 100 )
+                    expect( cmd:GetUpMove() ).to.equal( 100 )
 
-                        cmd:ClearMovement()
+                    cmd:ClearMovement()
 
-                        expect( cmd:GetForwardMove() ).to.equal( 0 )
-                        expect( cmd:GetSideMove() ).to.equal( 0 )
-                        expect( cmd:GetUpMove() ).to.equal( 0 )
+                    expect( cmd:GetForwardMove() ).to.equal( 0 )
+                    expect( cmd:GetSideMove() ).to.equal( 0 )
+                    expect( cmd:GetUpMove() ).to.equal( 0 )
 
-                        done()
-                    end )
+                    done()
                 end )
             end
         },
@@ -51,23 +49,21 @@ return WithBotTestTools( {
                 hook.Add( "StartCommand", "CUserCmd:ClearMovement", function( ply, cmd )
                     if ply ~= bot then return end
 
-                    ProtectedCall( function()
-                        cmd:SetForwardMove( -100 )
-                        cmd:SetSideMove( -100 )
-                        cmd:SetUpMove( -100 )
+                    cmd:SetForwardMove( -100 )
+                    cmd:SetSideMove( -100 )
+                    cmd:SetUpMove( -100 )
 
-                        expect( cmd:GetForwardMove() ).to.equal( -100 )
-                        expect( cmd:GetSideMove() ).to.equal( -100 )
-                        expect( cmd:GetUpMove() ).to.equal( -100 )
+                    expect( cmd:GetForwardMove() ).to.equal( -100 )
+                    expect( cmd:GetSideMove() ).to.equal( -100 )
+                    expect( cmd:GetUpMove() ).to.equal( -100 )
 
-                        cmd:ClearMovement()
+                    cmd:ClearMovement()
 
-                        expect( cmd:GetForwardMove() ).to.equal( 0 )
-                        expect( cmd:GetSideMove() ).to.equal( 0 )
-                        expect( cmd:GetUpMove() ).to.equal( 0 )
+                    expect( cmd:GetForwardMove() ).to.equal( 0 )
+                    expect( cmd:GetSideMove() ).to.equal( 0 )
+                    expect( cmd:GetUpMove() ).to.equal( 0 )
 
-                        done()
-                    end )
+                    done()
                 end )
             end
         }

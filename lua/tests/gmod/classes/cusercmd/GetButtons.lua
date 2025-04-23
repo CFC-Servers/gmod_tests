@@ -20,16 +20,14 @@ return WithBotTestTools( {
                 hook.Add( "StartCommand", "CUserCmd:GetButtons", function( ply, cmd )
                     if ply ~= bot then return end
 
-                    ProtectedCall( function()
-                        cmd:ClearButtons()
-                        expect( cmd:GetButtons() ).to.equal( 0 )
+                    cmd:ClearButtons()
+                    expect( cmd:GetButtons() ).to.equal( 0 )
 
-                        cmd:AddKey( IN_FORWARD )
-                        cmd:AddKey( IN_BACK )
-                        expect( cmd:GetButtons() ).to.equal( IN_FORWARD + IN_BACK )
+                    cmd:AddKey( IN_FORWARD )
+                    cmd:AddKey( IN_BACK )
+                    expect( cmd:GetButtons() ).to.equal( IN_FORWARD + IN_BACK )
 
-                        done()
-                    end )
+                    done()
                 end )
             end
         },
@@ -44,18 +42,16 @@ return WithBotTestTools( {
                 hook.Add( "StartCommand", "CUserCmd:GetButtons", function( ply, cmd )
                     if ply ~= bot then return end
 
-                    ProtectedCall( function()
-                        cmd:ClearButtons()
-                        expect( cmd:GetButtons() ).to.equal( 0 )
+                    cmd:ClearButtons()
+                    expect( cmd:GetButtons() ).to.equal( 0 )
 
-                        cmd:AddKey( math.huge )
-                        expect( cmd:GetButtons() ).to.equal( -2147483648 )
+                    cmd:AddKey( math.huge )
+                    expect( cmd:GetButtons() ).to.equal( -2147483648 )
 
-                        cmd:AddKey( -math.huge )
-                        expect( cmd:GetButtons() ).to.equal( -2147483648 )
+                    cmd:AddKey( -math.huge )
+                    expect( cmd:GetButtons() ).to.equal( -2147483648 )
 
-                        done()
-                    end )
+                    done()
                 end )
             end
         }

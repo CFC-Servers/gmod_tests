@@ -21,14 +21,11 @@ return WithBotTestTools( {
                 hook.Add( "StartCommand", "CUserCmd:GetImpulse", function( ply, cmd )
                     if ply ~= bot then return end
 
-                    ProtectedCall( function()
-                        expect( cmd:GetImpulse() ).to.equal( 0 )
+                    expect( cmd:GetImpulse() ).to.equal( 0 )
 
-                        cmd:SetImpulse( 101 )
-                        expect( cmd:GetImpulse() ).to.equal( 101 )
-
-                        done()
-                    end )
+                    cmd:SetImpulse( 101 )
+                    expect( cmd:GetImpulse() ).to.equal( 101 )
+                    done()
                 end )
             end
         },
@@ -43,14 +40,12 @@ return WithBotTestTools( {
                 hook.Add( "StartCommand", "CUserCmd:GetImpulse", function( ply, cmd )
                     if ply ~= bot then return end
 
-                    ProtectedCall( function()
-                        expect( cmd:GetImpulse() ).to.equal( 0 )
+                    expect( cmd:GetImpulse() ).to.equal( 0 )
 
-                        cmd:SetImpulse( math.huge )
-                        expect( cmd:GetImpulse() ).to.equal( 0 )
+                    cmd:SetImpulse( math.huge )
+                    expect( cmd:GetImpulse() ).to.equal( 0 )
 
-                        done()
-                    end )
+                    done()
                 end )
             end
         },
@@ -66,20 +61,18 @@ return WithBotTestTools( {
                 hook.Add( "StartCommand", "CUserCmd:GetImpulse", function( ply, cmd )
                     if ply ~= bot then return end
 
-                    ProtectedCall( function()
-                        expect( cmd:GetImpulse() ).to.equal( 0 )
+                    expect( cmd:GetImpulse() ).to.equal( 0 )
 
-                        cmd:SetImpulse( -100 )
-                        expect( cmd:GetImpulse() ).to.equal( 156 )
+                    cmd:SetImpulse( -100 )
+                    expect( cmd:GetImpulse() ).to.equal( 156 )
 
-                        cmd:SetImpulse( -1000 )
-                        expect( cmd:GetImpulse() ).to.equal( 24 )
+                    cmd:SetImpulse( -1000 )
+                    expect( cmd:GetImpulse() ).to.equal( 24 )
 
-                        cmd:SetImpulse( -9999 )
-                        expect( cmd:GetImpulse() ).to.equal( 241 )
+                    cmd:SetImpulse( -9999 )
+                    expect( cmd:GetImpulse() ).to.equal( 241 )
 
-                        done()
-                    end )
+                    done()
                 end )
             end
         }

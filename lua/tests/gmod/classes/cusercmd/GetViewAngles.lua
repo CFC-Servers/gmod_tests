@@ -20,21 +20,19 @@ return WithBotTestTools( {
                 hook.Add( "StartCommand", "CUserCmd:GetViewAngles", function( ply, cmd )
                     if ply ~= bot then return end
 
-                    ProtectedCall( function()
-                        local ang1 = Angle( 1, 2, 3 )
-                        cmd:SetViewAngles( ang1 )
-                        expect( cmd:GetViewAngles() ).to.equal( ang1 )
+                    local ang1 = Angle( 1, 2, 3 )
+                    cmd:SetViewAngles( ang1 )
+                    expect( cmd:GetViewAngles() ).to.equal( ang1 )
 
-                        local ang2 = Angle( 999, 999, 999 )
-                        cmd:SetViewAngles( ang2 )
-                        expect( cmd:GetViewAngles() ).to.equal( ang2 )
+                    local ang2 = Angle( 999, 999, 999 )
+                    cmd:SetViewAngles( ang2 )
+                    expect( cmd:GetViewAngles() ).to.equal( ang2 )
 
-                        local ang3 = Angle( -360, -360, -360 )
-                        cmd:SetViewAngles( ang3 )
-                        expect( cmd:GetViewAngles() ).to.equal( ang3 )
+                    local ang3 = Angle( -360, -360, -360 )
+                    cmd:SetViewAngles( ang3 )
+                    expect( cmd:GetViewAngles() ).to.equal( ang3 )
 
-                        done()
-                    end )
+                    done()
                 end )
             end
         }

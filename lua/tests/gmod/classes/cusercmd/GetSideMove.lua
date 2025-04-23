@@ -20,15 +20,13 @@ return WithBotTestTools( {
                 hook.Add( "StartCommand", "CUserCmd:GetSideMove", function( ply, cmd )
                     if ply ~= bot then return end
 
-                    ProtectedCall( function()
-                        cmd:ClearMovement()
-                        expect( cmd:GetSideMove() ).to.equal( 0 )
+                    cmd:ClearMovement()
+                    expect( cmd:GetSideMove() ).to.equal( 0 )
 
-                        cmd:SetSideMove( 100 )
-                        expect( cmd:GetSideMove() ).to.equal( 100 )
+                    cmd:SetSideMove( 100 )
+                    expect( cmd:GetSideMove() ).to.equal( 100 )
 
-                        done()
-                    end )
+                    done()
                 end )
             end
         },
@@ -43,15 +41,13 @@ return WithBotTestTools( {
                 hook.Add( "StartCommand", "CUserCmd:GetSideMove", function( ply, cmd )
                     if ply ~= bot then return end
 
-                    ProtectedCall( function()
-                        cmd:ClearMovement()
-                        expect( cmd:GetSideMove() ).to.equal( 0 )
+                    cmd:ClearMovement()
+                    expect( cmd:GetSideMove() ).to.equal( 0 )
 
-                        cmd:SetSideMove( math.huge )
-                        expect( cmd:GetSideMove() ).to.equal( math.huge )
+                    cmd:SetSideMove( math.huge )
+                    expect( cmd:GetSideMove() ).to.equal( math.huge )
 
-                        done()
-                    end )
+                    done()
                 end )
             end
         },
@@ -66,15 +62,13 @@ return WithBotTestTools( {
                 hook.Add( "StartCommand", "CUserCmd:GetSideMove", function( ply, cmd )
                     if ply ~= bot then return end
 
-                    ProtectedCall( function()
-                        cmd:ClearMovement()
-                        expect( cmd:GetSideMove() ).to.equal( 0 )
+                    cmd:ClearMovement()
+                    expect( cmd:GetSideMove() ).to.equal( 0 )
 
-                        cmd:SetSideMove( -100 )
-                        expect( cmd:GetSideMove() ).to.equal( -100 )
+                    cmd:SetSideMove( -100 )
+                    expect( cmd:GetSideMove() ).to.equal( -100 )
 
-                        done()
-                    end )
+                    done()
                 end )
             end
         }

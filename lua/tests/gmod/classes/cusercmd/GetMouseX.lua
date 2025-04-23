@@ -20,15 +20,13 @@ return WithBotTestTools( {
                 hook.Add( "StartCommand", "CUserCmd:GetMouseX", function( ply, cmd )
                     if ply ~= bot then return end
 
-                    ProtectedCall( function()
-                        cmd:ClearButtons()
-                        expect( cmd:GetMouseX() ).to.equal( 0 )
+                    cmd:ClearButtons()
+                    expect( cmd:GetMouseX() ).to.equal( 0 )
 
-                        cmd:SetMouseX( 100 )
-                        expect( cmd:GetMouseX() ).to.equal( 100 )
+                    cmd:SetMouseX( 100 )
+                    expect( cmd:GetMouseX() ).to.equal( 100 )
 
-                        done()
-                    end )
+                    done()
                 end )
             end
         },
@@ -43,15 +41,13 @@ return WithBotTestTools( {
                 hook.Add( "StartCommand", "CUserCmd:GetMouseX", function( ply, cmd )
                     if ply ~= bot then return end
 
-                    ProtectedCall( function()
-                        cmd:ClearButtons()
-                        expect( cmd:GetMouseX() ).to.equal( 0 )
+                    cmd:ClearButtons()
+                    expect( cmd:GetMouseX() ).to.equal( 0 )
 
-                        cmd:SetMouseX( math.huge )
-                        expect( cmd:GetMouseX() ).to.equal( 0 )
+                    cmd:SetMouseX( math.huge )
+                    expect( cmd:GetMouseX() ).to.equal( 0 )
 
-                        done()
-                    end )
+                    done()
                 end )
             end
         },
@@ -66,15 +62,13 @@ return WithBotTestTools( {
                 hook.Add( "StartCommand", "CUserCmd:GetMouseX", function( ply, cmd )
                     if ply ~= bot then return end
 
-                    ProtectedCall( function()
-                        cmd:ClearButtons()
-                        expect( cmd:GetMouseX() ).to.equal( 0 )
+                    cmd:ClearButtons()
+                    expect( cmd:GetMouseX() ).to.equal( 0 )
 
-                        cmd:SetMouseX( -100 )
-                        expect( cmd:GetMouseX() ).to.equal( -100 )
+                    cmd:SetMouseX( -100 )
+                    expect( cmd:GetMouseX() ).to.equal( -100 )
 
-                        done()
-                    end )
+                    done()
                 end )
             end
         }

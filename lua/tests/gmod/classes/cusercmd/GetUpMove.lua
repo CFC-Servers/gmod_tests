@@ -20,15 +20,13 @@ return WithBotTestTools( {
                 hook.Add( "StartCommand", "CUserCmd:GetUpMove", function( ply, cmd )
                     if ply ~= bot then return end
 
-                    ProtectedCall( function()
-                        cmd:ClearMovement()
-                        expect( cmd:GetUpMove() ).to.equal( 0 )
+                    cmd:ClearMovement()
+                    expect( cmd:GetUpMove() ).to.equal( 0 )
 
-                        cmd:SetUpMove( 100 )
-                        expect( cmd:GetUpMove() ).to.equal( 100 )
+                    cmd:SetUpMove( 100 )
+                    expect( cmd:GetUpMove() ).to.equal( 100 )
 
-                        done()
-                    end )
+                    done()
                 end )
             end
         },
@@ -43,15 +41,13 @@ return WithBotTestTools( {
                 hook.Add( "StartCommand", "CUserCmd:GetUpMove", function( ply, cmd )
                     if ply ~= bot then return end
 
-                    ProtectedCall( function()
-                        cmd:ClearMovement()
-                        expect( cmd:GetUpMove() ).to.equal( 0 )
+                    cmd:ClearMovement()
+                    expect( cmd:GetUpMove() ).to.equal( 0 )
 
-                        cmd:SetUpMove( math.huge )
-                        expect( cmd:GetUpMove() ).to.equal( math.huge )
+                    cmd:SetUpMove( math.huge )
+                    expect( cmd:GetUpMove() ).to.equal( math.huge )
 
-                        done()
-                    end )
+                    done()
                 end )
             end
         },
@@ -66,15 +62,13 @@ return WithBotTestTools( {
                 hook.Add( "StartCommand", "CUserCmd:GetUpMove", function( ply, cmd )
                     if ply ~= bot then return end
 
-                    ProtectedCall( function()
-                        cmd:ClearMovement()
-                        expect( cmd:GetUpMove() ).to.equal( 0 )
+                    cmd:ClearMovement()
+                    expect( cmd:GetUpMove() ).to.equal( 0 )
 
-                        cmd:SetUpMove( -100 )
-                        expect( cmd:GetUpMove() ).to.equal( -100 )
+                    cmd:SetUpMove( -100 )
+                    expect( cmd:GetUpMove() ).to.equal( -100 )
 
-                        done()
-                    end )
+                    done()
                 end )
             end
         }

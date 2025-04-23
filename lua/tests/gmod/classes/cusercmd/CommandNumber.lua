@@ -23,16 +23,14 @@ return WithBotTestTools( {
                 hook.Add( "StartCommand", "CUserCmd:ClearMovement", function( ply, cmd )
                     if ply ~= bot then return end
 
-                    ProtectedCall( function()
-                        local number = cmd:CommandNumber()
-                        expect( number ).to.beA( "number" )
-                        expect( number ).to.beGreaterThan( last )
+                    local number = cmd:CommandNumber()
+                    expect( number ).to.beA( "number" )
+                    expect( number ).to.beGreaterThan( last )
 
-                        last = number
-                        iterations = iterations + 1
+                    last = number
+                    iterations = iterations + 1
 
-                        if iterations == 4 then done() end
-                    end )
+                    if iterations == 4 then done() end
                 end )
             end
         }

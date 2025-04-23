@@ -20,15 +20,13 @@ return WithBotTestTools( {
                 hook.Add( "StartCommand", "CUserCmd:RemoveKey", function( ply, cmd )
                     if ply ~= bot then return end
 
-                    ProtectedCall( function()
-                        cmd:AddKey( IN_FORWARD )
-                        expect( cmd:KeyDown( IN_FORWARD ) ).to.beTrue()
+                    cmd:AddKey( IN_FORWARD )
+                    expect( cmd:KeyDown( IN_FORWARD ) ).to.beTrue()
 
-                        cmd:RemoveKey( IN_FORWARD )
-                        expect( cmd:KeyDown( IN_FORWARD ) ).to.beFalse()
+                    cmd:RemoveKey( IN_FORWARD )
+                    expect( cmd:KeyDown( IN_FORWARD ) ).to.beFalse()
 
-                        done()
-                    end )
+                    done()
                 end )
             end
         },
@@ -43,15 +41,13 @@ return WithBotTestTools( {
                 hook.Add( "StartCommand", "CUserCmd:RemoveKey", function( ply, cmd )
                     if ply ~= bot then return end
 
-                    ProtectedCall( function()
-                        cmd:AddKey( math.huge )
-                        expect( cmd:KeyDown( math.huge ) ).to.beTrue()
+                    cmd:AddKey( math.huge )
+                    expect( cmd:KeyDown( math.huge ) ).to.beTrue()
 
-                        cmd:RemoveKey( math.huge )
-                        expect( cmd:KeyDown( math.huge ) ).to.beFalse()
+                    cmd:RemoveKey( math.huge )
+                    expect( cmd:KeyDown( math.huge ) ).to.beFalse()
 
-                        done()
-                    end )
+                    done()
                 end )
             end
         },
@@ -66,15 +62,13 @@ return WithBotTestTools( {
                 hook.Add( "StartCommand", "CUserCmd:RemoveKey", function( ply, cmd )
                     if ply ~= bot then return end
 
-                    ProtectedCall( function()
-                        local func = function()
-                            cmd:RemoveKey( nil )
-                        end
+                    local func = function()
+                        cmd:RemoveKey( nil )
+                    end
 
-                        expect( func ).to.errWith( "bad argument #1 to 'RemoveKey' (number expected, got nil)" )
+                    expect( func ).to.errWith( "bad argument #1 to 'RemoveKey' (number expected, got nil)" )
 
-                        done()
-                    end )
+                    done()
                 end )
             end
         },

@@ -20,15 +20,13 @@ return WithBotTestTools( {
                 hook.Add( "StartCommand", "CUserCmd:GetMouseWheel", function( ply, cmd )
                     if ply ~= bot then return end
 
-                    ProtectedCall( function()
-                        cmd:ClearButtons()
-                        expect( cmd:GetMouseWheel() ).to.equal( 0 )
+                    cmd:ClearButtons()
+                    expect( cmd:GetMouseWheel() ).to.equal( 0 )
 
-                        cmd:SetMouseWheel( 100 )
-                        expect( cmd:GetMouseWheel() ).to.equal( 100 )
+                    cmd:SetMouseWheel( 100 )
+                    expect( cmd:GetMouseWheel() ).to.equal( 100 )
 
-                        done()
-                    end )
+                    done()
                 end )
             end
         },
@@ -43,15 +41,13 @@ return WithBotTestTools( {
                 hook.Add( "StartCommand", "CUserCmd:GetMouseWheel", function( ply, cmd )
                     if ply ~= bot then return end
 
-                    ProtectedCall( function()
-                        cmd:ClearButtons()
-                        expect( cmd:GetMouseWheel() ).to.equal( 0 )
+                    cmd:ClearButtons()
+                    expect( cmd:GetMouseWheel() ).to.equal( 0 )
 
-                        cmd:SetMouseWheel( math.huge )
-                        expect( cmd:GetMouseWheel() ).to.equal( 0 )
+                    cmd:SetMouseWheel( math.huge )
+                    expect( cmd:GetMouseWheel() ).to.equal( 0 )
 
-                        done()
-                    end )
+                    done()
                 end )
             end
         },
@@ -66,15 +62,13 @@ return WithBotTestTools( {
                 hook.Add( "StartCommand", "CUserCmd:GetMouseWheel", function( ply, cmd )
                     if ply ~= bot then return end
 
-                    ProtectedCall( function()
-                        cmd:ClearButtons()
-                        expect( cmd:GetMouseWheel() ).to.equal( 0 )
+                    cmd:ClearButtons()
+                    expect( cmd:GetMouseWheel() ).to.equal( 0 )
 
-                        cmd:SetMouseWheel( -100 )
-                        expect( cmd:GetMouseWheel() ).to.equal( -100 )
+                    cmd:SetMouseWheel( -100 )
+                    expect( cmd:GetMouseWheel() ).to.equal( -100 )
 
-                        done()
-                    end )
+                    done()
                 end )
             end
         }

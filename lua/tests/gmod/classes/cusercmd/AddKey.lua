@@ -20,14 +20,11 @@ return WithBotTestTools( {
                 hook.Add( "StartCommand", "CUserCmd:AddKey", function( ply, cmd )
                     if ply ~= bot then return end
 
-                    -- FIXME: We put this in a new stack because otherwise it's the hook library that ends up catching the error
-                    ProtectedCall( function()
-                        expect( cmd:KeyDown( IN_FORWARD ) ).to.beFalse()
-                        cmd:AddKey( IN_FORWARD )
-                        expect( cmd:KeyDown( IN_FORWARD ) ).to.beTrue()
+                    expect( cmd:KeyDown( IN_FORWARD ) ).to.beFalse()
+                    cmd:AddKey( IN_FORWARD )
+                    expect( cmd:KeyDown( IN_FORWARD ) ).to.beTrue()
 
-                        done()
-                    end )
+                    done()
                 end )
             end
         },
@@ -42,13 +39,11 @@ return WithBotTestTools( {
                 hook.Add( "StartCommand", "CUserCmd:AddKey", function( ply, cmd )
                     if ply ~= bot then return end
 
-                    ProtectedCall( function()
-                        expect( cmd:KeyDown( 0 ) ).to.beFalse()
-                        cmd:AddKey( 0 )
-                        expect( cmd:KeyDown( 0 ) ).to.beFalse()
+                    expect( cmd:KeyDown( 0 ) ).to.beFalse()
+                    cmd:AddKey( 0 )
+                    expect( cmd:KeyDown( 0 ) ).to.beFalse()
 
-                        done()
-                    end )
+                    done()
                 end )
             end
         },
@@ -63,13 +58,11 @@ return WithBotTestTools( {
                 hook.Add( "StartCommand", "CUserCmd:AddKey", function( ply, cmd )
                     if ply ~= bot then return end
 
-                    ProtectedCall( function()
-                        expect( cmd:KeyDown( math.huge ) ).to.beFalse()
-                        cmd:AddKey( math.huge )
-                        expect( cmd:KeyDown( math.huge ) ).to.beTrue()
+                    expect( cmd:KeyDown( math.huge ) ).to.beFalse()
+                    cmd:AddKey( math.huge )
+                    expect( cmd:KeyDown( math.huge ) ).to.beTrue()
 
-                        done()
-                    end )
+                    done()
                 end )
             end
         },
@@ -84,15 +77,13 @@ return WithBotTestTools( {
                 hook.Add( "StartCommand", "CUserCmd:AddKey", function( ply, cmd )
                     if ply ~= bot then return end
 
-                    ProtectedCall( function()
-                        local func = function()
-                            cmd:AddKey( nil )
-                        end
+                    local func = function()
+                        cmd:AddKey( nil )
+                    end
 
-                        expect( func ).to.errWith( "bad argument #1 to 'AddKey' (number expected, got nil)" )
+                    expect( func ).to.errWith( "bad argument #1 to 'AddKey' (number expected, got nil)" )
 
-                        done()
-                    end )
+                    done()
                 end )
             end
         },

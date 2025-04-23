@@ -21,15 +21,13 @@ return WithBotTestTools( {
                 hook.Add( "StartCommand", "CUserCmd:TickCount", function( ply, cmd )
                     if ply ~= bot then return end
 
-                    ProtectedCall( function()
-                        expect( cmd:TickCount() ).to.equal( 0 )
+                    expect( cmd:TickCount() ).to.equal( 0 )
 
-                        iter = iter + 1
-                        if iter == 6 then
-                            done()
-                            return
-                        end
-                    end )
+                    iter = iter + 1
+                    if iter == 6 then
+                        done()
+                        return
+                    end
                 end )
             end
         },

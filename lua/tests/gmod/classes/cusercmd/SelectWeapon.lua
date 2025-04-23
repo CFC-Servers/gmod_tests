@@ -10,38 +10,38 @@ return WithBotTestTools( {
             end
         },
 
-        -- FIXME: how tf do we make this work
         {
             name = "Selects the given weapon",
             async = true,
-            coroutine = true,
-            when = "We can figure out how to make this work..." == false,
-            timeout = 5,
+            timeout = 0.5,
             func = function( state )
                 --- @type Player
                 local bot = state.addBot()
-
-                WaitForTicks( 10 )
+                bot:StripWeapons()
 
                 local crowbar = bot:Give( "weapon_crowbar" )
                 local magnum = bot:Give( "weapon_357" )
 
-                WaitForTicks( 10 )
-
+                local iter = 0
                 hook.Add( "StartCommand", "CUserCmd:SelectWeapon", function( ply, cmd )
                     if ply ~= bot then return end
 
-                    local success = ProtectedCall( function()
+                    -- Needs about 1 tick after SelectWeapon is called
+                    if iter == 0 then
                         cmd:SelectWeapon( magnum )
-                        expect( bot:GetActiveWeapon():GetClass() ).to.equal( "weapon_357" )
+                    end
 
+                    if iter == 1 then
+                        expect( bot:GetActiveWeapon() ).to.equal( magnum )
                         cmd:SelectWeapon( crowbar )
-                        expect( bot:GetActiveWeapon():GetClass() ).to.equal( "weapon_crowbar" )
+                    end
 
+                    if iter == 2 then
+                        expect( bot:GetActiveWeapon() ).to.equal( crowbar )
                         done()
-                    end )
-                    if not success then fail() end
+                    end
 
+                    iter = iter + 1
                 end )
             end
         },

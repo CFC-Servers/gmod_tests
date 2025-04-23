@@ -20,10 +20,8 @@ return WithBotTestTools( {
                 hook.Add( "StartCommand", "CUserCmd:IsForced", function( ply, cmd )
                     if ply ~= bot then return end
 
-                    ProtectedCall( function()
-                        expect( cmd:IsForced() ).to.beFalse()
-                        done()
-                    end )
+                    expect( cmd:IsForced() ).to.beFalse()
+                    done()
                 end )
             end
         },
