@@ -1,26 +1,35 @@
 AddCSLuaFile()
 
+hook.Add( "GLuaTest_TestGroupLoaded", "Yes", function( group, rawGroup )
+    group.yes = rawGroup.yes
+end )
+
 -- Helper utility to isolate test groups
 -- If any test group has `yes = true`, then only test groups that have `yes = true` will be run
 hook.Add( "GLuaTest_StartedTestRun", "Yes", function( testGroups )
     local hasYes = false
     local groupCount = #testGroups
 
-    local toRemove = {}
+    local newGroups = {}
+    local isWhitelisted = {}
 
     for i = 1, groupCount do
         local group = testGroups[i]
 
         if group.yes then
             hasYes = true
-        else
-            table.insert( toRemove, 1, i )
+            table.insert( newGroups, group )
+            isWhitelisted[group] = true
         end
     end
 
     if not hasYes then return end
 
-    for _, i in ipairs( toRemove ) do
-        table.remove( testGroups, i )
+    for i = groupCount, 1, -1 do
+        local group = testGroups[i]
+
+        if not isWhitelisted[group] then
+            table.remove( testGroups, i )
+        end
     end
 end )
