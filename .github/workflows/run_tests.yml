@@ -29,3 +29,4 @@ jobs:
       collection: 3460542547
       map: gm_glua_tests
       branch: ${{ matrix.branch }}
+      extra-startup-args: "-maxplayers 24"
