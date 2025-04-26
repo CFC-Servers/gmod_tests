@@ -21,6 +21,10 @@ env:
     }
   ALL_BRANCHES: '["dev", "prerelease", "live", "x86-64"]'
 
+permissions:
+  actions: read
+  contents: read
+
 jobs:
   check_versions:
     name: Check for Updated Versions
@@ -51,7 +55,7 @@ jobs:
         id: compare_versions
         shell: bash
         run: |
-          echo "Force run requested: ${{ github.event.inputs.force_run }}"
+          echo "Force run requested?: ${{ github.event.inputs.force_run }}"
 
           if [[ "${{ github.event.inputs.force_run }}" == "true" ]]; then
             echo "Force run enabled, running all branches."
@@ -63,12 +67,11 @@ jobs:
 
             for branch in $(echo "$branch_map" | jq -r 'keys[]'); do
               version_file=$(echo "$branch_map" | jq -r --arg b "$branch" '.[$b]')
-              current_version_path="current_repo/$version_file"
-              gluatest_version_path="gluatest_repo/$version_file"
+              current_version_path="$version_file"
+              gluatest_version_path="GLuaTest/$version_file"
 
               echo "Comparing $branch ($version_file)..."
 
-              # Check if files exist before comparing
               if [[ ! -f "$current_version_path" ]]; then
                 echo "Warning: Version file $current_version_path not found in current repo."
                 current_version=""
@@ -102,12 +105,11 @@ jobs:
           echo "branches_to_run=$branches_json" >> $GITHUB_OUTPUT
 
           if [[ "$branches_json" == "[]" ]]; then
-             echo "should_run=false" >> $GITHUB_OUTPUT
+              echo "should_run=false" >> $GITHUB_OUTPUT
           else
-             echo "should_run=true" >> $GITHUB_OUTPUT
+              echo "should_run=true" >> $GITHUB_OUTPUT
           fi
 
-  # Run tests based on the output of check_versions
   run_tests:
     needs: check_versions
     if: needs.check_versions.outputs.should_run == 'true'
@@ -124,10 +126,69 @@ jobs:
       branch: ${{ matrix.branch }}
       extra-startup-args: "-maxplayers 64"
 
+  summarize_failures:
+      name: Summarize Failures
+      needs: run_tests
+      if: always() && (needs.run_tests.result == 'failure' || needs.run_tests.result == 'cancelled')
+      runs-on: ubuntu-latest
+      outputs:
+        failure_summary: ${{ steps.get_failures.outputs.failure_summary }}
+        failed_branches_count: ${{ steps.get_failures.outputs.failed_branches_count }}
+      steps:
+        - name: Checkout repository
+          uses: actions/checkout@v4
+
+        - name: Get Failed Test Details using Python
+          id: get_failures
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          shell: bash
+          run: |
+            # Get ID and Name of failed/cancelled matrix jobs
+            failed_jobs_json=$(gh api /repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs -q '.jobs[] | select(.name | startswith("Run Tests on ")) | select(.conclusion=="failure" or .conclusion=="cancelled") | {id: .id, name: .name}' | jq -s .)
+
+            summary_output=""
+            count=0
+            failed_branches_list=""
+
+            echo "Processing failed jobs:"
+            echo "$failed_jobs_json" | jq -c '.[]' | while IFS= read -r job_json; do
+              job_id=$(echo "$job_json" | jq -r '.id')
+              job_name=$(echo "$job_json" | jq -r '.name')
+              branch_name=$(echo "$job_name" | sed 's/Run Tests on //g')
+
+              echo "Fetching logs for job $job_id (Branch: $branch_name)..."
+
+              # Use || true for resilience if gh or python fails
+              filtered_failures=$(gh job view "$job_id" --log | python .github/tools/parse_test_failures.py || true)
+
+              if [[ -n "$filtered_failures" || $(echo "$job_json" | jq -r '.conclusion') != "success" ]]; then
+                 summary_output+="\n**Branch: $branch_name**\n"
+                 if [[ -n "$filtered_failures" ]]; then
+                    summary_output+=" \`\`\`\n${filtered_failures}\n\`\`\`"
+                 else
+                    summary_output+=" Job failed or was cancelled, but no specific test failure summary found matching pattern."
+                 fi
+                 if [[ $count -gt 0 ]]; then failed_branches_list+=","; fi
+                 failed_branches_list+="$branch_name"
+                 ((count++))
+              fi
+            done
+
+            echo "Final Summary Details:"
+            echo -e "$summary_output"
+
+            summary_output="${summary_output//'%'/'%25'}"
+            summary_output="${summary_output//$'\n'/'%0A'}"
+            summary_output="${summary_output//$'\r'/'%0D'}"
+
+            echo "failure_summary=$summary_output" >> $GITHUB_OUTPUT
+            echo "failed_branches_count=$count" >> $GITHUB_OUTPUT
+
   report_failure:
     name: Report Failure to Discord
-    if: failure() && needs.run_tests.result == 'failure'
-    needs: run_tests
+    needs: [run_tests, summarize_failures]
+    if: failure() && needs.run_tests.result == 'failure' && needs.summarize_failures.outputs.failed_branches_count > 0
     runs-on: ubuntu-latest
 
     steps:
@@ -140,6 +201,5 @@ jobs:
           embed-color: 15548997 # Red
           embed-url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           embed-description: |
-            One or more tests failed during the GLuaTest branch run.
-
-            Please check the run details to see which branch(es) failed.
+            One or more tests failed or were cancelled. See failure summary below.
+            ${{ needs.summarize_failures.outputs.failure_summary }}
