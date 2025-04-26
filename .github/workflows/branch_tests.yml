@@ -1,0 +1,145 @@
+name: GLuaTest Branch Runner
+
+on:
+  schedule:
+    - cron: "35 */12 * * *"
+  workflow_dispatch:
+    inputs:
+      force_run:
+        description: 'Runs all branches regardless of the last build version'
+        required: false
+        type: boolean
+        default: false
+
+env:
+  BRANCH_MAP: >
+    {
+      "dev": "last_dev_build.txt",
+      "prerelease": "last_prerelease_build.txt",
+      "live": "last_public_build.txt",
+      "x86-64": "last_64bit.txt"
+    }
+  ALL_BRANCHES: '["dev", "prerelease", "live", "x86-64"]'
+
+jobs:
+  check_versions:
+    name: Check for Updated Versions
+    runs-on: ubuntu-latest
+    outputs:
+      branches_to_run: ${{ steps.compare_versions.outputs.branches_to_run }}
+      should_run: ${{ steps.compare_versions.outputs.should_run }}
+
+    steps:
+      - name: Checkout Current Repo Version Branch
+        uses: actions/checkout@v4
+        with:
+          ref: 'build/last-build-versions'
+
+      - name: Checkout GLuaTest Version Branch
+        uses: actions/checkout@v4
+        with:
+          repository: 'CFC-Servers/GLuaTest'
+          ref: 'build/last-build-versions'
+          path: 'GLuaTest'
+
+      - name: Install requirements
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq
+
+      - name: Compare Version Files and Determine Branches
+        id: compare_versions
+        shell: bash
+        run: |
+          echo "Force run requested: ${{ github.event.inputs.force_run }}"
+
+          if [[ "${{ github.event.inputs.force_run }}" == "true" ]]; then
+            echo "Force run enabled, running all branches."
+            branches_json='${{ env.ALL_BRANCHES }}'
+          else
+            echo "Comparing versions..."
+            branches=()
+            branch_map='${{ env.BRANCH_MAP }}'
+
+            for branch in $(echo "$branch_map" | jq -r 'keys[]'); do
+              version_file=$(echo "$branch_map" | jq -r --arg b "$branch" '.[$b]')
+              current_version_path="current_repo/$version_file"
+              gluatest_version_path="gluatest_repo/$version_file"
+
+              echo "Comparing $branch ($version_file)..."
+
+              # Check if files exist before comparing
+              if [[ ! -f "$current_version_path" ]]; then
+                echo "Warning: Version file $current_version_path not found in current repo."
+                current_version=""
+              else
+                current_version=$(cat "$current_version_path")
+              fi
+
+              if [[ ! -f "$gluatest_version_path" ]]; then
+                echo "Warning: Version file $gluatest_version_path not found in GLuaTest repo."
+                gluatest_version=""
+              else
+                gluatest_version=$(cat "$gluatest_version_path")
+              fi
+
+              if [[ "$current_version" != "$gluatest_version" ]]; then
+                echo "  -> Versions differ ('$current_version' vs '$gluatest_version') or file missing. Adding $branch to run list."
+                branches+=("$branch")
+              else
+                echo "  -> Versions match ('$current_version'). Skipping $branch."
+              fi
+            done
+
+            if [[ ${#branches[@]} -gt 0 ]]; then
+              branches_json=$(printf '%s\n' "${branches[@]}" | jq -R . | jq -s .)
+            else
+              branches_json="[]"
+            fi
+          fi
+
+          echo "Branches to run: $branches_json"
+          echo "branches_to_run=$branches_json" >> $GITHUB_OUTPUT
+
+          if [[ "$branches_json" == "[]" ]]; then
+             echo "should_run=false" >> $GITHUB_OUTPUT
+          else
+             echo "should_run=true" >> $GITHUB_OUTPUT
+          fi
+
+  # Run tests based on the output of check_versions
+  run_tests:
+    needs: check_versions
+    if: needs.check_versions.outputs.should_run == 'true'
+    strategy:
+      matrix:
+        branch: ${{ fromJson(needs.check_versions.outputs.branches_to_run) }}
+      fail-fast: false
+
+    name: Run Tests on ${{ matrix.branch }}
+    uses: CFC-Servers/GLuaTest/.github/workflows/run_tests.yml@main
+    with:
+      collection: 3460542547
+      map: gm_glua_tests
+      branch: ${{ matrix.branch }}
+      extra-startup-args: "-maxplayers 64"
+
+  report_failure:
+    name: Report Failure to Discord
+    if: failure() && needs.run_tests.result == 'failure'
+    needs: run_tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send Discord Notification
+        uses: tsickert/discord-webhook@v7.0.0
+        with:
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          wait: true
+          embed-title: "❌ GLuaTest Branch Runner Failed"
+          embed-color: 15548997 # Red
+          embed-url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          embed-description: |
+            One or more tests failed during the GLuaTest branch run.
+
+            Please check the run details to see which branch(es) failed.
