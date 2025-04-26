@@ -1,15 +1,18 @@
 name: GLuaTest Branch Runner
 
 on:
-  schedule:
-    - cron: "35 */12 * * *"
   workflow_dispatch:
     inputs:
       force_run:
-        description: 'Runs all branches regardless of the last build version'
+        description: 'Run all branches regardless of the last build version'
         required: false
         type: boolean
         default: false
+
+  # Depending on the longest run, this should be about ~10m after GLuaTest's automatic check:
+  # https://github.com/CFC-Servers/GLuaTest/blob/main/.github/workflows/check_for_updates.yml#L12
+  schedule:
+    - cron: "28 */12 * * *"
 
 env:
   BRANCH_MAP: >
@@ -37,14 +40,15 @@ jobs:
       - name: Checkout Current Repo Version Branch
         uses: actions/checkout@v4
         with:
-          ref: 'build/last-build-versions'
+          ref: "build/last-build-versions"
+          path: "gmod_tests"
 
       - name: Checkout GLuaTest Version Branch
         uses: actions/checkout@v4
         with:
-          repository: 'CFC-Servers/GLuaTest'
-          ref: 'build/last-build-versions'
-          path: 'GLuaTest'
+          repository: "CFC-Servers/GLuaTest"
+          ref: "build/last-build-versions"
+          path: "GLuaTest"
 
       - name: Install requirements
         run: |
@@ -129,7 +133,7 @@ jobs:
   summarize_failures:
       name: Summarize Failures
       needs: run_tests
-      if: always() && (needs.run_tests.result == 'failure' || needs.run_tests.result == 'cancelled')
+      if: always() && (needs.run_tests.result == 'failure')
       runs-on: ubuntu-latest
       outputs:
         failure_summary: ${{ steps.get_failures.outputs.failure_summary }}
@@ -144,8 +148,8 @@ jobs:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           shell: bash
           run: |
-            # Get ID and Name of failed/cancelled matrix jobs
-            failed_jobs_json=$(gh api /repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs -q '.jobs[] | select(.name | startswith("Run Tests on ")) | select(.conclusion=="failure" or .conclusion=="cancelled") | {id: .id, name: .name}' | jq -s .)
+            # Get ID and Name of failed matrix jobs
+            failed_jobs_json=$(gh api /repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs -q '.jobs[] | select(.name | startswith("Run Tests on ")) | select(.conclusion=="failure") | {id: .id, name: .name}' | jq -s .)
 
             summary_output=""
             count=0
@@ -167,9 +171,11 @@ jobs:
                  if [[ -n "$filtered_failures" ]]; then
                     summary_output+=" \`\`\`\n${filtered_failures}\n\`\`\`"
                  else
-                    summary_output+=" Job failed or was cancelled, but no specific test failure summary found matching pattern."
+                    summary_output+=" Job failed, but no specific test failure summary found matching pattern."
                  fi
+
                  if [[ $count -gt 0 ]]; then failed_branches_list+=","; fi
+
                  failed_branches_list+="$branch_name"
                  ((count++))
               fi
