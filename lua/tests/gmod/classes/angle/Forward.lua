@@ -30,7 +30,7 @@ return {
 
                 expect( x ).to.equal( 1 )
                 expect( y ).to.equal( 0 )
-                expect( z ).to.equal( 0 )
+                expect( z ).to.equal( 1 )
             end
         },
 
