@@ -4,7 +4,7 @@ on:
   pull_request:
     paths:
       - lua/**
-      - .github/workflow/run_tests.yml
+      - .github/workflows/run_tests.yml
   push:
     branches:
       - main
