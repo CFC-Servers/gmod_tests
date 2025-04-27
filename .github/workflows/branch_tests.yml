@@ -1,0 +1,345 @@
+name: GLuaTest Branch Runner
+
+on:
+  workflow_dispatch:
+    inputs:
+      force_run:
+        description: 'Run all branches regardless of the last build version'
+        required: false
+        type: boolean
+        default: false
+
+  # Depending on the longest run, this should be about ~10m after GLuaTest's automatic check:
+  # https://github.com/CFC-Servers/GLuaTest/blob/main/.github/workflows/check_for_updates.yml#L12
+  schedule:
+    - cron: "28 */12 * * *"
+
+env:
+  BRANCH_MAP: >
+    {
+      "dev": "last_dev_build.txt",
+      "prerelease": "last_prerelease_build.txt",
+      "live": "last_public_build.txt",
+      "x86-64": "last_64bit_build.txt"
+    }
+  ALL_BRANCHES: '["dev", "prerelease", "live", "x86-64"]'
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  check_versions:
+    name: Check for Updated Versions
+    runs-on: ubuntu-latest
+    outputs:
+      branches_to_run: ${{ steps.compare_versions.outputs.branches_to_run }}
+      should_run: ${{ steps.compare_versions.outputs.should_run }}
+
+    steps:
+      - name: Checkout Current Repo Version Branch
+        uses: actions/checkout@v4
+        with:
+          ref: "build/last-build-versions"
+          path: "gmod_tests"
+
+      - name: Checkout GLuaTest Version Branch
+        uses: actions/checkout@v4
+        with:
+          repository: "CFC-Servers/GLuaTest"
+          ref: "build/last-build-versions"
+          path: "GLuaTest"
+
+      - name: Install requirements
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq
+
+      - name: Compare Version Files and Determine Branches
+        id: compare_versions
+        shell: bash
+        run: |
+          echo "Force run requested?: ${{ github.event.inputs.force_run }}"
+
+          if [[ "${{ github.event.inputs.force_run }}" == "true" ]]; then
+            echo "Force run enabled, running all branches."
+            branches_json='${{ env.ALL_BRANCHES }}'
+          else
+            echo "Comparing versions..."
+            branches=()
+            branch_map='${{ env.BRANCH_MAP }}'
+
+            current_repo_base_path="gmod_tests"
+            gluatest_repo_base_path="GLuaTest"
+
+            for branch in $(echo "$branch_map" | jq -r 'keys[]'); do
+              version_file=$(echo "$branch_map" | jq -r --arg b "$branch" '.[$b]')
+              current_version_path="$current_repo_base_path/$version_file"
+              gluatest_version_path="$gluatest_repo_base_path/$version_file"
+
+              echo "Comparing $branch ($version_file)..."
+
+              if [[ ! -f "$current_version_path" ]]; then
+                echo "Warning: Version file $current_version_path not found in current repo."
+                current_version=""
+              else
+                current_version=$(cat "$current_version_path")
+              fi
+
+              if [[ ! -f "$gluatest_version_path" ]]; then
+                echo "Warning: Version file $gluatest_version_path not found in GLuaTest repo."
+                gluatest_version=""
+              else
+                gluatest_version=$(cat "$gluatest_version_path")
+              fi
+
+              if [[ "$current_version" != "$gluatest_version" || ( -f "$gluatest_version_path" && ! -f "$current_version_path" ) ]]; then
+                  echo "  -> Versions differ ('$current_version' vs '$gluatest_version') or target file missing. Adding $branch to run list."
+                  branches+=("$branch")
+              else
+                  echo "  -> Versions match ('$current_version'). Skipping $branch."
+              fi
+            done
+
+            if [[ ${#branches[@]} -gt 0 ]]; then
+              branches_json=$(printf '%s\n' "${branches[@]}" | jq -R . | jq -cs .)
+            else
+              branches_json="[]"
+            fi
+          fi
+
+          echo "Branches to run: $branches_json"
+          echo "branches_to_run=$branches_json" >> $GITHUB_OUTPUT
+
+          if [[ "$branches_json" == "[]" ]]; then
+             echo "should_run=false" >> $GITHUB_OUTPUT
+          else
+             echo "should_run=true" >> $GITHUB_OUTPUT
+          fi
+
+  run_tests:
+    needs: check_versions
+    if: needs.check_versions.outputs.should_run == 'true'
+    strategy:
+      matrix:
+        branch: ${{ fromJson(needs.check_versions.outputs.branches_to_run) }}
+      fail-fast: false
+
+    name: Run Tests on ${{ matrix.branch }}
+    uses: CFC-Servers/GLuaTest/.github/workflows/run_tests.yml@main
+    with:
+      collection: 3460542547
+      map: gm_glua_tests
+      branch: ${{ matrix.branch }}
+      logs-as-artifact: true
+      extra-startup-args: "-maxplayers 64"
+
+  summarize_failures:
+      name: Summarize Failures
+      needs: run_tests
+      if: always() && (needs.run_tests.result == 'failure')
+      runs-on: ubuntu-latest
+      outputs:
+        failure_summary: ${{ steps.process_logs.outputs.failure_summary }}
+        failed_branches_count: ${{ steps.process_logs.outputs.failed_branches_count }}
+
+      steps:
+        - name: Checkout repository
+          uses: actions/checkout@v4
+
+        - name: Get Failed Job Info
+          id: get_failed_jobs
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          shell: bash
+          run: |
+            failed_jobs_info=$(gh api /repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs -q '.jobs[] | select(.name | startswith("Run Tests on ")) | select(.conclusion=="failure" or .conclusion=="cancelled") | {name: .name, conclusion: .conclusion}' | jq -s .)
+            echo "Failed jobs info: $failed_jobs_info"
+
+            echo "failed_jobs_json<<EOF" >> $GITHUB_OUTPUT
+            echo "$failed_jobs_info" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+
+        - name: Get all GLuaTest artifacts
+          uses: actions/download-artifact@v4
+          with:
+            path: ./downloaded_logs
+
+        - name: Download Logs and Process Failures
+          id: process_logs
+          shell: bash
+          run: |
+            failed_jobs_json='${{ steps.get_failed_jobs.outputs.failed_jobs_json }}'
+
+            echo "Raw failed jobs JSON from output: $failed_jobs_json"
+
+            summary_output=""
+            count=0
+            failed_branches_list="" # Keep track for count output
+
+            mkdir -p ./downloaded_logs
+
+            echo "Processing failed jobs:"
+
+            while IFS= read -r job_json; do
+              job_name=$(echo "$job_json" | jq -r '.name')
+              echo "job_name: $job_name"
+              job_conclusion=$(echo "$job_json" | jq -r '.conclusion')
+              echo "job_conclusion: $job_conclusion"
+
+              branch_name=$(echo "$job_name" | sed 's/Run Tests on //g')
+              branch_name=$(echo "$branch_name" | sed 's/ \/ Run tests//g')
+              echo "branch_name: $branch_name"
+
+              artifact_name="gluatest-log-${branch_name}"
+              echo "artifact_name: $artifact_name"
+
+              log_file_path="./downloaded_logs/${artifact_name}/${artifact_name}.log"
+              echo "log_file_path: $log_file_path"
+
+              if [[ -f "$log_file_path" ]]; then
+                  echo "Parsing log file: $log_file_path"
+                  filtered_failures=$(cat "$log_file_path" | python .github/tools/parse_test_failures.py)
+                  echo "Parsed:"
+                  echo "$filtered_failures"
+
+                  summary_output+="\n## Branch: \`$branch_name\` _(${job_conclusion})_\n"
+                  echo "Summary output:"
+                  echo "$summary_output"
+
+                  if [[ -n "$filtered_failures" ]]; then
+                      echo "has filtered failures"
+                      summary_output+=" \`\`\`\n${filtered_failures}\n\`\`\`"
+                  else
+                      echo "does not have filtered failures"
+                      summary_output+=" \`\`\`\nJob finished with status '${job_conclusion}', but no specific test failure summary found matching pattern in log.\n\`\`\`"
+                  fi
+
+                  echo "new summary output:"
+                  echo "$summary_output"
+              else
+                  echo "Warning: Log file '$log_file_path' not found"
+                  summary_output+="\n## Branch: \`$branch_name\` _(${job_conclusion})_\n \`\`\`\nLog file '$log_file_path' not found\n\`\`\`"
+              fi
+
+              echo "done with the parsing"
+
+              if [[ $count -gt 0 ]]; then
+                  failed_branches_list="$failed_branches_list,"
+              fi
+              failed_branches_list="$failed_branches_list$branch_name"
+              count=$((count + 1))
+
+              echo "failed branches list: $failed_branches_list"
+              echo "new count: $count"
+
+            done < <(echo "$failed_jobs_json" | jq -c '.[]')
+
+            echo "failure_summary<<EOF" >> $GITHUB_OUTPUT
+            printf "%b" "$summary_output" >> $GITHUB_OUTPUT
+            echo "" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+
+            echo "failed_branches_count=$count" >> $GITHUB_OUTPUT
+
+            echo "--- Start Content of GITHUB_OUTPUT ---"
+            cat -A $GITHUB_OUTPUT || echo "GITHUB_OUTPUT not found or cat failed"
+            echo "--- End Content of GITHUB_OUTPUT ---"
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+  report_failure:
+    name: Report Failure to Discord
+    needs: [run_tests, summarize_failures]
+    if: always() && needs.run_tests.result == 'failure' && needs.summarize_failures.outputs.failed_branches_count > 0
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send Discord Notification
+        uses: tsickert/discord-webhook@v7.0.0
+        with:
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          wait: true
+          embed-title: "❌ GLuaTest Branch Runner Failed"
+          embed-color: 15548997 # Red
+          embed-url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          embed-description: |
+            ## One or more tests failed or were cancelled.
+            ${{ needs.summarize_failures.outputs.failure_summary }}
+
+
+  update_versions:
+    name: Update Version Files
+    needs: [check_versions, run_tests]
+    if: always() && needs.check_versions.outputs.should_run == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Self Version Branch for Update
+        uses: actions/checkout@v4
+        with:
+          ref: "build/last-build-versions"
+          path: self_repo_update
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout GLuaTest Version Branch for Source
+        uses: actions/checkout@v4
+        with:
+          repository: "CFC-Servers/GLuaTest"
+          ref: "build/last-build-versions"
+          path: gluatest_repo_source
+
+      - name: Install jq (just in case)
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Copy Updated Version Files if Changed
+        id: copy_files
+        shell: bash
+        run: |
+          changes_made=false
+          branches_to_update='${{ needs.check_versions.outputs.branches_to_run }}'
+          branch_map='${{ env.BRANCH_MAP }}'
+          echo "Branches identified for potential update: $branches_to_update"
+
+          # Loop through only the branches that were marked to run/update
+          for branch in $(echo "$branches_to_update" | jq -r '.[]'); do
+            version_file=$(echo "$branch_map" | jq -r --arg b "$branch" '.[$b]')
+            if [[ "$version_file" == "null" || -z "$version_file" ]]; then
+              echo "Warning: No version file mapping found for branch '$branch'. Skipping."
+              continue
+            fi
+
+            source_path="gluatest_repo_source/$version_file"
+            dest_path="self_repo_update/$version_file"
+
+            echo "Processing branch '$branch': File '$version_file'"
+
+            if [[ -f "$source_path" ]]; then
+              # Check if destination file exists and differs, OR if it doesn't exist
+              # Use `cmp -s` for silent comparison, returns 0 if same, non-zero if different/missing
+              if ! cmp -s "$source_path" "$dest_path"; then
+                 echo "  Updating file: Copying $source_path to $dest_path"
+
+                 mkdir -p "$(dirname "$dest_path")"
+                 cp "$source_path" "$dest_path"
+                 changes_made=true
+              else
+                 echo "  Skipping copy, destination file '$dest_path' is identical."
+              fi
+            else
+              echo "  Warning: Source file '$source_path' not found in GLuaTest repo. Cannot update."
+            fi
+          done
+
+          echo "changes_made=$changes_made" >> $GITHUB_OUTPUT
+
+      - name: Commit and Push Version Updates
+        if: steps.copy_files.outputs.changes_made == 'true'
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          repository: self_repo_update
+          commit_message: "ci: Update build version files"
+          branch: build/last-build-versions
+          commit_user_name: "github-actions[bot]"
+          commit_user_email: "github-actions[bot]@users.noreply.github.com"
