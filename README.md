@@ -3,7 +3,7 @@
 This is a community driven best-effort initiative to create a suite of automated tests for all basic Garry's Mod functionality.
 
 Here are some of our primary goals with this project:
-- Help catch GLua regressions as soon as an update is released.
+- Help catch GLua regressions as soon as a branch is updated.
 - Help contributors in the [official Garry's Mod repo](https://github.com/Facepunch/garrysmod) increase confidence in their PRs
 - Improve the Wiki with knowledge gained from writing tests
 
