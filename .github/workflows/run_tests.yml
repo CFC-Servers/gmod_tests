@@ -30,3 +30,4 @@ jobs:
       map: gm_glua_tests
       branch: ${{ matrix.branch }}
       extra-startup-args: "-maxplayers 64"
+      additional-setup: "wget -q https://github.com/RaphaelIT7/gmod-holytest/releases/latest/download/linux64.tar.gz -O gluatest/docker/_gluatest_artifacts/linux64.tar.gz"
