@@ -6,6 +6,8 @@ local function getWaitIdentifier()
     return "GLuaTest_Waiter_" .. waitIdent
 end
 
+--- Halts a tests's execution until player.GetCount() returns 0
+--- (Must be run in a coroutine=true test case)
 WaitForEmptyServer = function()
     local co = coroutine.running()
     local identifier = getWaitIdentifier()
@@ -21,6 +23,8 @@ WaitForEmptyServer = function()
     return coroutine.yield()
 end
 
+--- Halts a test's execution for the given number of ticks
+--- (Must be run in a coroutine=true test case)
 WaitForTicks = function( ticks )
     local co = coroutine.running()
 

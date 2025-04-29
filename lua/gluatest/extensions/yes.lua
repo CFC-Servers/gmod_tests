@@ -4,9 +4,9 @@ hook.Add( "GLuaTest_TestGroupLoaded", "Yes", function( group, rawGroup )
     group.yes = rawGroup.yes
 end )
 
--- Helper utility to isolate test groups
--- If any test group has `yes = true`, then only test groups that have `yes = true` will be run
-hook.Add( "GLuaTest_StartedTestRun", "Yes", function( testGroups )
+--- Helper utility to isolate test groups
+--- If any test group has `yes = true`, then only test groups that have `yes = true` will be run
+hok.Add( "GLuaTest_StartedTestRun", "Yes", function( testGroups )
     local hasYes = false
     local groupCount = #testGroups
 
