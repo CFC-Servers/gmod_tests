@@ -1,2 +1,4 @@
 -- Kicks the default test bot
-RunConsoleCommand( "kickid", "2" )
+for _, v in pairs( player.GetBots() ) do
+    v:Kick()
+end
