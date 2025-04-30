@@ -12,13 +12,7 @@ return WithBotTestTools( {
 
         {
             name = "Adds the contents of one CRecipientFilter to another",
-            async = true,
-            timeout = 3,
-            coroutine = true,
             func = function( state )
-                WaitForEmptyServer()
-                expect( #player.GetAll() ).to.equal( 0 )
-
                 local bots = state.addBots( 3 )
 
                 local filter1 = RecipientFilter()
@@ -32,20 +26,12 @@ return WithBotTestTools( {
                 local addedPlayers = filter2:GetPlayers()
                 expect( #addedPlayers ).to.equal( 2 )
                 expect( addedPlayers ).to.deepEqual( filter1:GetPlayers() )
-
-                done()
             end
         },
 
         {
             name = "Adds a table of players",
-            async = true,
-            timeout = 3,
-            coroutine = true,
             func = function( state )
-                WaitForEmptyServer()
-                expect( #player.GetAll() ).to.equal( 0 )
-
                 local bots = state.addBots( 3 )
                 local filter = RecipientFilter()
 
@@ -54,21 +40,13 @@ return WithBotTestTools( {
 
                 expect( #addedPlayers ).to.equal( 3 )
                 expect( addedPlayers ).to.deepEqual( bots )
-
-                done()
             end
         },
 
         -- This is fun behavior - may be unexpected?
         {
             name = "Adds everything up to the first not-player entry",
-            async = true,
-            timeout = 1,
-            coroutine = true,
             func = function( state )
-                WaitForEmptyServer()
-                expect( #player.GetAll() ).to.equal( 0 )
-
                 local bots = state.addBots( 3 )
                 local tbl = { bots[1], bots[2], "not a player", bots[3] }
 
@@ -76,8 +54,6 @@ return WithBotTestTools( {
                 filter:AddPlayers( tbl )
                 expect( filter:GetCount() ).to.equal( 2 )
                 expect( filter:GetPlayers() ).to.deepEqual( { bots[1], bots[2] } )
-
-                done()
             end
         },
 

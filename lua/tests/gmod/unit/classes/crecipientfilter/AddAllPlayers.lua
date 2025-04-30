@@ -15,6 +15,7 @@ return WithBotTestTools( {
             async = true,
             timeout = 2,
             coroutine = true,
+            when = WHEN_NO_HUMANS,
             func = function( state )
                 WaitForEmptyServer()
                 expect( #player.GetAll() ).to.equal( 0 )
@@ -47,6 +48,7 @@ return WithBotTestTools( {
             async = true,
             timeout = 1,
             coroutine = true,
+            when = WHEN_NO_HUMANS,
             func = function()
                 WaitForEmptyServer()
 

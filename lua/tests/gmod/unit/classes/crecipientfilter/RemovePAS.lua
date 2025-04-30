@@ -12,7 +12,7 @@ return WithBotTestTools( {
 
         {
             name = "Removes targets from the PAS of the given vector",
-            when = TestMap.IsRunningTestMap,
+            when = { TestMap.IsRunningTestMap, WHEN_NO_HUMANS },
             async = true,
             timeout = 1,
             coroutine = true,
@@ -45,7 +45,7 @@ return WithBotTestTools( {
 
         {
             name = "Removes no targets if none exist in the given PAS",
-            when = TestMap.IsRunningTestMap,
+            when = { TestMap.IsRunningTestMap, WHEN_NO_HUMANS },
             async = true,
             timeout = 1,
             coroutine = true,
@@ -77,7 +77,7 @@ return WithBotTestTools( {
 
         {
             name = "Removes no targets if given an out-of-map position",
-            when = TestMap.IsRunningTestMap,
+            when = { TestMap.IsRunningTestMap, WHEN_NO_HUMANS },
             async = true,
             timeout = 1,
             coroutine = true,

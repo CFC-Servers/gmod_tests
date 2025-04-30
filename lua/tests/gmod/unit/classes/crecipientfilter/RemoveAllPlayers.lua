@@ -12,24 +12,16 @@ return WithBotTestTools( {
 
         {
             name = "Removes all players from the CRecipientFilter",
-            async = true,
-            timeout = 2,
-            coroutine = true,
             func = function( state )
-                WaitForEmptyServer()
-                expect( #player.GetAll() ).to.equal( 0 )
-
                 local botCount = 3
                 local filter = RecipientFilter()
-                state.addBots( botCount )
+                local bots = state.addBots( botCount )
 
-                filter:AddAllPlayers()
+                filter:AddPlayers( bots )
                 expect( filter:GetCount() ).to.equal( botCount )
 
                 filter:RemoveAllPlayers()
                 expect( filter:GetCount() ).to.equal( 0 )
-
-                done()
             end
         },
 

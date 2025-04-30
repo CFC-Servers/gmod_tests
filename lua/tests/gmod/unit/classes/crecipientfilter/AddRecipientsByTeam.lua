@@ -12,14 +12,8 @@ return WithBotTestTools( {
 
         {
             name = "Adds all players on the given team to the filter",
-            async = true,
-            timeout = 1,
-            coroutine = true,
             func = function( state )
-                WaitForEmptyServer()
-                expect( #player.GetAll() ).to.equal( 0 )
-
-                local teamNumber = 69
+                local teamNumber = 80
 
                 local filter = RecipientFilter()
                 local bots = state.addBots( 2 )
@@ -32,20 +26,12 @@ return WithBotTestTools( {
 
                 local plys = filter:GetPlayers()
                 expect( #plys ).to.equal( 2 )
-
-                done()
             end
         },
 
         {
             name = "Does nothing when given a team with no players",
-            async = true,
-            timeout = 1,
-            coroutine = true,
             func = function( state )
-                WaitForEmptyServer()
-                expect( #player.GetAll() ).to.equal( 0 )
-
                 local filter = RecipientFilter()
                 state.addBots( 2 )
 
@@ -53,8 +39,6 @@ return WithBotTestTools( {
 
                 local plys = filter:GetPlayers()
                 expect( #plys ).to.equal( 0 )
-
-                done()
             end
         },
     }

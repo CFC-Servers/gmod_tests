@@ -12,22 +12,14 @@ return WithBotTestTools( {
 
         {
             name = "Returns the number of players in the filter",
-            async = true,
-            timeout = 3,
-            coroutine = true,
             func = function( state )
-                WaitForEmptyServer()
-                expect( #player.GetAll() ).to.equal( 0 )
-
                 local botCount = 3
                 local filter = RecipientFilter()
 
-                state.addBots( botCount )
-                filter:AddAllPlayers()
+                local bots = state.addBots( botCount )
+                filter:AddPlayers( bots )
 
                 expect( filter:GetCount() ).to.equal( botCount )
-
-                done()
             end
         },
 

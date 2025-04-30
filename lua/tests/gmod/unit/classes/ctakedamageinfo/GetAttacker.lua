@@ -79,11 +79,7 @@ return WithBotTestTools( {
 
         {
             name = "Returns the correct entity set by SetAttacker (NextBot)",
-            async = true,
-            coroutine = true,
-            timeout = 5,
             func = function( state )
-                WaitForEmptyServer()
                 local bots = state.addBots( 1 )
                 local expectedAttacker = bots[1]
 
@@ -91,8 +87,6 @@ return WithBotTestTools( {
                 local actualAttacker = state.dmgInfo:GetAttacker()
 
                 expect( actualAttacker ).to.equal( expectedAttacker )
-
-                done()
             end
         }
     }

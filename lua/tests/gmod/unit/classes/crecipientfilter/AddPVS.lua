@@ -26,6 +26,7 @@ return WithBotTestTools( {
                 local firstBot = bots[1]
                 local secondBot = bots[2]
 
+                -- TODO: We need some kind of WaitForRoomToBeEmpty, or some system that lets us queue up usages of rooms
                 local firstRoom = TestMap:GetRoom( "pas_test_room_01" )
                 local secondRoom = TestMap:GetRoom( "pas_test_room_02" )
 

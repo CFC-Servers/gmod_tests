@@ -1,17 +1,46 @@
 if not SERVER then return end
 
+--- @type Player[]
+local botPool = {}
 local botCounter = 0
+
+local function getBotFromPool()
+    local poolCount = #botPool
+    if poolCount == 0 then return end
+
+    for _ = 1, poolCount do
+        local bot = table.remove( botPool, poolCount )
+        if IsValid( bot ) then
+            return bot
+        end
+    end
+
+    return nil
+end
+
 --- Makes a bot for test purposes
 --- @param name string? The name of the bot
-MakeTestBot = function( name )
+--- @param allowReuse boolean? Whether or not this can return a bot that's already been used
+MakeTestBot = function( name, allowReuse )
+    if allowReuse == nil then allowReuse = true end
+
+    if allowReuse then
+        local bot = getBotFromPool()
+        if bot then return bot end
+    end
+
     botCounter = botCounter + 1
 
     name = name or ("Bot " .. botCounter)
-    return player.CreateNextBot( name )
+    local newBot = player.CreateNextBot( name )
+    if not newBot then
+        error( "Failed to create a new bot - player limit reached?" )
+    end
+
+    return newBot
 end
 
 --- @class TestBotConfig
---- @field name? string The name of the bot
 --- @field createdCallback fun(ply: Player)? A callback to run after the bot is created
 
 --- Sets up a testGroup to make a test bot for each test, and remove it after each test
@@ -30,7 +59,7 @@ WithBotTestTools = function( testGroup, config )
             local newBots = {}
 
             for _ = 1, count do
-                local bot = MakeTestBot( config.name )
+                local bot = MakeTestBot()
                 table.insert( state.bots, bot )
                 table.insert( newBots, bot )
 
@@ -57,15 +86,11 @@ WithBotTestTools = function( testGroup, config )
                 return
             end
 
-            game.KickID( bot:UserID() )
+            bot:Kick()
         end
 
-        function state.kickBots()
-            local bots = state.bots
-            local botCount = #bots
-
-            for i = botCount, 1, -1 do
-                local bot = bots[i]
+        function state.kickBots( bots )
+            for _, bot in ipairs( bots ) do
                 state.kickBot( bot )
             end
         end
@@ -76,19 +101,25 @@ WithBotTestTools = function( testGroup, config )
     local _afterEach = testGroup.afterEach
     testGroup.afterEach = function( state )
         if not state.bots then return end
-        state.kickBots()
+
+        for _, bot in ipairs( state.bots ) do
+            if IsValid( bot ) then
+                table.insert( botPool, bot )
+            end
+        end
 
         if _afterEach then _afterEach( state ) end
     end
 
-    local _beforeAll = testGroup.beforeAll
-    testGroup.beforeAll = function()
-        for _, bot in ipairs( player.GetBots() ) do
-            game.KickID( tostring( bot:UserID() ) )
-        end
-
-        if _beforeAll then _beforeAll() end
-    end
-
     return testGroup
 end
+
+hook.Add( "GLuaTest_Finished", "TestBotCleanup", function()
+    for _, bot in ipairs( botPool ) do
+        if IsValid( bot ) then
+            bot:Kick()
+        end
+    end
+
+    botPool = {}
+end )

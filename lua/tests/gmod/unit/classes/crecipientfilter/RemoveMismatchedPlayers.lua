@@ -12,18 +12,12 @@ return WithBotTestTools( {
 
         {
             name = "Removes mismatched players from the CRecipientFilter when given a CRecipientFilter",
-            async = true,
-            timeout = 3,
-            coroutine = true,
             func = function( state )
-                WaitForEmptyServer()
-                expect( #player.GetAll() ).to.equal( 0 )
-
                 local botCount = 4
                 local filter1 = RecipientFilter()
                 local bots = state.addBots( botCount )
 
-                filter1:AddAllPlayers()
+                filter1:AddPlayers( bots )
                 expect( filter1:GetCount() ).to.equal( botCount )
 
                 local filter2 = RecipientFilter()
@@ -36,25 +30,17 @@ return WithBotTestTools( {
                 local filter1Contents = filter1:GetPlayers()
                 expect( filter1Contents[1] ).to.equal( bots[3] )
                 expect( filter1Contents[2] ).to.equal( bots[4] )
-
-                done()
             end
         },
 
         {
             name = "Removes mismatched players from the CRecipientFilter when given a table of players",
-            async = true,
-            timeout = 3,
-            coroutine = true,
             func = function( state )
-                WaitForEmptyServer()
-                expect( #player.GetAll() ).to.equal( 0 )
-
                 local botCount = 4
                 local filter1 = RecipientFilter()
                 local bots = state.addBots( botCount )
 
-                filter1:AddAllPlayers()
+                filter1:AddPlayers( bots )
                 expect( filter1:GetCount() ).to.equal( botCount )
 
                 local filter2 = RecipientFilter()
@@ -67,31 +53,21 @@ return WithBotTestTools( {
                 local filter1Contents = filter1:GetPlayers()
                 expect( filter1Contents[1] ).to.equal( bots[3] )
                 expect( filter1Contents[2] ).to.equal( bots[4] )
-
-                done()
             end
         },
 
         {
             name = "Clears the given CRecipientFilter when given an empty table",
-            async = true,
-            timeout = 3,
-            coroutine = true,
             func = function( state )
-                WaitForEmptyServer()
-                expect( #player.GetAll() ).to.equal( 0 )
-
                 local botCount = 4
                 local filter1 = RecipientFilter()
-                state.addBots( botCount )
+                local bots = state.addBots( botCount )
 
-                filter1:AddAllPlayers()
+                filter1:AddPlayers( bots )
                 expect( filter1:GetCount() ).to.equal( botCount )
 
                 filter1:RemoveMismatchedPlayers( {} )
                 expect( filter1:GetCount() ).to.equal( 0 )
-
-                done()
             end
         },
 

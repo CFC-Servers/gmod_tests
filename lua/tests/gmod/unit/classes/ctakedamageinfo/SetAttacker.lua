@@ -61,18 +61,12 @@ return WithBotTestTools( {
 
         {
             name = "Sets attacker correctly (NextBot)",
-            async = true,
-            coroutine = true,
-            timeout = 5,
             func = function( state )
-                WaitForEmptyServer()
                 local bots = state.addBots( 1 )
                 local expectedAttacker = bots[1]
 
                 state.dmgInfo:SetAttacker( expectedAttacker )
                 expect( state.dmgInfo:GetAttacker() ).to.equal( expectedAttacker )
-
-                done()
             end
         },
 
@@ -107,7 +101,6 @@ return WithBotTestTools( {
                 if IsValid( state.dummyEnt ) then SafeRemoveEntity( state.dummyEnt ) end
             end
         },
-
 
         {
             name = "Errors when given a non-Entity argument (number)",
