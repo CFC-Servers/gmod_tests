@@ -17,6 +17,7 @@ return WithBotTestTools( {
             coroutine = true,
             when = WHEN_NO_HUMANS,
             func = function( state )
+                state.kickAllBots()
                 WaitForEmptyServer()
                 expect( #player.GetAll() ).to.equal( 0 )
 
@@ -49,9 +50,9 @@ return WithBotTestTools( {
             timeout = 1,
             coroutine = true,
             when = WHEN_NO_HUMANS,
-            func = function()
+            func = function( state )
+                state.kickAllBots()
                 WaitForEmptyServer()
-
                 expect( #player.GetAll() ).to.equal( 0 )
 
                 local filter = RecipientFilter()

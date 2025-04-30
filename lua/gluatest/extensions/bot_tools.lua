@@ -95,6 +95,22 @@ WithBotTestTools = function( testGroup, config )
             end
         end
 
+        function state.kickAllBots()
+            for _, bot in ipairs( botPool ) do
+                if IsValid( bot ) then
+                    state.kickBot( bot )
+                end
+            end
+
+            for _, bot in ipairs( state.bots ) do
+                if IsValid( bot ) then
+                    state.kickBot( bot )
+                end
+            end
+
+            state.bots = {}
+        end
+
         if _beforeEach then _beforeEach( state ) end
     end
 
