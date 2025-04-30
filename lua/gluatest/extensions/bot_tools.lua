@@ -1,5 +1,10 @@
 if not SERVER then return end
 
+-- Important to kick all existing bots before a new test run
+for _, v in pairs( player.GetBots() ) do
+    v:Kick()
+end
+
 --- @type Player[]
 local botPool = {}
 local botCounter = 0

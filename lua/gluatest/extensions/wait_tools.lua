@@ -48,7 +48,7 @@ local function create()
     return WaitTools
 end
 
--- We add a fresh copy of WaitTools to every async env, and apply the async meta to its
+-- We add a fresh copy of WaitTools to every async env, and apply the async meta to its functions
 -- (That way, any hooks it creates will be automatically cleaned up, because it'll use the wrapped hook library)
 hook.Add( "GLuaTest_AsyncEnvCreated", "GLuaTest_WaitTools", function( env, meta )
     local waitTools = create()
