@@ -17,6 +17,7 @@ return WithBotTestTools( {
             timeout = 1,
             coroutine = true,
             func = function( state )
+                state.kickAllBots()
                 WaitForEmptyServer()
                 expect( #player.GetAll() ).to.equal( 0 )
 
@@ -51,6 +52,7 @@ return WithBotTestTools( {
             timeout = 1,
             coroutine = true,
             func = function( state )
+                state.kickAllBots()
                 WaitForEmptyServer()
                 expect( #player.GetAll() ).to.equal( 0 )
 
@@ -82,6 +84,7 @@ return WithBotTestTools( {
             timeout = 1,
             coroutine = true,
             func = function( state )
+                state.kickAllBots()
                 WaitForEmptyServer()
                 expect( #player.GetAll() ).to.equal( 0 )
 

@@ -49,7 +49,7 @@ end
 --- @field createdCallback fun(ply: Player)? A callback to run after the bot is created
 
 --- Sets up a testGroup to make a test bot for each test, and remove it after each test
---- Note: Does not automatically create bots. Use `state:addBot()` or `state:addBots()` to create bots
+--- Note: Does not automatically create bots. Use `state.addBot()` or `state.addBots()` to create bots
 --- @param testGroup table The test group to modify
 --- @param config TestBotConfig? The configuration for the test bot
 WithBotTestTools = function( testGroup, config )
