@@ -1,0 +1,30 @@
+{
+  "$schema": "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json",
+  "runtime.version": "Lua 5.1`",
+  "hint.enable": false,
+  "runtime.special": {
+    "include": "require"
+  },
+  "workspace.library": [
+      "../gluatest",
+      "$GLUATEST_PATH",
+      "$GLUA_SNIPPETS_PATH"
+  ],
+  "format.defaultConfig": {
+    "indent_style": "space",
+    "indent_size": "4",
+    "tab_width": "4",
+    "quote_style": "double",
+    "max_line_length": "120",
+    "end_of_line": "unset",
+    "insert_final_newline": "false",
+    "space_before_inline_comment": "1",
+    "space_around_table_append_operator": "true",
+    "space_before_function_call_single_arg": "none",
+    "space_inside_function_call_parentheses": "true",
+    "space_inside_function_param_list_parentheses": "true"
+  },
+  "misc.parameters": [ "--develop=true" ]
+}
+
+
