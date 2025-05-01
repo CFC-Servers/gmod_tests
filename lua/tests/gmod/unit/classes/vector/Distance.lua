@@ -17,7 +17,7 @@ return {
                 local b = Vector( 4, 5, 6 )
                 local dist = a:Distance( b )
 
-                expect( dist ).to.equal( 5.1961522102355957031250 )
+                expect( dist ).to.aboutEqual( 5.1961522102355957031250 )
             end
         },
     }

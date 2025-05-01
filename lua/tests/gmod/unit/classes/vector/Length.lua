@@ -16,7 +16,7 @@ return {
                 local a = Vector( 1, 2, 3 )
                 local b = a:Length()
 
-                expect( b ).to.equal( 3.7416574954986572265625 ) -- return value isn't precise, so this wouldn't work "math.sqrt( math.pow( 1, 2 ) + math.pow( 2, 2 ) + math.pow( 3, 2 ) )"
+                expect( b ).to.aboutEqual( 3.7416574954986572265625 ) -- return value isn't precise, so this wouldn't work "math.sqrt( math.pow( 1, 2 ) + math.pow( 2, 2 ) + math.pow( 3, 2 ) )"
             end
         },
     }

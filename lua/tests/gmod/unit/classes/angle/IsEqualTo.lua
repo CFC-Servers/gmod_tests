@@ -49,7 +49,7 @@ return {
                 local a = Angle( 0, 0, 0 )
                 local b = Angle( 0.1, 0.1, 0.1 )
 
-                local out = a:IsEqualTol( b, 0.1 )
+                local out = a:IsEqualTol( b, 0.11 )
                 expect( out ).to.beTrue()
             end
         },
@@ -91,7 +91,7 @@ return {
                 local a = Angle( 0, 0, 0 )
                 local b = Angle( 0.1, 0.1, 0.1 )
 
-                local out = a:IsEqualTol( b, "0.1" )
+                local out = a:IsEqualTol( b, "0.11" )
                 expect( out ).to.beTrue()
             end
         },

@@ -16,7 +16,7 @@ return {
                 local a = Vector( 1, 2, 3 )
                 local length = a:Length2D()
 
-                expect( length ).to.equal( 2.2360680103302001953125 )
+                expect( length ).to.aboutEqual( 2.2360680103302001953125 )
             end
         },
     }

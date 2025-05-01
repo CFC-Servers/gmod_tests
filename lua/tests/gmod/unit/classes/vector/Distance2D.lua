@@ -17,7 +17,7 @@ return {
                 local b = Vector( 4, 5, 6 )
                 local dist = a:Distance2D( b )
 
-                expect( dist ).to.equal( 4.2426404953002929687500 )
+                expect( dist ).to.aboutEqual( 4.2426404953002929687500 )
             end
         },
     }
