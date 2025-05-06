@@ -26,8 +26,8 @@ return {
             name = "Fails to format invalid inputs",
             func = function()
                 expect( string.NiceTime( -600 ) ).to.equal( "-600 seconds" )
-                expect( string.NiceTime( NULL ) ).to.err()
-                expect( string.NiceTime( "string" ) ).to.err()
+                expect( string.NiceTime, NULL ).to.err()
+                expect( string.NiceTime, "string" ).to.err()
             end
         }
     }
