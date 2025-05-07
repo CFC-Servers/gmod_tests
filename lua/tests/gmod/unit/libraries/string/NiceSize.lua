@@ -24,9 +24,9 @@ return {
         {
             name = "Fails to format invalid inputs",
             func = function()
-                expect( string.NiceName, nil ).to.err()
-                expect( string.NiceName, NULL ).to.err()
-                expect( string.NiceName, "string" ).to.err()
+                expect( string.NiceSize, nil ).to.err()
+                expect( string.NiceSize, NULL ).to.err()
+                expect( string.NiceSize, "string" ).to.err()
             end
         }
     }
