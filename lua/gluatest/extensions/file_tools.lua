@@ -62,15 +62,15 @@ local function getNewFileState()
 end
 
 --- @class GmodTests_TestCaseWithFileTools: GLuaTest_TestCase
---- @field func fun(state: GmodTests_FileState): nil The test function
---- @field cleanup? fun(state: GmodTests_FileState): nil? A function to run after the test, regardless of the test outcome
+--- @field func fun( state: GmodTests_FileState ): nil The test function
+--- @field cleanup? fun( state: GmodTests_FileState ): nil? A function to run after the test, regardless of the test outcome
 
 --- @class GmodTests_TestGroupWithFileTools: GLuaTest_TestGroup
 --- @field cases GmodTests_TestCaseWithFileTools[] The test cases in this group
---- @field beforeAll? fun(state: GmodTests_FileState): nil A function to run before all tests in the group
---- @field beforeEach? fun(state: GmodTests_FileState): nil A function to run before each test in the group
---- @field afterAll? fun(state: GmodTests_FileState): nil A function to run after all tests in the group
---- @field afterEach? fun(state: GmodTests_FileState): nil A function to run after each test in the group
+--- @field beforeAll? fun( state: GmodTests_FileState ): nil A function to run before all tests in the group
+--- @field beforeEach? fun( state: GmodTests_FileState ): nil A function to run before each test in the group
+--- @field afterAll? fun( state: GmodTests_FileState ): nil A function to run after all tests in the group
+--- @field afterEach? fun( state: GmodTests_FileState ): nil A function to run after each test in the group
 
 --- Sets up a testGroup to inject self-cleaning file tools to each test case
 --- @param testGroup GmodTests_TestGroupWithFileTools The test group to set up

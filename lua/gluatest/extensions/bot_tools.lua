@@ -118,18 +118,18 @@ local function getNewBotState( config )
 end
 
 --- @class TestBotConfig
---- @field createdCallback fun(ply: Player)? A callback to run after the bot is created
+--- @field createdCallback fun( ply: Player )? A callback to run after the bot is created
 
 --- @class GmodTests_TestCaseWithBotTools: GLuaTest_TestCase
---- @field func fun(state: GmodTests_BotState): nil The test function
---- @field cleanup? fun(state: GmodTests_BotState): nil? A function to run after the test, regardless of the test outcome
+--- @field func fun( state: GmodTests_BotState ): nil The test function
+--- @field cleanup? fun( state: GmodTests_BotState ): nil? A function to run after the test, regardless of the test outcome
 
 --- @class GmodTests_TestGroupWithBotTools: GLuaTest_TestGroup
 --- @field cases GmodTests_TestCaseWithBotTools[] The test cases in this group
---- @field beforeAll? fun(state: GmodTests_BotState): nil A function to run before all tests in the group
---- @field beforeEach? fun(state: GmodTests_BotState): nil A function to run before each test in the group
---- @field afterAll? fun(state: GmodTests_BotState): nil A function to run after all tests in the group
---- @field afterEach? fun(state: GmodTests_BotState): nil A function to run after each test in the group
+--- @field beforeAll? fun( state: GmodTests_BotState ): nil A function to run before all tests in the group
+--- @field beforeEach? fun( state: GmodTests_BotState ): nil A function to run before each test in the group
+--- @field afterAll? fun( state: GmodTests_BotState ): nil A function to run after all tests in the group
+--- @field afterEach? fun( state: GmodTests_BotState ): nil A function to run after each test in the group
 
 --- Sets up a testGroup to inject self-managing bot tools into each test case
 --- Note: Does not automatically create bots. Use `state:addBot()` or `state:addBots()` to create bots
