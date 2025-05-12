@@ -3,8 +3,8 @@ file.CreateDir( testPath )
 
 --- @param name string The name of the file in the test directory
 --- @param write boolean? Whether or not to open the File in "write" mode
---- @returns File f The File object
---- @returns string path The full path to the file
+--- @return File f The File object
+--- @return string path The full path to the file
 local function getTestFile( name, write )
     local path = testPath .. "/" .. name .. ".txt"
     local mode = write and "wb" or "rb"
@@ -47,7 +47,7 @@ local function getNewFileState()
     --- Returns a new File object for use in the gmod_tests test suite
     --- @param name string The name of the file in the test directory
     --- @param write boolean? Whether or not to open the File in "write" mode
-    --- @returns File f The File object
+    --- @return File f The File object
     function fileState.getTestFile( name, write )
         local f, path = getTestFile( name, write )
 
@@ -74,7 +74,7 @@ end
 
 --- Sets up a testGroup to inject self-cleaning file tools to each test case
 --- @param testGroup GmodTests_TestGroupWithFileTools The test group to set up
---- @returns GmodTests_TestGroupWithFileTools The test group with file tools set up
+--- @return GmodTests_TestGroupWithFileTools The test group with file tools set up
 WithFileTestTools = function( testGroup )
     local _beforeEach = testGroup.beforeEach
     testGroup.beforeEach = function( state )
