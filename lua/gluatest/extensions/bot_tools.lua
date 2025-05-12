@@ -41,7 +41,9 @@ MakeTestBot = function( name, allowReuse )
     return newBot
 end
 
-local function getNewBotState()
+--- Makes a new state table for the bot tools
+--- @param config TestBotConfig The configuration for the test bot
+local function getNewBotState( config )
     --- @class GmodTests_BotState
     local botState = {}
 
@@ -129,7 +131,7 @@ end
 --- @field afterAll? fun(state: GmodTests_BotState): nil A function to run after all tests in the group
 --- @field afterEach? fun(state: GmodTests_BotState): nil A function to run after each test in the group
 
---- Sets up a testGroup to make a test bot for each test, and remove it after each test
+--- Sets up a testGroup to inject self-managing bot tools into each test case
 --- Note: Does not automatically create bots. Use `state:addBot()` or `state:addBots()` to create bots
 --- @param testGroup GmodTests_TestGroupWithBotTools The test group to modify
 --- @param config TestBotConfig? The configuration for the test bot
@@ -139,7 +141,7 @@ WithBotTestTools = function( testGroup, config )
 
     local _beforeEach = testGroup.beforeEach
     testGroup.beforeEach = function( state )
-        table.Merge( state, getNewBotState() )
+        table.Merge( state, getNewBotState( config ) )
 
         if _beforeEach then _beforeEach( state ) end
     end
@@ -148,6 +150,7 @@ WithBotTestTools = function( testGroup, config )
     testGroup.afterEach = function( state )
         if not state.bots then return end
 
+        -- Return the bots to the pool
         for _, bot in ipairs( state.bots ) do
             if IsValid( bot ) then
                 table.insert( botPool, bot )
@@ -160,7 +163,7 @@ WithBotTestTools = function( testGroup, config )
     return testGroup
 end
 
-hook.Add( "GLuaTest_Finished", "TestBotCleanup", function()
+hook.Add( "GLuaTest_Finished", "GmodTests_BotToolsCleanup", function()
     for _, bot in ipairs( botPool ) do
         if IsValid( bot ) then
             bot:Kick()
