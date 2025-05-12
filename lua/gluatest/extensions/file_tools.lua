@@ -2,7 +2,7 @@ local testPath = "gmod_tests_file_tests"
 file.CreateDir( testPath )
 
 --- @param name string The name of the file in the test directory
---- @param write boolean? Whether or not to open the File in "write" mode
+--- @param write boolean? Whether or not to open the File in "write" mode (Default: false)
 --- @return File f The File object
 --- @return string path The full path to the file
 local function getTestFile( name, write )
@@ -46,7 +46,7 @@ local function getNewFileState()
 
     --- Returns a new File object for use in the gmod_tests test suite
     --- @param name string The name of the file in the test directory
-    --- @param write boolean? Whether or not to open the File in "write" mode
+    --- @param write boolean? Whether or not to open the File in "write" mode (Default: false)
     --- @return File f The File object
     function fileState.getTestFile( name, write )
         local f, path = getTestFile( name, write )

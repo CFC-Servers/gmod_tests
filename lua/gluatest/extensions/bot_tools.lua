@@ -19,8 +19,8 @@ local function getBotFromPool()
 end
 
 --- Makes a bot for test purposes
---- @param name string? The name of the bot
---- @param allowReuse boolean? Whether or not this can return a bot that's already been used
+--- @param name string? The name of the bot (optional)
+--- @param allowReuse boolean? Whether or not this can return a bot that's already been used (Default: true)
 --- @return Player bot The bot that was created
 MakeTestBot = function( name, allowReuse )
     if allowReuse == nil then allowReuse = true end
