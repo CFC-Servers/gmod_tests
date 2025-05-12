@@ -1,3 +1,4 @@
+--- @type GLuaTest_TestGroup
 return {
     groupName = "stop action",
     cases = {
