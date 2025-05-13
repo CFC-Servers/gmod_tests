@@ -1,24 +1,27 @@
-return {
+return WithFileTestTools( {
     groupName = "File:ReadULong",
 
     cases = {
         {
             name = "Exists on the File meta table",
             func = function()
-                local meta = FindMetaTable( "File" )
+                local meta = assert( FindMetaTable( "File" ) )
                 expect( meta.ReadULong ).to.beA( "function" )
             end
         },
 
         {
             name = "Reads the unsigned long correctly",
-            func = function()
-                local a = GetTestFile( "WriteULong" )
+            func = function( state )
+                local expected = 4200000000
 
-                local val = a:ReadULong()
+                local a = state.getTestFile( "ReadULong", true )
+                a:WriteULong( expected )
+                a:Close()
 
-                expect( val ).to.equal( 4200000000 )
+                local b = state.getTestFile( "ReadULong" )
+                expect( b:ReadULong() ).to.equal( expected )
             end
-        },
+        }
     }
-}
+} )

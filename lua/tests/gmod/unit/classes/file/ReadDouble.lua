@@ -1,24 +1,27 @@
-return {
+return WithFileTestTools( {
     groupName = "File:ReadDouble",
 
     cases = {
         {
             name = "Exists on the File meta table",
             func = function()
-                local meta = FindMetaTable( "File" )
+                local meta = assert( FindMetaTable( "File" ) )
                 expect( meta.ReadDouble ).to.beA( "function" )
             end
         },
 
         {
-            name = "Reads the double correctly",
-            func = function()
-                local a = GetTestFile( "WriteDouble" )
+            name = "Reads a written double correctly",
+            func = function( state )
+                local expected = 1.0000000000001
 
-                local val = a:ReadDouble()
+                local a = state.getTestFile( "ReadDouble", true )
+                a:WriteDouble( expected )
+                a:Close()
 
-                expect( val ).to.equal( 1.0000000000001 )
+                local b = state.getTestFile( "ReadDouble" )
+                expect( b:ReadDouble() ).to.equal( expected )
             end
-        },
+        }
     }
-}
+} )

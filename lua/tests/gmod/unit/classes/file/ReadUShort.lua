@@ -1,24 +1,27 @@
-return {
+return WithFileTestTools( {
     groupName = "File:ReadUShort",
 
     cases = {
         {
             name = "Exists on the File meta table",
             func = function()
-                local meta = FindMetaTable( "File" )
+                local meta = assert( FindMetaTable( "File" ) )
                 expect( meta.ReadUShort ).to.beA( "function" )
             end
         },
 
         {
             name = "Reads the unsigned short correctly",
-            func = function()
-                local a = GetTestFile( "WriteUShort" )
+            func = function( state )
+                local expected = 64000
 
-                local val = a:ReadUShort()
+                local a = state.getTestFile( "ReadUShort", true )
+                a:WriteUShort( expected )
+                a:Close()
 
-                expect( val ).to.equal( 64000 )
+                local b = state.getTestFile( "ReadUShort" )
+                expect( b:ReadUShort() ).to.equal( 64000 )
             end
-        },
+        }
     }
-}
+} )

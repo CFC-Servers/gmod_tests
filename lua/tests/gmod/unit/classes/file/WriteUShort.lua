@@ -1,3 +1,4 @@
+--- @type GLuaTest_TestGroup
 return {
     groupName = "File:WriteUShort",
 
@@ -5,23 +6,9 @@ return {
         {
             name = "Exists on the File meta table",
             func = function()
-                local meta = FindMetaTable( "File" )
+                local meta = assert( FindMetaTable( "File" ) )
                 expect( meta.WriteUShort ).to.beA( "function" )
             end
-        },
-
-        {
-            name = "Writes a unsigned short correctly",
-            func = function()
-                local a = GetTestFile( "WriteUShort", true )
-                local value = 64000
-
-                a:WriteUShort( value )
-                a:Close()
-
-                local b = GetTestFile( "WriteUShort" )
-                expect( b:ReadUShort() ).to.equal( value )
-            end
-        },
+        }
     }
 }

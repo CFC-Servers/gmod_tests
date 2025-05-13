@@ -1,24 +1,27 @@
-return {
+return WithFileTestTools( {
     groupName = "File:ReadFloat",
 
     cases = {
         {
             name = "Exists on the File meta table",
             func = function()
-                local meta = FindMetaTable( "File" )
+                local meta = assert( FindMetaTable( "File" ) )
                 expect( meta.ReadFloat ).to.beA( "function" )
             end
         },
 
         {
-            name = "Reads the float correctly",
-            func = function()
-                local a = GetTestFile( "WriteFloat" )
+            name = "Reads a written float correctly",
+            func = function( state )
+                local value = 1.0000001192092895507812
 
-                local val = a:ReadFloat()
+                local a = state.getTestFile( "ReadFloat", true )
+                a:WriteFloat( value )
+                a:Close()
 
-                expect( val ).to.equal( 1.0000001192092895507812 )
+                local b = state.getTestFile( "ReadFloat" )
+                expect( b:ReadFloat() ).to.equal( value )
             end
-        },
+        }
     }
-}
+} )

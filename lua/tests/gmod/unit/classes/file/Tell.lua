@@ -1,25 +1,28 @@
-return {
+return WithFileTestTools( {
     groupName = "File:Tell",
 
     cases = {
         {
             name = "Exists on the File meta table",
             func = function()
-                local meta = FindMetaTable( "File" )
+                local meta = assert( FindMetaTable( "File" ) )
                 expect( meta.Tell ).to.beA( "function" )
             end
         },
 
         {
             name = "Returns the right value",
-            func = function()
-                local a = GetTestFile( "Write" )
-                local skipAmount = 12
+            func = function( state )
+                local a = state.getTestFile( "Tell", true )
+                a:Write( "Hello World" )
+                a:Close()
 
-                a:Skip( skipAmount )
+                local b = state.getTestFile( "Tell" )
+                local skipAmount = 10
+                b:Skip( skipAmount )
 
-                expect( a:Tell() ).to.equal( skipAmount )
+                expect( b:Tell() ).to.equal( skipAmount )
             end
-        },
+        }
     }
-}
+} )
