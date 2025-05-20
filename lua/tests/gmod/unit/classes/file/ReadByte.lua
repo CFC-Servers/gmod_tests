@@ -1,24 +1,25 @@
-return {
+return WithFileTestTools( {
     groupName = "File:ReadByte",
 
     cases = {
         {
             name = "Exists on the File meta table",
             func = function()
-                local meta = FindMetaTable( "File" )
+                local meta = assert( FindMetaTable( "File" ) )
                 expect( meta.ReadByte ).to.beA( "function" )
             end
         },
 
         {
-            name = "Reads the byte correctly",
-            func = function()
-                local a = GetTestFile( "WriteByte" )
+            name = "Reads a written byte correctly",
+            func = function( state )
+                local a = state.getTestFile( "ReadByte", true )
+                a:WriteByte( 123 )
+                a:Close()
 
-                local val = a:ReadByte()
-
-                expect( val ).to.equal( 123 )
+                local b = state.getTestFile( "ReadByte" )
+                expect( b:ReadByte() ).to.equal( 123 )
             end
-        },
+        }
     }
-}
+} )

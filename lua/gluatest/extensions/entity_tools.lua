@@ -28,7 +28,7 @@ end
 --- @field model string? The model of the Entity
 --- @field shouldSpawn boolean? Whether the entity should be :Spawn()'d
 --- @field shouldFreeze boolean? Whether the entity should be :Freeze()'d (only valid if shouldSpawn is true)
---- @field createdCallback fun(ent: Entity)? A callback to run after the entity is created
+--- @field createdCallback fun( ent: Entity )? A callback to run after the entity is created
 
 --- Sets up a testGroup to make a test ent for each test, and remove it after each test
 --- @param testGroup table The test group to modify

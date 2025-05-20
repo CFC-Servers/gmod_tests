@@ -1,35 +1,41 @@
-return {
+return WithFileTestTools( {
     groupName = "File:Read",
 
     cases = {
         {
             name = "Exists on the File meta table",
             func = function()
-                local meta = FindMetaTable( "File" )
+                local meta = assert( FindMetaTable( "File" ) )
                 expect( meta.Read ).to.beA( "function" )
             end
         },
 
         {
             name = "Reads the string correctly",
-            func = function()
-                local a = GetTestFile( "Write" )
+            func = function( state )
+                local expected = "Hello World"
 
-                local str = a:Read( 11 )
+                local a = state.getTestFile( "Read", true )
+                a:Write( expected )
+                a:Close()
 
-                expect( str ).to.equal( "Hello World" )
+                local b = state.getTestFile( "Read" )
+                expect( b:Read( 11 ) ).to.equal( "Hello World" )
             end
         },
 
         {
             name = "Reads the entire file correctly",
-            func = function()
-                local a = GetTestFile( "Write" )
+            func = function( state )
+                local expected = "Hello World\nHello World2"
 
-                local str = a:Read()
+                local a = state.getTestFile( "Read", true )
+                a:Write( expected )
+                a:Close()
 
-                expect( str ).to.equal( "Hello World\nHello World2" )
+                local b = state.getTestFile( "Read" )
+                expect( b:Read() ).to.equal( expected )
             end
-        },
+        }
     }
-}
+} )

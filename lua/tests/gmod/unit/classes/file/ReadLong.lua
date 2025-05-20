@@ -1,24 +1,28 @@
-return {
+return WithFileTestTools( {
     groupName = "File:ReadLong",
 
     cases = {
         {
             name = "Exists on the File meta table",
             func = function()
-                local meta = FindMetaTable( "File" )
+                local meta = assert( FindMetaTable( "File" ) )
                 expect( meta.ReadLong ).to.beA( "function" )
             end
         },
 
         {
             name = "Reads the long correctly",
-            func = function()
-                local a = GetTestFile( "WriteLong" )
+            func = function( state )
+                local expected = 2100000000
 
-                local val = a:ReadLong()
+                local a = state.getTestFile( "ReadLong", true )
+                a:WriteLong( expected )
+                a:Close()
 
-                expect( val ).to.equal( 2100000000 )
+                local b = state.getTestFile( "ReadLong" )
+
+                expect( b:ReadLong() ).to.equal( expected )
             end
-        },
+        }
     }
-}
+} )

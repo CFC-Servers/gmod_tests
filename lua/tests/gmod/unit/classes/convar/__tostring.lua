@@ -1,7 +1,8 @@
 function GetTestConVar( name, value, description ) -- Abusing the loading order :>
-	return CreateConVar( "ConVarTest" .. ( name or "" ), value or "1.2", 0, description or "This is a Test", -10, 10 )
+    return CreateConVar( "ConVarTest" .. (name or ""), value or "1.2", 0, description or "This is a Test", -10, 10 )
 end
 
+--- @type GLuaTest_TestGroup
 return {
     groupName = "ConVar:__tostring",
 
@@ -32,7 +33,7 @@ return {
             func = function()
                 local a = GetTestConVar()
 
-                local expected = string.format("ConVar [%s]", "ConVarTest" )
+                local expected = string.format( "ConVar [%s]", "ConVarTest" )
                 expect( a:__tostring() ).to.equal( expected )
             end
         },

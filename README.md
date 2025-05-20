@@ -31,11 +31,13 @@ Anyone can contribute test cases!
 - Clone this repository into your `addons/` dir
 - Clone [GLuaTest](https://github.com/CFC-Servers/GLuaTest) into your `addons/` dir
 - Restart your local server
+- (Optional LuaLS improvements):
+  - If you store GLuaTest somewhere other than your `addons/` dir (along side `gmod_tests`), you can set the `GLUATEST_PATH=` environment variable
+  - If you clone the [glua-api-snippets](https://github.com/luttje/glua-api-snippets/tree/lua-language-server-addon) repo, you can set the `GLUA_SNIPPETS_PATH=` environment variable to make gmod typing work in this project
 
 Now you can add your test suites or make changes to existing ones.
 
 Simply run `gluatest_run_tests` in the server console to run the test suite. This works even if you add new files.
-
 
 ### Test structure
 All unit tests _(the primary type of test you'll probably be writing)_ go in the `lua/tests/gmod/unit/` dir.
@@ -59,6 +61,14 @@ For example, if you were going to write tests for the [`File`](https://gmodwiki.
 In general, we want to keep each test file from getting _way too big_. Given that most methods you test will require 3-5 tests for the "success" cases and at least 1 test for the "failure" case, these can get big quickly.
 
 Definitely read some existing tests to get an idea of how to structure your tests.
+
+Note: Be sure to annotate any new files with the GLuaTest type header:
+```lua
+--- @type GLuaTest_TestGroup
+return {
+    -- your test stuff in here
+}
+```
 
 
 ### Submitting changes
