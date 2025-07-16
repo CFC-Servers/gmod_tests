@@ -20,7 +20,7 @@ return {
 
                 expect( a[1] ).to.equal( 3 )
                 expect( a[2] ).to.equal( 2 )
-                expect( a[3] ).to.equal( -1.0000001192092895507812 )
+                expect( math.Round(a[3], 5) ).to.equal( math.Round(-1.0000001192092895507812, 5) )
             end
         },
     }

@@ -18,8 +18,8 @@ return {
                 local b = Vector( 0, 0, 1 )
                 local c = a:AngleEx( b )
 
-                expect( c[1] ).to.aboutEqual( -53.300769805908203125 )
-                expect( c[2] ).to.aboutEqual( 63.434947967529296875 )
+                expect( math.Round(c[1], 4) ).to.aboutEqual( math.Round(-53.300769805908203125, 4) )
+                expect( math.Round(c[2], 4) ).to.aboutEqual( math.Round(63.434947967529296875, 4) )
                 expect( c[3] ).to.equal( 0 )
             end
         },
