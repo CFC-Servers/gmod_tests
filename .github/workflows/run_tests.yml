@@ -26,8 +26,7 @@ jobs:
 
     uses: CFC-Servers/GLuaTest/.github/workflows/run_tests.yml@main
     with:
-      collection: 3460542547
       map: gm_glua_tests
       branch: ${{ matrix.branch }}
       extra-startup-args: "-maxplayers 64"
-      additional-setup: "wget -q https://github.com/RaphaelIT7/gmod-holytest/releases/latest/download/linux64.tar.gz -O gluatest/docker/_gluatest_artifacts/linux64.tar.gz"
+      additional-setup: "wget -q https://github.com/RaphaelIT7/gmod-holytest/releases/latest/download/linux64.tar.gz -O gluatest/docker/_gluatest_artifacts/linux64.tar.gz && wget -O gm_glua_tests.bsp https://github.com/CFC-Servers/gm_tests_map/raw/refs/heads/main/maps/gm_glua_tests.bsp && mkdir -p garrysmod/maps && mv gm_glua_tests.bsp garrysmod/maps/ && tar -czf gluatest/docker/_gluatest_artifacts/gm_glua_tests.tar.gz -C . garrysmod && rm -r garrysmod"
