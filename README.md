@@ -21,7 +21,7 @@ This project uses [GLuaTest](https://github.com/CFC-Servers/GLuaTest) to run the
 A secondary goal is actually to improve GLuaTest based on our experiences writing tests here. Please don't be shy about asking for new features or complaining about GLuaTest!
     
 <p align="left">
-    <a href="https://github.com/CFC-Servers/gmod_tests/actions/workflows/run_tests.yml" alt="Tests Status"><img src="https://img.shields.io/github/actions/workflow/status/CFC-Servers/gmod_tests/run_tests.yml?event=push&style=for-the-badge&label=GLuaTest" /></a>
+    <a href="https://github.com/CFC-Servers/gmod_tests/actions/workflows/branch_tests.yml" alt="Tests Status"><img src="https://img.shields.io/github/actions/workflow/status/CFC-Servers/gmod_tests/branch_tests.yml?event=push&style=for-the-badge&label=GLuaTest" /></a>
 </p>
 
 ## Contributing
