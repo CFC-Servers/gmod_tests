@@ -19,10 +19,10 @@ env:
     {
       "dev": "last_dev_build.txt",
       "prerelease": "last_prerelease_build.txt",
-      "live": "last_public_build.txt",
+      "public": "last_public_build.txt",
       "x86-64": "last_64bit_build.txt"
     }
-  ALL_BRANCHES: '["dev", "prerelease", "live", "x86-64"]'
+  ALL_BRANCHES: '["dev", "prerelease", "public", "x86-64"]'
 
 permissions:
   actions: read
