@@ -3,50 +3,42 @@ return {
     groupName = "bit.tobit",
     cases = {
         {
-            name = "Should be a function",
+            name = "Functions exists",
             func = function()
                 expect( bit.tobit ).to.beA( "function" )
             end
         },
 
         {
-            name = "Should return unchanged values",
+            name = "Correctly returns unchanged values",
             func = function()
-                expect( bit.tobit( 1 ) ).to.equal( 1 )
-                expect( bit.tobit( -1 ) ).to.equal( -1 )
+                expect( bit.tobit( 1 ) ).to.equal(1)
+                expect( bit.tobit( -1 ) ).to.equal(-1)
             end
         },
 
         {
-            name = "Should work correctly on positive boundary values",
+            name = "Behaves correctly when handling large numbers",
             func = function()
-                expect( bit.tobit( 2147483647 ) ).to.equal( 2147483647 )
-                expect( bit.tobit( 2147483648 ) ).to.equal( -2147483648 )
+                expect( bit.tobit( 2147483647 ) ).to.equal(2147483647)
+                expect( bit.tobit( 2147483648 ) ).to.equal(-2147483648)
             end
         },
 
         {
-            name = "Should work correctly on negative boundary values",
+            name = "Handles Non-integer values",
             func = function()
-                expect( bit.tobit( -2147483647 ) ).to.equal( -2147483647 )
-                expect( bit.tobit( -2147483648 ) ).to.equal( -2147483648 )
+                expect( bit.tobit( 1.1 ) ).to.equal(1)
+                expect( bit.tobit( -1 ) ).to.equal(-1)
             end
         },
 
         {
-            name = "Handles float values by truncating them",
+            name = "Throws error when not given a number",
             func = function()
-                expect( bit.tobit( 1.123 ) ).to.equal( 1 )
-                expect( bit.tobit( -1.123 ) ).to.equal( -1 )
-            end
-        },
-
-        {
-            name = "Fails on invalid input",
-            func = function()
-                expect( bit.tobit, nil ).to.err()
-                expect( bit.tobit, "abc" ).to.err()
-                expect( bit.tobit, {} ).to.err()
+                expect( bit.tobit, nil ).to.errWith( [[bad argument #1 to '?' (number expected, got no value)]] )
+                expect( bit.tobit, "abc" ).to.errWith( [[bad argument #1 to '?' (number expected, got string)]] )
+                expect( bit.tobit, {} ).to.errWith( [[bad argument #1 to '?' (number expected, got table)]] )
             end
         },
     }

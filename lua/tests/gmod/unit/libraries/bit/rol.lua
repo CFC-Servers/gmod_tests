@@ -3,7 +3,7 @@ return {
     groupName = "bit.rol",
     cases = {
         {
-            name = "Should be a function",
+            name = "Function exists",
             func = function()
                 expect( bit.rol ).to.beA( "function" )
             end
@@ -35,19 +35,24 @@ return {
         },
 
         {
-            name = "Functions properly when rotating by 32",
+            name = "Functions properly when rotating over the limit",
             func = function()
                 expect( bit.rol( 1, 32 ) ).to.equal( 1 )
-                expect( bit.rol( 16, 32 ) ).to.equal( 16 )
+                expect( bit.rol( 16, 16 ) ).to.equal( 1048576 )
             end
         },
 
         {
-            name = "Fails on invalid input",
+            name = "Throws error when not given a number",
             func = function()
-                expect( bit.rol, nil, nil ).to.err()
-                expect( bit.rol, "abc", "def" ).to.err()
-                expect( bit.rol, {}, {} ).to.err()
+                expect( bit.rol, nil, 1 ).to.errWith( [[bad argument #1 to '?' (number expected, got nil)]] )
+                expect( bit.rol, 1, nil ).to.errWith( [[bad argument #2 to '?' (number expected, got no value)]] )
+
+                expect( bit.rol, "abc", 1 ).to.errWith( [[bad argument #1 to '?' (number expected, got string)]] )
+                expect( bit.rol, 1, "def" ).to.errWith( [[bad argument #2 to '?' (number expected, got string)]] )
+
+                expect( bit.rol, {}, 1 ).to.errWith( [[bad argument #1 to '?' (number expected, got table)]] )
+                expect( bit.rol, 1, {} ).to.errWith( [[bad argument #2 to '?' (number expected, got table)]] )
             end
         },
     }

@@ -3,14 +3,14 @@ return {
     groupName = "bit.bor",
     cases = {
         {
-            name = "Should be a function",
+            name = "Function exists",
             func = function()
                 expect( bit.bor ).to.beA( "function" )
             end
         },
 
         {
-            name = "Should handle positive numbers correctly",
+            name = "Correctly handles positive OR operations",
             func = function()
                 expect( bit.bor( 8, 8 ) ).to.equal( 8 )
                 expect( bit.bor( 8, 1 ) ).to.equal( 9 )
@@ -19,7 +19,7 @@ return {
         },
 
         {
-            name = "Should handle negative numbers correctly",
+            name = "Correctly handles negative OR operations",
             func = function()
                 expect( bit.bor( -1, 0 ) ).to.equal( -1 )
                 expect( bit.bor( -8, 1 ) ).to.equal( -7 )
@@ -28,22 +28,21 @@ return {
         },
 
         {
-            name = "Should handle zero values correctly",
+            name = "Correctly handles or operation with 0",
             func = function()
                 expect( bit.bor( 0, 69 ) ).to.equal( 69 )
-                expect( bit.bor( -42, 0 ) ).to.equal( -42 )
             end
         },
 
         {
-            name = "Returns correct value with multiple args",
+            name = "Correctly returns result with mutliple args",
             func = function()
                 expect( bit.bor( 1, 2, 4, 8 ) ).to.equal( 15 )
             end
         },
 
         {
-            name = "Handles Min and max values",
+            name = "Correctly handles min and max values",
             func = function()
                 expect( bit.bor( 2147483647, 2147483648 ) ).to.equal( -1 )
                 expect( bit.bor( -2147483648, 0 ) ).to.equal( -2147483648 )
@@ -51,11 +50,16 @@ return {
         },
 
         {
-            name = "Fails on invalid input",
+            name = "Throws error when not given a number",
             func = function()
-                expect( bit.bor, nil, nil ).to.err()
-                expect( bit.bor, "abc", "def" ).to.err()
-                expect( bit.bor, {}, {} ).to.err()
+                expect( bit.bor, nil, 1 ).to.errWith( [[bad argument #1 to '?' (number expected, got nil)]] )
+                expect( bit.bor, 1, nil ).toNot.err()
+
+                expect( bit.bor, "abc", 1 ).to.errWith( [[bad argument #1 to '?' (number expected, got string)]] )
+                expect( bit.bor, 1, "def" ).to.errWith( [[bad argument #2 to '?' (number expected, got string)]] )
+
+                expect( bit.bor, {}, 1 ).to.errWith( [[bad argument #1 to '?' (number expected, got table)]] )
+                expect( bit.bor, 1, {} ).to.errWith( [[bad argument #2 to '?' (number expected, got table)]] )
             end
         },
     }

@@ -3,7 +3,7 @@ return {
     groupName = "bit.ror",
     cases = {
         {
-            name = "Should be a function",
+            name = "Function exists",
             func = function()
                 expect( bit.ror ).to.beA( "function" )
             end
@@ -43,11 +43,16 @@ return {
         },
 
         {
-            name = "Fails on invalid input",
+            name = "Throws error when not given a number",
             func = function()
-                expect( bit.ror, nil, nil ).to.err()
-                expect( bit.ror, "abc", "def" ).to.err()
-                expect( bit.ror, {}, {} ).to.err()
+                expect( bit.ror, nil, 1 ).to.errWith( [[bad argument #1 to '?' (number expected, got nil)]] )
+                expect( bit.ror, 1, nil ).to.errWith( [[bad argument #2 to '?' (number expected, got no value)]] )
+
+                expect( bit.ror, "abc", 1 ).to.errWith( [[bad argument #1 to '?' (number expected, got string)]] )
+                expect( bit.ror, 1, "def" ).to.errWith( [[bad argument #2 to '?' (number expected, got string)]] )
+
+                expect( bit.ror, {}, 1 ).to.errWith( [[bad argument #1 to '?' (number expected, got table)]] )
+                expect( bit.ror, 1, {} ).to.errWith( [[bad argument #2 to '?' (number expected, got table)]] )
             end
         },
     }

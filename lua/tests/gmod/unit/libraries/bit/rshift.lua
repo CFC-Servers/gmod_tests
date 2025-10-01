@@ -3,7 +3,7 @@ return {
     groupName = "bit.rshift",
     cases = {
         {
-            name = "Should be a function",
+            name = "Functions exists",
             func = function()
                 expect( bit.rshift ).to.beA( "function" )
             end
@@ -26,25 +26,30 @@ return {
         },
 
         {
-            name = "Shifting 0 should remain 0",
+            name = "Correctly handles shifting the number 0",
             func = function()
                 expect( bit.rshift( 0, 1 ) ).to.equal( 0 )
             end
         },
 
         {
-            name = "Shifting 0 times",
+            name = "Correctly handles shifting a number 0 times",
             func = function()
                 expect( bit.rshift( 312, 0 ) ).to.equal( 312 )
             end
         },
 
         {
-            name = "Fails on invalid input",
+            name = "Throws error when not given a number",
             func = function()
-                expect( bit.rshift, nil, nil ).to.err()
-                expect( bit.rshift, "abc", "def" ).to.err()
-                expect( bit.rshift, {}, {} ).to.err()
+                expect( bit.rshift, nil, 1 ).to.errWith( [[bad argument #1 to '?' (number expected, got nil)]] )
+                expect( bit.rshift, 1, nil ).to.errWith( [[bad argument #2 to '?' (number expected, got no value)]] )
+
+                expect( bit.rshift, "abc", 1 ).to.errWith( [[bad argument #1 to '?' (number expected, got string)]] )
+                expect( bit.rshift, 1, "def" ).to.errWith( [[bad argument #2 to '?' (number expected, got string)]] )
+
+                expect( bit.rshift, {}, 1 ).to.errWith( [[bad argument #1 to '?' (number expected, got table)]] )
+                expect( bit.rshift, 1, {} ).to.errWith( [[bad argument #2 to '?' (number expected, got table)]] )
             end
         },
     }

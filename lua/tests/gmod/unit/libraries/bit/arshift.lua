@@ -3,14 +3,14 @@ return {
     groupName = "bit.arshift",
     cases = {
         {
-            name = "Should be a function",
+            name = "Functions exists",
             func = function()
                 expect( bit.arshift ).to.beA( "function" )
             end
         },
 
         {
-            name = "Should correctly shift positive numbers",
+            name = "Correctly shifts positive numbers",
             func = function()
                 expect( bit.arshift( 8, 1 ) ).to.equal( 4 )
                 expect( bit.arshift( 16, 2 ) ).to.equal( 4 )
@@ -21,7 +21,7 @@ return {
         },
 
         {
-            name = "Returns correct values for negative arhithmetic shifting",
+            name = "Correctly shifts negative numbers",
             func = function()
                 expect( bit.arshift( -8, 1 ) ).to.equal( -4 )
                 expect( bit.arshift( -16, 2 ) ).to.equal( -4 )
@@ -31,11 +31,16 @@ return {
         },
 
         {
-            name = "Fails on invalid input",
+            name = "Throws error when not given a number",
             func = function()
-                expect( bit.arshift, nil, nil ).to.err()
-                expect( bit.arshift, "abc", "def" ).to.err()
-                expect( bit.arshift, {}, {} ).to.err()
+                expect( bit.arshift, nil, 1 ).to.errWith( [[bad argument #1 to '?' (number expected, got nil)]] )
+                expect( bit.arshift, 1, nil ).to.errWith( [[bad argument #2 to '?' (number expected, got no value)]] )
+
+                expect( bit.arshift, "abc", 1 ).to.errWith( [[bad argument #1 to '?' (number expected, got string)]] )
+                expect( bit.arshift, 1, "def" ).to.errWith( [[bad argument #2 to '?' (number expected, got string)]] )
+
+                expect( bit.arshift, {}, 1 ).to.errWith( [[bad argument #1 to '?' (number expected, got table)]] )
+                expect( bit.arshift, 1, {} ).to.errWith( [[bad argument #2 to '?' (number expected, got table)]] )
             end
         },
     }

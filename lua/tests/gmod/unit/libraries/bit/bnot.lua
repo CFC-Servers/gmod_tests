@@ -3,14 +3,14 @@ return {
     groupName = "bit.bnot",
     cases = {
         {
-            name = "Should be a function",
+            name = "Function exists",
             func = function()
                 expect( bit.bnot ).to.beA( "function" )
             end
         },
 
         {
-            name = "Should correctly invert positive and negative numbers",
+            name = "Correctly inverts input number",
             func = function()
                 expect( bit.bnot( 8 ) ).to.equal( -9 )
                 expect( bit.bnot( 32 ) ).to.equal( -33 )
@@ -20,22 +20,27 @@ return {
         },
 
         {
-            name = "Should handle edge cases correctly",
+            name = "Correctly inverts 0 and -1",
             func = function()
                 expect( bit.bnot( 0 ) ).to.equal( -1 )
                 expect( bit.bnot( -1 ) ).to.equal( 0 )
+            end
+        },
 
+        {
+            name = "Correctly handles min and max values",
+            func = function()
                 expect( bit.bnot( 2147483647 ) ).to.equal( -2147483648 )
                 expect( bit.bnot( -2147483648 ) ).to.equal( 2147483647 )
             end
         },
 
         {
-            name = "Fails on invalid input",
+            name = "Throws error when not given a number",
             func = function()
-                expect( bit.bnot, nil ).to.err()
-                expect( bit.bnot, "abc" ).to.err()
-                expect( bit.bnot, {} ).to.err()
+                expect( bit.bnot, nil ).to.errWith( [[bad argument #1 to '?' (number expected, got no value)]] )
+                expect( bit.bnot, "abc" ).to.errWith( [[bad argument #1 to '?' (number expected, got string)]] )
+                expect( bit.bnot, {} ).to.errWith( [[bad argument #1 to '?' (number expected, got table)]] )
             end
         },
     }
