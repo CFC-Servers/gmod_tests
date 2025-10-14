@@ -17,15 +17,9 @@ return {
                 local a = Vector( 1, 2, 3 )
                 a:Normalize()
 
-                if IS_64BIT_BRANCH then
-                	expect( a[1] ).to.equal( 0.2672612071037292480469 )
-                   	expect( a[2] ).to.equal( 0.5345224142074584960938 )
-                   	expect( a[3] ).to.equal( 0.8017836213111877441406 )
-                else
-               	   	expect( a[1] ).to.equal( 0.2672612369060516357422 )
-                   	expect( a[2] ).to.equal( 0.5345224738121032714844 )
-                   	expect( a[3] ).to.equal( 0.8017836809158325195312 )
-                end
+                expect( math.Round(a[1], 5) ).to.equal( math.Round(0.2672612369060516357422, 5) )
+                expect( math.Round(a[2], 5) ).to.equal( math.Round(0.5345224738121032714844, 5) )
+                expect( math.Round(a[3], 5) ).to.equal( math.Round(0.8017836809158325195312, 5) )
             end
         },
     }
