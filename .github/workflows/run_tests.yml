@@ -14,14 +14,28 @@ on:
   workflow_dispatch:
 
 jobs:
-  run_tests:
+  run_tests_32x:
     strategy:
       matrix:
         branch:
           - "public"
-          - "x86-64"
           - "prerelease"
           - "dev"
+      fail-fast: false
+
+    uses: CFC-Servers/GLuaTest/.github/workflows/run_tests.yml@main
+    with:
+      collection: 3460542547
+      map: gm_glua_tests
+      branch: ${{ matrix.branch }}
+      extra-startup-args: "-maxplayers 64"
+      additional-setup: "wget -q https://github.com/RaphaelIT7/gmod-holytest/releases/latest/download/linux32.tar.gz -O gluatest/docker/_gluatest_artifacts/linux32.tar.gz"
+
+  run_tests_64x:
+    strategy:
+      matrix:
+        branch:
+          - "x86-64"
       fail-fast: false
 
     uses: CFC-Servers/GLuaTest/.github/workflows/run_tests.yml@main
