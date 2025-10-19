@@ -132,7 +132,12 @@ jobs:
       map: gm_glua_tests
       branch: ${{ matrix.branch }}
       logs-as-artifact: true
-      extra-startup-args: "-maxplayers 64"
+      extra-startup-args: "-maxplayers 64 -allowlocalhttp"
+      additional-setup: |
+        # Start the testing server for the HTTP tests
+        sudo apt-get install -y python3-flask
+        ./project/lua/tests/gmod/unit/globals/HTTP.py 1>/dev/null 2>&1 &
+        until curl --silent "http://127.0.0.1:5000" 1>/dev/null 2>&1; do sleep 1; done
 
   summarize_failures:
       name: Summarize Failures
