@@ -8,7 +8,7 @@ return {
             timeout = 1,
             func = function()
                 HTTP({
-                    url = "http://127.0.0.1:5000/response_null_byte_in_body",
+                    url = "http://host.docker.internal:5000/response_null_byte_in_body",
                     success = function(code, body, headers)
                         expect(body).to.equal("Hello World\0!")
                         done()
@@ -25,7 +25,7 @@ return {
             timeout = 1,
             func = function()
                 HTTP({
-                    url = "http://127.0.0.1:5000/response_multiple_cookies",
+                    url = "http://host.docker.internal:5000/response_multiple_cookies",
                     success = function(code, body, headers)
                         -- Note: RFC 6265 states that origin servers should not fold Set-Cookie
                         --       headers due to semantics changes. This does not just apply to
@@ -47,7 +47,7 @@ return {
             timeout = 1,
             func = function()
                 HTTP({
-                    url = "http://127.0.0.1:5000/response_multiple_cookies_with_expires",
+                    url = "http://host.docker.internal:5000/response_multiple_cookies_with_expires",
                     success = function(code, body, headers)
 
                         -- Header order is nondeterministic, so we need to test both combinations.
@@ -68,7 +68,7 @@ return {
             timeout = 1,
             func = function()
                 HTTP({
-                    url = "http://127.0.0.1:5000/response_multiple_warning",
+                    url = "http://host.docker.internal:5000/response_multiple_warning",
                     success = function(code, body, headers)
                         -- Header order is nondeterministic, so we need to test both combinations.
                         local warning_a = "199 - Warning1"
@@ -88,7 +88,7 @@ return {
             timeout = 1,
             func = function()
                 HTTP({
-                    url = "http://127.0.0.1:5000/response_redirect",
+                    url = "http://host.docker.internal:5000/response_redirect",
                     success = function(code, body, headers)
                         expect(code).to.equal(200)
                         expect(body).to.equal("Redirected!")
@@ -110,7 +110,7 @@ return {
             func = function()
                 HTTP({
                     method = "GET",
-                    url = "http://127.0.0.1:5000/echo_content_type",
+                    url = "http://host.docker.internal:5000/echo_content_type",
                     success = function(code, body, headers)
                         expect(code).to.equal(404)
                         done()
@@ -128,7 +128,7 @@ return {
             func = function()
                 HTTP({
                     method = "POST",
-                    url = "http://127.0.0.1:5000/echo_content_type",
+                    url = "http://host.docker.internal:5000/echo_content_type",
                     success = function(code, body, headers)
                         expect(body).to.equal("application/x-www-form-urlencoded")
                         done()
@@ -146,7 +146,7 @@ return {
             func = function()
                 HTTP({
                     method = "POST",
-                    url = "http://127.0.0.1:5000/echo_content_type",
+                    url = "http://host.docker.internal:5000/echo_content_type",
                     body = "Hello world!",
                     success = function(code, body, headers)
                         expect(body).to.equal("text/plain; charset=utf-8")
@@ -165,7 +165,7 @@ return {
             func = function()
                 HTTP({
                     method = "POST",
-                    url = "http://127.0.0.1:5000/echo_content_type",
+                    url = "http://host.docker.internal:5000/echo_content_type",
                     headers = {
                         ["Content-Type"] = "application/octet-stream",
                     },
@@ -186,7 +186,7 @@ return {
             func = function()
                 HTTP({
                     method = "POST",
-                    url = "http://127.0.0.1:5000/echo_content_type",
+                    url = "http://host.docker.internal:5000/echo_content_type",
                     headers = {
                         ["Content-Type"] = "application/octet-stream",
                     },
@@ -222,7 +222,7 @@ return {
 
                     local queued = HTTP({
                         method = method_in,
-                        url = "http://127.0.0.1:5000/echo_method",
+                        url = "http://host.docker.internal:5000/echo_method",
                         success = function(code, body, headers)
                             expect(body).to.equal(method_out)
                             on_request_done()
