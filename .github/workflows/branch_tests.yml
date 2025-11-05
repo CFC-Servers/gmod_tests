@@ -133,6 +133,7 @@ jobs:
       branch: ${{ matrix.branch }}
       logs-as-artifact: true
       extra-startup-args: "-maxplayers 64"
+      additional-setup: "wget -q https://github.com/RaphaelIT7/gmod-holytest/releases/latest/download/linux.tar.gz -O gluatest/docker/_gluatest_artifacts/linux.tar.gz"
 
   summarize_failures:
       name: Summarize Failures
