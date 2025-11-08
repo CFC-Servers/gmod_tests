@@ -11,7 +11,7 @@ return WithFileTestTools( {
         },
 
         {
-            name = "Moves the pointer by the specified number of characcters",
+            name = "Moves the pointer by the specified number of characters",
             func = function( state )
                 local a = state.getTestFile( "Skip", true )
                 a:Write( "Hello World-Hello World2" )
