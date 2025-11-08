@@ -36,4 +36,4 @@ jobs:
           mkdir -p garrysmod/maps
           mv gm_glua_tests.bsp garrysmod/maps/
           tar -czf gluatest/docker/_gluatest_artifacts/gm_glua_tests.tar.gz -C . garrysmod
-          rm -r garrysmod"
+          rm -r garrysmod
