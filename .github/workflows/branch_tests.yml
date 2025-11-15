@@ -128,12 +128,11 @@ jobs:
     name: Run Tests on ${{ matrix.branch }}
     uses: CFC-Servers/GLuaTest/.github/workflows/run_tests.yml@main
     with:
-      collection: 3460542547
       map: gm_glua_tests
       branch: ${{ matrix.branch }}
       logs-as-artifact: true
       extra-startup-args: "-maxplayers 64"
-      additional-setup: "wget -q https://github.com/RaphaelIT7/gmod-holytest/releases/latest/download/linux.tar.gz -O gluatest/docker/_gluatest_artifacts/linux.tar.gz"
+      additional-setup: "cd project/.github/tools/ && chmod +x workshop_map.sh && ./workshop_map.sh"
 
   summarize_failures:
       name: Summarize Failures
