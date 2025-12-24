@@ -18,7 +18,7 @@ def echo_content_type():
     return flask.request.headers["Content-Type"], 200
 
 
-@app.route("/echo_method", methods=["GET", "HEAD", "OPTIONS", "TRACE", "PUT", "DELETE", "POST", "PATCH", "CONNECT"])
+@app.route("/echo_method", methods=["GET", "HEAD", "OPTIONS", "TRACE", "PUT", "DELETE", "POST", "PATCH", "CONNECT", "INVALID"])
 def echo_method():
     return flask.request.method, 200
 

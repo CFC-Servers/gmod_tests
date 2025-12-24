@@ -122,7 +122,7 @@ return {
             end
         },
         {
-            name = "Content-Type for POST request defaults to urlencoded form",
+            name = "Content-Type for POST request defaults to being unset",
             async = true,
             timeout = 1,
             func = function()
@@ -130,7 +130,8 @@ return {
                     method = "POST",
                     url = "http://172.17.0.1:5000/echo_content_type",
                     success = function(code, body, headers)
-                        expect(body).to.equal("application/x-www-form-urlencoded")
+                        expect(code).to.equal(404)
+                        expect(body).to.equal("")
                         done()
                     end,
                     failed = function(err)
@@ -180,7 +181,7 @@ return {
             end
         },
         {
-            name = "Content-Type for POST request with body and header override sticks",
+            name = "Content-Type for POST request with body and header override does not stick",
             async = true,
             timeout = 1,
             func = function()
@@ -192,7 +193,7 @@ return {
                     },
                     body = "Hello world!",
                     success = function(code, body, headers)
-                        expect(body).to.equal("application/octet-stream")
+                        expect(body).to.equal("text/plain; charset=utf-8")
                         done()
                     end,
                     failed = function(err)
@@ -257,10 +258,10 @@ return {
                 test_method("HEAD", "")
 
                 -- Other request methods defined by RFC 9110, those are unsupported.
-                test_method("trace", nil)
-                test_method("TRACE", nil)
-                test_method("connect", nil)
-                test_method("CONNECT", nil)
+                test_method("trace", "INVALID")
+                test_method("TRACE", "INVALID")
+                test_method("connect", "INVALID")
+                test_method("CONNECT", "INVALID")
 
                 -- All requests scheduled, check just in case the scheduler beat us every time.
                 -- That said, the way GLuaTest runs tests should make this impossible.
@@ -286,7 +287,7 @@ return {
             func = function()
                 HTTP({
                     failed = function(err)
-                        expect(err).to.equal("invalid url or GET parameters")
+                        expect(err).to.equal("invalid url")
                         done()
                     end,
                 })
