@@ -17,8 +17,8 @@ return {
                 local a = Vector( 1, 2, 3 )
                 local b = a:Angle()
 
-                expect( math.Round(b[1], 4) ).to.equal( math.Round(306.69921875, 4) )
-                expect( math.Round(b[2], 4) ).to.equal( math.Round(63.434947967529296875, 4) )
+                expect( b[1] ).to.aboutEqual( 306.69921 )
+                expect( b[2] ).to.aboutEqual( 63.434947 )
                 expect( b[3] ).to.equal( 0 )
             end
         },
