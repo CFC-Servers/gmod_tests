@@ -19,10 +19,10 @@ env:
     {
       "dev": "last_dev_build.txt",
       "prerelease": "last_prerelease_build.txt",
-      "live": "last_public_build.txt",
+      "public": "last_public_build.txt",
       "x86-64": "last_64bit_build.txt"
     }
-  ALL_BRANCHES: '["dev", "prerelease", "live", "x86-64"]'
+  ALL_BRANCHES: '["dev", "prerelease", "public", "x86-64"]'
 
 permissions:
   actions: read
@@ -128,11 +128,11 @@ jobs:
     name: Run Tests on ${{ matrix.branch }}
     uses: CFC-Servers/GLuaTest/.github/workflows/run_tests.yml@main
     with:
-      collection: 3460542547
       map: gm_glua_tests
       branch: ${{ matrix.branch }}
       logs-as-artifact: true
       extra-startup-args: "-maxplayers 64"
+      additional-setup: "cd project/.github/tools/ && chmod +x workshop_map.sh && ./workshop_map.sh"
 
   summarize_failures:
       name: Summarize Failures
