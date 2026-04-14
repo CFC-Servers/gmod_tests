@@ -17,9 +17,9 @@ return {
                 local a = Vector( 1, 2, 3 )
                 a:Normalize()
 
-                expect( math.Round(a[1], 5) ).to.equal( math.Round(0.2672612369060516357422, 5) )
-                expect( math.Round(a[2], 5) ).to.equal( math.Round(0.5345224738121032714844, 5) )
-                expect( math.Round(a[3], 5) ).to.equal( math.Round(0.8017836809158325195312, 5) )
+                expect( a[1] ).to.aboutEqual( 0.26726 )
+                expect( a[2] ).to.aboutEqual( 0.53452 )
+                expect( a[3] ).to.aboutEqual( 0.80178 )
             end
         },
     }
