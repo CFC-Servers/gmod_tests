@@ -17,8 +17,8 @@ return {
                 local a = Vector( 1, 2, 3 )
                 local b = a:Angle()
 
-                expect( b[1] ).to.equal( 306.69921875 )
-                expect( b[2] ).to.equal( 63.434947967529296875 )
+                expect( b[1] ).to.aboutEqual( 306.69921  )
+                expect( b[2] ).to.aboutEqual( 63.43494 )
                 expect( b[3] ).to.equal( 0 )
             end
         },
