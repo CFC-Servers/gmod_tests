@@ -253,6 +253,7 @@ Use `state` for fixtures and for anything `cleanup` must undo. Do not pass data 
 - **Cover three kinds of cases** for each function: expected inputs, edge inputs (`nil`, `0`, negative, empty string/table, huge values), and failure paths asserted with `errWith` and the exact message.
 - **Research the function before writing cases**: look up the function's documentation first (for example via the gmodwiki MCP server, if available) and turn every Warning, Note, Bug, or deprecation callout into a test case or a documented decision to skip it — realm differences, entities that are invalid for a tick after creation, functions that silently no-op on bad input, prediction quirks. The docs' notes sections are where GMod's divergences from stock Lua and other surprises live.
 - **Probe for unexpected behavior**: don't assume a function matches stock Lua or its own documentation. GMod overrides many builtins (e.g. `type` is a Lua function that no longer errors on missing arguments), and engine functions have quirks the docs may not mention: returning `nil` instead of erroring, silent no-ops on invalid entities, case-sensitivity, string trimming, numeric precision, and behavior at exact boundaries (`0`, the documented max, one past it). When a test fails against your expectation, first consider that the *engine's actual behavior* is the fact to pin down — write the case to assert what GMod really does, named after the surprise.
+- **Experiment first when the docs run out**: for thinly documented or surprising functions, don't guess — run experiments against the real server and let the results drive the tests. Write a temporary probe file (a normal test group whose cases feed the function edge inputs and assert obviously-wrong values like `expect( result ).to.equal( "???" )`), run it with the Docker runner, and read the failure output to learn the actual return values, error messages, and side effects. Iterate until you can predict the function's behavior across the whole input space, then delete the probes and write real cases asserting everything you learned. This discovery work is a primary goal of the project: documenting edge cases and undocumented behavior is how these tests improve the wiki, so every quirk you uncover should become a clearly named test case — even (especially) when the behavior is weird — and be reported as a wiki finding (see "Reporting wiki findings").
 - **Split work into intentional steps**: call the function under test, assign the result to a named local, then assert the local. Don't bury the call inside `expect( ... )`:
 
   ```lua
@@ -292,6 +293,26 @@ Use `state` for fixtures and for anything `cleanup` must undo. Do not pass data 
 5. Use `async` + `done()` + a tight `timeout` only where the code is actually asynchronous.
 6. Before finishing, verify every field and expectation you wrote appears in the tables above, and that every case calls `expect`.
 7. If Docker is available, prove the suite passes by running it (see "Running your tests" below). Reading tests is not running them: a real run catches load errors, typo'd expectation names, async cases that never call `done()`, and behavior you guessed wrong.
+8. Report every wiki improvement opportunity you discovered along the way (see "Reporting wiki findings" below). Do this even for findings you decided not to write a test for.
+
+## Reporting wiki findings
+
+Improving the wiki is a primary goal of this project, and test-writing is how the raw material gets discovered. Findings must be recorded somewhere that persists across branches and conversations, so they are collected as comments on a dedicated GitHub issue: [#42 — Wiki improvement opportunities](https://github.com/CFC-Servers/gmod_tests/issues/42).
+
+Whenever a test or experiment reveals behavior the wiki documents incorrectly, incompletely, or not at all — a wrong return value, an undocumented error message, a silent no-op, a surprising edge case, a missing Warning — post one comment per finding:
+
+```sh
+gh issue comment 42 --repo CFC-Servers/gmod_tests --body "$(cat <<'EOF'
+**Wiki page:** [PageName](https://gmodwiki.com/PageName)
+**Finding:** One or two sentences describing the actual behavior discovered.
+**What the wiki says:** What is missing, wrong, or ambiguous on the page.
+**Pinned by test:** `lua/tests/gmod/unit/path/to/File.lua` (test case name)
+**Suggested wiki edit:** Concrete text or callout (Note/Warning/Bug) to add.
+EOF
+)"
+```
+
+Before posting, skim the existing comments on the issue for the same page so you don't file a duplicate. Post findings as you confirm them, not in a batch at the end of a long session — a finding that dies with the conversation is lost. Also mention the findings in the PR description so reviewers see them in context.
 
 ## Running your tests
 
