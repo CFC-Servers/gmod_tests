@@ -1,3 +1,4 @@
+--- @type GLuaTest_TestGroup
 return {
     groupName = "string.NiceName",
 
@@ -10,23 +11,57 @@ return {
         },
 
         {
-            name = "Reformats strings correctly",
+            name = "Replaces underscores with spaces and capitalizes words",
             func = function()
-                expect( string.NiceName( "string_likeThis" ) ).to.equal( "String like This" )
-                expect( string.NiceName( "hi_whats_up" ) ).to.equal( "Hi whats up" )
-                expect( string.NiceName( "Nothing much how about you?" ) ).to.equal( "Nothing much how about you ?" )
-                expect( string.NiceName( "just testing_some stringsHere" ) ).to.equal( "Just testing some strings Here" )
-                expect( string.NiceName( "" ) ).to.equal( "" )
-                expect( string.NiceName( "üäö_üäö") ).to.equal( "üäö üäö" )
+                local spaced = string.NiceName( "hi_whats_up" )
+                expect( spaced ).to.equal( "Hi whats up" )
+
+                local plain = string.NiceName( "hello" )
+                expect( plain ).to.equal( "Hello" )
             end
         },
 
         {
-            name = "Fails to reformat invalid inputs",
+            name = "Splits words at internal capital letters",
             func = function()
-                expect( string.NiceName, nil ).to.err()
-                expect( string.NiceName, NULL ).to.err()
-                expect( string.NiceName, 1 ).to.err()
+                local split = string.NiceName( "string_likeThis" )
+                expect( split ).to.equal( "String like This" )
+
+                local mixed = string.NiceName( "just testing_some stringsHere" )
+                expect( mixed ).to.equal( "Just testing some strings Here" )
+            end
+        },
+
+        {
+            name = "Separates trailing punctuation into its own word",
+            func = function()
+                local spacedPunctuation = string.NiceName( "Nothing much how about you?" )
+                expect( spacedPunctuation ).to.equal( "Nothing much how about you ?" )
+            end
+        },
+
+        {
+            name = "Passes UTF-8 letters through without capitalization",
+            func = function()
+                local unchanged = string.NiceName( "üäö_üäö" )
+                expect( unchanged ).to.equal( "üäö üäö" )
+            end
+        },
+
+        {
+            name = "Returns an empty string unchanged",
+            func = function()
+                local empty = string.NiceName( "" )
+                expect( empty ).to.equal( "" )
+            end
+        },
+
+        {
+            name = "Errors on non-string inputs",
+            func = function()
+                expect( string.NiceName, nil ).to.errWith( "attempt to index local 'name' (a nil value)" )
+                expect( string.NiceName, NULL ).to.errWith( "attempt to call method 'Replace' (a nil value)" )
+                expect( string.NiceName, 1 ).to.errWith( "attempt to index local 'name' (a number value)" )
             end
         }
     }
