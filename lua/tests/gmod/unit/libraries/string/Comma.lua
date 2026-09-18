@@ -73,6 +73,28 @@ return {
 
                 expect( subject ).to.err()
             end
+        },
+
+        {
+            name = "Errors when the separator is not a string",
+            func = function()
+                local subject = function()
+                    string.Comma( 1234, 5 )
+                end
+
+                expect( subject ).to.errWith( "bad argument #2 to 'string.Comma' (string expected, got number)" )
+            end
+        },
+
+        {
+            name = "Errors when the separator contains a digit",
+            func = function()
+                local subject = function()
+                    string.Comma( 1234, "1" )
+                end
+
+                expect( subject ).to.errWith( "bad argument #2 to 'string.Comma' (non-numerical values expected, got 1)" )
+            end
         }
     }
 }
