@@ -11,13 +11,12 @@ return {
         },
 
         {
-            name = "Behaves identically to string.StartsWith",
+            name = "Is the same function as string.StartsWith",
             func = function()
+                expect( string.StartWith ).to.equal( string.StartsWith )
+
                 local matches = string.StartWith( "Hello World", "Hello" )
                 expect( matches ).to.beTrue()
-
-                local mismatch = string.StartWith( "Hello World", "World" )
-                expect( mismatch ).to.beFalse()
             end
         }
     }

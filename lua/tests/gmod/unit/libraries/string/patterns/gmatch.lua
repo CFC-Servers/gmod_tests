@@ -100,12 +100,17 @@ return {
         },
 
         {
-            name = "Never matches anchored patterns",
+            name = "Treats a leading caret as a literal character rather than an anchor",
             func = function()
                 local iter = string.gmatch( "aaa", "^a" )
 
-                local first = iter()
-                expect( first ).to.beNil()
+                local unanchored = iter()
+                expect( unanchored ).to.beNil()
+
+                local literalIter = string.gmatch( "x^a", "^a" )
+
+                local literal = literalIter()
+                expect( literal ).to.equal( "^a" )
             end
         },
 

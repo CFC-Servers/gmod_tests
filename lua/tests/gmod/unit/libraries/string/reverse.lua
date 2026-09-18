@@ -38,8 +38,8 @@ return {
         {
             name = "Reverses bytes rather than UTF-8 codepoints",
             func = function()
-                local mangled = string.reverse( "üäö" ) == "öäü"
-                expect( mangled ).to.beFalse()
+                local swappedBytes = string.reverse( "é" )
+                expect( swappedBytes ).to.equal( "\169\195" )
             end
         },
 
