@@ -59,7 +59,12 @@ return {
         {
             name = "Errors on non-string inputs",
             func = function()
-                expect( string.NiceName, nil ).to.errWith( "attempt to index local 'name' (a nil value)" )
+                local fromNil = function()
+                    string.NiceName( nil )
+                end
+
+                expect( fromNil ).to.errWith( "attempt to index local 'name' (a nil value)" )
+
                 expect( string.NiceName, NULL ).to.errWith( "attempt to call method 'Replace' (a nil value)" )
                 expect( string.NiceName, 1 ).to.errWith( "attempt to index local 'name' (a number value)" )
             end
