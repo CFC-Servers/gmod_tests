@@ -19,24 +19,7 @@ return {
                 expect( units.h ).to.equal( 1 )
                 expect( units.m ).to.equal( 2 )
                 expect( units.s ).to.equal( 5 )
-            end
-        },
-
-        {
-            name = "Counts the fraction as thousandths (x86-64)",
-            when = IS_64BIT_BRANCH,
-            func = function()
-                local units = string.FormattedTime( 3725.5 )
                 expect( units.ms ).to.equal( 500 )
-            end
-        },
-
-        {
-            name = "Counts the fraction as hundredths (base)",
-            when = not IS_64BIT_BRANCH,
-            func = function()
-                local units = string.FormattedTime( 3725.5 )
-                expect( units.ms ).to.equal( 50 )
             end
         },
 
