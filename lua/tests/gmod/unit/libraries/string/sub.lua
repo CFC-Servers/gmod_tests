@@ -91,7 +91,11 @@ return {
         {
             name = "Errors when given nil instead of a string",
             func = function()
-                expect( string.sub, nil, 1 ).to.errWith( "bad argument #1 to '?' (string expected, got nil)" )
+                local subject = function()
+                    string.sub( nil, 1 )
+                end
+
+                expect( subject ).to.errWith( "bad argument #1 to 'sub' (string expected, got nil)" )
             end
         }
     }

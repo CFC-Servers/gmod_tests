@@ -28,10 +28,32 @@ return {
         },
 
         {
-            name = "Truncates fractional numbers for integer specifiers",
+            name = "Truncates fractional numbers toward zero for integer specifiers (x86-64)",
+            when = IS_64BIT_BRANCH,
             func = function()
                 local truncated = string.format( "%d", 41.9 )
                 expect( truncated ).to.equal( "41" )
+
+                local negative = string.format( "%d", -41.9 )
+                expect( negative ).to.equal( "-41" )
+
+                local halfway = string.format( "%d", 41.5 )
+                expect( halfway ).to.equal( "41" )
+
+                local negativeHalfway = string.format( "%d", -41.5 )
+                expect( negativeHalfway ).to.equal( "-41" )
+            end
+        },
+
+        {
+            name = "Rounds fractional numbers to the nearest integer for integer specifiers (base)",
+            when = not IS_64BIT_BRANCH,
+            func = function()
+                local rounded = string.format( "%d", 41.9 )
+                expect( rounded ).to.equal( "42" )
+
+                local negative = string.format( "%d", -41.9 )
+                expect( negative ).to.equal( "-42" )
             end
         },
 
@@ -44,10 +66,32 @@ return {
         },
 
         {
-            name = "Wraps negative numbers for the unsigned specifier",
+            name = "Wraps negative numbers to 64 bits for unsigned specifiers (x86-64)",
+            when = IS_64BIT_BRANCH,
             func = function()
-                local wrapped = string.format( "%u", -1 )
-                expect( wrapped ).to.equal( "18446744073709551615" )
+                local unsigned = string.format( "%u", -1 )
+                expect( unsigned ).to.equal( "18446744073709551615" )
+
+                local hex = string.format( "%x", -1 )
+                expect( hex ).to.equal( "ffffffffffffffff" )
+
+                local octal = string.format( "%o", -1 )
+                expect( octal ).to.equal( "1777777777777777777777" )
+            end
+        },
+
+        {
+            name = "Wraps negative numbers to 32 bits for unsigned specifiers (base)",
+            when = not IS_64BIT_BRANCH,
+            func = function()
+                local unsigned = string.format( "%u", -1 )
+                expect( unsigned ).to.equal( "4294967295" )
+
+                local hex = string.format( "%x", -1 )
+                expect( hex ).to.equal( "ffffffff" )
+
+                local octal = string.format( "%o", -1 )
+                expect( octal ).to.equal( "37777777777" )
             end
         },
 
@@ -95,14 +139,22 @@ return {
         {
             name = "Errors when given a non-number for an integer specifier",
             func = function()
-                expect( string.format, "%d", "abc" ).to.errWith( "bad argument #2 to '?' (number expected, got string)" )
+                local subject = function()
+                    string.format( "%d", "abc" )
+                end
+
+                expect( subject ).to.errWith( "bad argument #2 to 'format' (number expected, got string)" )
             end
         },
 
         {
             name = "Errors when the argument for a specifier is missing",
             func = function()
-                expect( string.format, "%d" ).to.errWith( "bad argument #2 to '?' (no value)" )
+                local subject = function()
+                    string.format( "%d" )
+                end
+
+                expect( subject ).to.errWith( "bad argument #2 to 'format' (no value)" )
             end
         }
     }

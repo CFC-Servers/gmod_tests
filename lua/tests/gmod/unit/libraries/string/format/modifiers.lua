@@ -72,11 +72,56 @@ return {
                 local twoDigits = string.format( "%.2f", 3.14159 )
                 expect( twoDigits ).to.equal( "3.14" )
 
-                local roundedHalf = string.format( "%.1f", 0.25 )
-                expect( roundedHalf ).to.equal( "0.3" )
-
                 local noDigits = string.format( "%.0f", 3.7 )
                 expect( noDigits ).to.equal( "4" )
+            end
+        },
+
+        {
+            name = "Rounds halfway float digits away from zero (x86-64)",
+            when = IS_64BIT_BRANCH,
+            func = function()
+                local quarter = string.format( "%.1f", 0.25 )
+                expect( quarter ).to.equal( "0.3" )
+
+                local threeQuarters = string.format( "%.1f", 0.75 )
+                expect( threeQuarters ).to.equal( "0.8" )
+
+                local eighth = string.format( "%.2f", 0.125 )
+                expect( eighth ).to.equal( "0.13" )
+
+                local half = string.format( "%.0f", 0.5 )
+                expect( half ).to.equal( "1" )
+
+                local onePointFive = string.format( "%.0f", 1.5 )
+                expect( onePointFive ).to.equal( "2" )
+
+                local twoPointFive = string.format( "%.0f", 2.5 )
+                expect( twoPointFive ).to.equal( "3" )
+            end
+        },
+
+        {
+            name = "Rounds halfway float digits to even (base)",
+            when = not IS_64BIT_BRANCH,
+            func = function()
+                local quarter = string.format( "%.1f", 0.25 )
+                expect( quarter ).to.equal( "0.2" )
+
+                local threeQuarters = string.format( "%.1f", 0.75 )
+                expect( threeQuarters ).to.equal( "0.8" )
+
+                local eighth = string.format( "%.2f", 0.125 )
+                expect( eighth ).to.equal( "0.12" )
+
+                local half = string.format( "%.0f", 0.5 )
+                expect( half ).to.equal( "0" )
+
+                local onePointFive = string.format( "%.0f", 1.5 )
+                expect( onePointFive ).to.equal( "2" )
+
+                local twoPointFive = string.format( "%.0f", 2.5 )
+                expect( twoPointFive ).to.equal( "2" )
             end
         },
 

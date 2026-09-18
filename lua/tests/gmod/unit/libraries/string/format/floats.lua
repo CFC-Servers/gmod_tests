@@ -75,7 +75,11 @@ return {
         {
             name = "Errors when given a non-number for a float specifier",
             func = function()
-                expect( string.format, "%f", "abc" ).to.errWith( "bad argument #2 to '?' (number expected, got string)" )
+                local subject = function()
+                    string.format( "%f", "abc" )
+                end
+
+                expect( subject ).to.errWith( "bad argument #2 to 'format' (number expected, got string)" )
             end
         }
     }

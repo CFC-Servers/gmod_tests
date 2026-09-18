@@ -59,7 +59,11 @@ return {
         {
             name = "Errors when given nil instead of a string",
             func = function()
-                expect( string.Left, nil, 2 ).to.errWith( "bad argument #1 to '?' (string expected, got nil)" )
+                local subject = function()
+                    string.Left( nil, 2 )
+                end
+
+                expect( subject ).to.errWith( "bad argument #1 to 'Left' (string expected, got nil)" )
             end
         }
     }

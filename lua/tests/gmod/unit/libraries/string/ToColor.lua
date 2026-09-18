@@ -1,3 +1,11 @@
+local function alphaIsOptional()
+    return string.ToColor( "1 2 3" ).r == 1
+end
+
+local function alphaIsRequired()
+    return not alphaIsOptional()
+end
+
 --- @type GLuaTest_TestGroup
 return {
     groupName = "string.ToColor",
@@ -55,19 +63,51 @@ return {
         {
             name = "Matches digit runs even inside malformed input",
             func = function()
-                local fromNegative = string.ToColor( "300 -5 0 255" )
-
-                expect( fromNegative.r ).to.equal( 5 )
-                expect( fromNegative.g ).to.equal( 0 )
-                expect( fromNegative.b ).to.equal( 255 )
-                expect( fromNegative.a ).to.equal( 255 )
-
                 local fromDecimal = string.ToColor( "25.5 0 0 255" )
 
                 expect( fromDecimal.r ).to.equal( 5 )
                 expect( fromDecimal.g ).to.equal( 0 )
                 expect( fromDecimal.b ).to.equal( 0 )
                 expect( fromDecimal.a ).to.equal( 255 )
+            end
+        },
+
+        {
+            name = "Parses three numbers and defaults the alpha to opaque",
+            when = alphaIsOptional,
+            func = function()
+                local color = string.ToColor( "10 20 30" )
+
+                expect( color.r ).to.equal( 10 )
+                expect( color.g ).to.equal( 20 )
+                expect( color.b ).to.equal( 30 )
+                expect( color.a ).to.equal( 255 )
+            end
+        },
+
+        {
+            name = "Scavenges three digit runs from around a negative number",
+            when = alphaIsOptional,
+            func = function()
+                local fromNegative = string.ToColor( "300 -5 0 255" )
+
+                expect( fromNegative.r ).to.equal( 5 )
+                expect( fromNegative.g ).to.equal( 0 )
+                expect( fromNegative.b ).to.equal( 255 )
+                expect( fromNegative.a ).to.equal( 255 )
+            end
+        },
+
+        {
+            name = "Returns opaque white when a negative number breaks the run of four",
+            when = alphaIsRequired,
+            func = function()
+                local fromNegative = string.ToColor( "300 -5 0 255" )
+
+                expect( fromNegative.r ).to.equal( 255 )
+                expect( fromNegative.g ).to.equal( 255 )
+                expect( fromNegative.b ).to.equal( 255 )
+                expect( fromNegative.a ).to.equal( 255 )
             end
         },
 

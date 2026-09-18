@@ -81,7 +81,12 @@ return {
         {
             name = "Errors on non-numeric inputs",
             func = function()
-                expect( string.NiceSize, nil ).to.errWith( "attempt to compare nil with number" )
+                local fromNil = function()
+                    string.NiceSize( nil )
+                end
+
+                expect( fromNil ).to.errWith( "attempt to compare nil with number" )
+
                 expect( string.NiceSize, NULL ).to.errWith( "attempt to compare nil with number" )
                 expect( string.NiceSize, "string" ).to.errWith( "attempt to compare nil with number" )
             end

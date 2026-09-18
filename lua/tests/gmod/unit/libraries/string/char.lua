@@ -59,8 +59,17 @@ return {
         {
             name = "Errors on byte values outside the 0-255 range",
             func = function()
-                expect( string.char, 256 ).to.errWith( "bad argument #1 to '?' (invalid value)" )
-                expect( string.char, -1 ).to.errWith( "bad argument #1 to '?' (invalid value)" )
+                local aboveRange = function()
+                    string.char( 256 )
+                end
+
+                expect( aboveRange ).to.errWith( "bad argument #1 to 'char' (invalid value)" )
+
+                local belowRange = function()
+                    string.char( -1 )
+                end
+
+                expect( belowRange ).to.errWith( "bad argument #1 to 'char' (invalid value)" )
             end
         },
 

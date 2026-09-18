@@ -47,10 +47,26 @@ return {
         },
 
         {
-            name = "Truncates fractional repetition counts",
+            name = "Truncates fractional repetition counts (x86-64)",
+            when = IS_64BIT_BRANCH,
             func = function()
-                local truncated = string.rep( "ab", 2.7 )
-                expect( truncated ).to.equal( "abab" )
+                local aboveHalf = string.rep( "ab", 2.7 )
+                expect( aboveHalf ).to.equal( "abab" )
+
+                local belowHalf = string.rep( "ab", 2.2 )
+                expect( belowHalf ).to.equal( "abab" )
+            end
+        },
+
+        {
+            name = "Rounds fractional repetition counts to the nearest integer (base)",
+            when = not IS_64BIT_BRANCH,
+            func = function()
+                local aboveHalf = string.rep( "ab", 2.7 )
+                expect( aboveHalf ).to.equal( "ababab" )
+
+                local belowHalf = string.rep( "ab", 2.2 )
+                expect( belowHalf ).to.equal( "abab" )
             end
         },
 
@@ -73,7 +89,11 @@ return {
         {
             name = "Errors when given nil instead of a string",
             func = function()
-                expect( string.rep, nil, 2 ).to.errWith( "bad argument #1 to '?' (string expected, got nil)" )
+                local subject = function()
+                    string.rep( nil, 2 )
+                end
+
+                expect( subject ).to.errWith( "bad argument #1 to 'rep' (string expected, got nil)" )
             end
         }
     }

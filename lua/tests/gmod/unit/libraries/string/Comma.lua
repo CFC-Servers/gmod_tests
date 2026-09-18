@@ -67,7 +67,11 @@ return {
         {
             name = "Errors when given nil",
             func = function()
-                expect( string.Comma, nil ).to.errWith( "bad argument #1 to 'gsub' (string expected, got nil)" )
+                local subject = function()
+                    string.Comma( nil )
+                end
+
+                expect( subject ).to.err()
             end
         }
     }

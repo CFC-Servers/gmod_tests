@@ -59,7 +59,35 @@ return {
         {
             name = "Errors when given nil instead of a string",
             func = function()
-                expect( string.len, nil ).to.errWith( "bad argument #1 to '?' (string expected, got nil)" )
+                local subject = function()
+                    string.len( nil )
+                end
+
+                expect( subject ).to.errWith( "bad argument #1 to 'len' (string expected, got nil)" )
+            end
+        },
+
+        {
+            name = "Reports a missing argument as nil (x86-64)",
+            when = IS_64BIT_BRANCH,
+            func = function()
+                local subject = function()
+                    string.len()
+                end
+
+                expect( subject ).to.errWith( "bad argument #1 to 'len' (string expected, got nil)" )
+            end
+        },
+
+        {
+            name = "Reports a missing argument as no value (base)",
+            when = not IS_64BIT_BRANCH,
+            func = function()
+                local subject = function()
+                    string.len()
+                end
+
+                expect( subject ).to.errWith( "bad argument #1 to 'len' (string expected, got no value)" )
             end
         }
     }

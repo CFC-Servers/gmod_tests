@@ -46,8 +46,17 @@ return {
         {
             name = "Errors when given nil or an entity",
             func = function()
-                expect( string.reverse, nil ).to.errWith( "bad argument #1 to '?' (string expected, got no value)" )
-                expect( string.reverse, NULL ).to.errWith( "bad argument #1 to '?' (string expected, got userdata)" )
+                local fromNil = function()
+                    string.reverse( nil )
+                end
+
+                expect( fromNil ).to.errWith( "bad argument #1 to 'reverse' (string expected, got nil)" )
+
+                local fromEntity = function()
+                    string.reverse( NULL )
+                end
+
+                expect( fromEntity ).to.errWith( "bad argument #1 to 'reverse' (string expected, got userdata)" )
             end
         }
     }

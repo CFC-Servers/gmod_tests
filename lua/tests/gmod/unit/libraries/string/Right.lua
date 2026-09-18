@@ -56,14 +56,22 @@ return {
         {
             name = "Errors when the count is nil",
             func = function()
-                expect( string.Right, "abc", nil ).to.errWith( "attempt to perform arithmetic on local 'num' (a nil value)" )
+                local subject = function()
+                    string.Right( "abc", nil )
+                end
+
+                expect( subject ).to.errWith( "attempt to perform arithmetic on local 'num' (a nil value)" )
             end
         },
 
         {
             name = "Errors when given nil instead of a string",
             func = function()
-                expect( string.Right, nil, 2 ).to.errWith( "bad argument #1 to '?' (string expected, got nil)" )
+                local subject = function()
+                    string.Right( nil, 2 )
+                end
+
+                expect( subject ).to.errWith( "bad argument #1 to 'Right' (string expected, got nil)" )
             end
         }
     }
