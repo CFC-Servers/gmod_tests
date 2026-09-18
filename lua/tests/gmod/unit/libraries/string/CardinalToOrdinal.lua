@@ -64,11 +64,22 @@ return {
         },
 
         {
-            name = "Suffixes negative and fractional numbers naively",
+            name = "Wraps negative numbers through floored modulo before picking the suffix",
             func = function()
-                local negative = string.CardinalToOrdinal( -1 )
-                expect( negative ).to.equal( "-1th" )
+                local wrapsToNine = string.CardinalToOrdinal( -1 )
+                expect( wrapsToNine ).to.equal( "-1th" )
 
+                local wrapsToOne = string.CardinalToOrdinal( -9 )
+                expect( wrapsToOne ).to.equal( "-9st" )
+
+                local wrapsToTwo = string.CardinalToOrdinal( -8 )
+                expect( wrapsToTwo ).to.equal( "-8nd" )
+            end
+        },
+
+        {
+            name = "Suffixes fractional numbers with th",
+            func = function()
                 local fractional = string.CardinalToOrdinal( 1.5 )
                 expect( fractional ).to.equal( "1.5th" )
             end

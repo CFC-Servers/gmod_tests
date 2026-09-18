@@ -28,13 +28,21 @@ return {
         },
 
         {
-            name = "Matches table.concat output",
+            name = "Returns an empty string for an empty table",
             func = function()
-                local pieces = { "x", "y", "z" }
+                local empty = string.Implode( ",", {} )
+                expect( empty ).to.equal( "" )
+            end
+        },
 
-                local viaImplode = string.Implode( "-", pieces )
-                local viaConcat = table.concat( pieces, "-" )
-                expect( viaImplode ).to.equal( viaConcat )
+        {
+            name = "Errors when a table value is not a string or number",
+            func = function()
+                local subject = function()
+                    string.Implode( ",", { "a", {} } )
+                end
+
+                expect( subject ).to.errWith( "invalid value (table) at index 2 in table for 'concat'" )
             end
         }
     }
