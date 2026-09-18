@@ -45,6 +45,25 @@ return {
                 local chars = string.ToTable( "a b" )
                 expect( chars ).to.deepEqual( { "a", " ", "b" } )
             end
+        },
+
+        {
+            name = "Splits a number into its digits",
+            func = function()
+                local digits = string.ToTable( 123 )
+                expect( digits ).to.deepEqual( { "1", "2", "3" } )
+            end
+        },
+
+        {
+            name = "Stringifies nil and booleans instead of erroring",
+            func = function()
+                local fromNil = string.ToTable( nil )
+                expect( fromNil ).to.deepEqual( { "n", "i", "l" } )
+
+                local fromBoolean = string.ToTable( true )
+                expect( fromBoolean ).to.deepEqual( { "t", "r", "u", "e" } )
+            end
         }
     }
 }
