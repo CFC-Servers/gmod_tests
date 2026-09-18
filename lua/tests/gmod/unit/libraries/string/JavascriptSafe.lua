@@ -39,6 +39,37 @@ return {
         },
 
         {
+            name = "Escapes the template literal characters",
+            func = function()
+                local backtick = string.JavascriptSafe( "`" )
+                expect( backtick ).to.equal( [[\`]] )
+
+                local dollar = string.JavascriptSafe( "$" )
+                expect( dollar ).to.equal( [[\$]] )
+
+                local openBrace = string.JavascriptSafe( "{" )
+                expect( openBrace ).to.equal( [[\{]] )
+
+                local closeBrace = string.JavascriptSafe( "}" )
+                expect( closeBrace ).to.equal( [[\}]] )
+            end
+        },
+
+        {
+            name = "Escapes backspace, vertical tab, and form feed as letter escapes",
+            func = function()
+                local backspace = string.JavascriptSafe( "\b" )
+                expect( backspace ).to.equal( [[\b]] )
+
+                local verticalTab = string.JavascriptSafe( "\v" )
+                expect( verticalTab ).to.equal( [[\v]] )
+
+                local formFeed = string.JavascriptSafe( "\f" )
+                expect( formFeed ).to.equal( [[\f]] )
+            end
+        },
+
+        {
             name = "Escapes the NUL byte as a hex escape",
             func = function()
                 local nul = string.JavascriptSafe( "\0" )
