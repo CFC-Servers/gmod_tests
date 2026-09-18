@@ -34,13 +34,53 @@ return {
         },
 
         {
-            name = "Rounds to the nearest unit instead of truncating",
+            name = "Truncates partial units instead of rounding",
             func = function()
-                local roundedDown = string.NiceTime( 630 )
-                expect( roundedDown ).to.equal( "10 minutes" )
+                local halfMinute = string.NiceTime( 630 )
+                expect( halfMinute ).to.equal( "10 minutes" )
 
-                local roundedUp = string.NiceTime( 660 )
-                expect( roundedUp ).to.equal( "11 minutes" )
+                local almostNext = string.NiceTime( 659 )
+                expect( almostNext ).to.equal( "10 minutes" )
+            end
+        },
+
+        {
+            name = "Switches units exactly at each tier boundary",
+            func = function()
+                local lastSecond = string.NiceTime( 59 )
+                expect( lastSecond ).to.equal( "59 seconds" )
+
+                local firstMinute = string.NiceTime( 60 )
+                expect( firstMinute ).to.equal( "1 minute" )
+
+                local lastMinute = string.NiceTime( 3599 )
+                expect( lastMinute ).to.equal( "59 minutes" )
+
+                local firstHour = string.NiceTime( 3600 )
+                expect( firstHour ).to.equal( "1 hour" )
+
+                local firstDay = string.NiceTime( 86400 )
+                expect( firstDay ).to.equal( "1 day" )
+
+                local firstWeek = string.NiceTime( 604800 )
+                expect( firstWeek ).to.equal( "1 week" )
+
+                local firstYear = string.NiceTime( 31536000 )
+                expect( firstYear ).to.equal( "1 year" )
+            end
+        },
+
+        {
+            name = "Uses the singular only for a count of exactly one",
+            func = function()
+                local one = string.NiceTime( 1 )
+                expect( one ).to.equal( "1 second" )
+
+                local zero = string.NiceTime( 0 )
+                expect( zero ).to.equal( "0 seconds" )
+
+                local two = string.NiceTime( 2 )
+                expect( two ).to.equal( "2 seconds" )
             end
         },
 

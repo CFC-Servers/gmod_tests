@@ -19,10 +19,35 @@ return {
         },
 
         {
-            name = "Converts non-string values with tostring",
+            name = "Converts number values to strings",
             func = function()
                 local number = string.Interpolate( "{n}", { n = 5 } )
                 expect( number ).to.equal( "5" )
+            end
+        },
+
+        {
+            name = "Keeps the placeholder when the lookup value is false",
+            func = function()
+                local kept = string.Interpolate( "{a}", { a = false } )
+                expect( kept ).to.equal( "{a}" )
+            end
+        },
+
+        {
+            name = "Errors when the lookup value is a boolean true or a table",
+            func = function()
+                local fromTrue = function()
+                    string.Interpolate( "{a}", { a = true } )
+                end
+
+                expect( fromTrue ).to.errWith( "invalid replacement value (a boolean)" )
+
+                local fromTable = function()
+                    string.Interpolate( "{a}", { a = {} } )
+                end
+
+                expect( fromTable ).to.errWith( "invalid replacement value (a table)" )
             end
         },
 
