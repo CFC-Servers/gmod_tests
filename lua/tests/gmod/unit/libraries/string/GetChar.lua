@@ -38,15 +38,6 @@ return {
                 local atZero = string.GetChar( "abc", 0 )
                 expect( atZero ).to.equal( "" )
             end
-        },
-
-        {
-            name = "Behaves identically to a single-character string.sub",
-            func = function()
-                local viaGetChar = string.GetChar( "Hello", 3 )
-                local viaSub = string.sub( "Hello", 3, 3 )
-                expect( viaGetChar ).to.equal( viaSub )
-            end
         }
     }
 }

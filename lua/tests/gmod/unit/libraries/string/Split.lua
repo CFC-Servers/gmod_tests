@@ -11,19 +11,13 @@ return {
         },
 
         {
-            name = "Splits the string at every separator",
+            name = "Takes its arguments in the opposite order of string.Explode",
             func = function()
                 local parts = string.Split( "a,b,c", "," )
                 expect( parts ).to.deepEqual( { "a", "b", "c" } )
-            end
-        },
 
-        {
-            name = "Takes its arguments in the opposite order of string.Explode",
-            func = function()
-                local viaSplit = string.Split( "a|b", "|" )
-                local viaExplode = string.Explode( "|", "a|b" )
-                expect( viaSplit ).to.deepEqual( viaExplode )
+                local viaExplode = string.Explode( ",", "a,b,c" )
+                expect( parts ).to.deepEqual( viaExplode )
             end
         },
 
