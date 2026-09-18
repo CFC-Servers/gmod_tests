@@ -35,6 +35,25 @@ return {
                 local empty = string.TrimLeft( "" )
                 expect( empty ).to.equal( "" )
             end
+        },
+
+        {
+            name = "Repeats only the last character of a multi-character argument",
+            func = function()
+                local onlyLastRepeats = string.TrimLeft( "youuu hi", "you" )
+                expect( onlyLastRepeats ).to.equal( " hi" )
+
+                local wholeUnitNotRepeated = string.TrimLeft( "youyou hi", "you" )
+                expect( wholeUnitNotRepeated ).to.equal( "you hi" )
+            end
+        },
+
+        {
+            name = "Leaves the string untouched when a multi-character argument is not at the start",
+            func = function()
+                local missingStart = string.TrimLeft( "hi you", "you" )
+                expect( missingStart ).to.equal( "hi you" )
+            end
         }
     }
 }
