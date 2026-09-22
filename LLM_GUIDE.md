@@ -299,20 +299,36 @@ Use `state` for fixtures and for anything `cleanup` must undo. Do not pass data 
 
 Improving the wiki is a primary goal of this project, and test-writing is how the raw material gets discovered. Findings must be recorded somewhere that persists across branches and conversations, so they are collected as comments on a dedicated GitHub issue: [#42 — Wiki improvement opportunities](https://github.com/CFC-Servers/gmod_tests/issues/42).
 
-Whenever a test or experiment reveals behavior the wiki documents incorrectly, incompletely, or not at all — a wrong return value, an undocumented error message, a silent no-op, a surprising edge case, a missing Warning — post one comment per finding:
+Whenever a test or experiment reveals behavior the wiki documents incorrectly, incompletely, or not at all — a wrong return value, an undocumented error message, a silent no-op, a surprising edge case, a missing Warning — file it on that issue. Each comment must be a ready-to-apply wiki edit: a maintainer opens the page's edit link, pastes what the comment says, and is done, without re-running anything or reading the rest of the issue.
 
-```sh
+Before you write anything:
+
+1. **Search the issue for the page name.** One wiki page per comment. If a comment for the page already exists, edit it in place (`gh api -X PATCH repos/CFC-Servers/gmod_tests/issues/comments/<id> -F body=@file`) so it stays the single source of truth. Never post a "correction to the comment above".
+2. **Read the live markup.** `https://wiki.facepunch.com/gmod/<Page>~edit` shows the raw `<function>`/`<arg>`/`<description>`/`<example>` source without a login. Confirm the gap is still there and write the edit against that text. gmodwiki.com is a mirror and can lag.
+3. **Only use values you have actually observed.** Every line in Repro comes from a passing test or a run you did. Name the branch whenever branches disagree (x86-64 versus the 32-bit dev/prerelease/public branches). Label anything you derived but did not run.
+
+Then post one comment per page in this shape:
+
+````sh
 gh issue comment 42 --repo CFC-Servers/gmod_tests --body "$(cat <<'EOF'
-**Wiki page:** [PageName](https://gmodwiki.com/PageName)
-**Finding:** One or two sentences describing the actual behavior discovered.
-**What the wiki says:** What is missing, wrong, or ambiguous on the page.
-**Pinned by test:** `lua/tests/gmod/unit/path/to/File.lua` (test case name)
-**Suggested wiki edit:** Concrete text or callout (Note/Warning/Bug) to add.
+### string.PageName
+**Edit:** https://wiki.facepunch.com/gmod/string.PageName~edit
+**Verified:** YYYY-MM-DD on <branches> (link to the CI run, or "local x86-64 server"); matches <engine Lua file> when the function is Lua
+**Tests:** `lua/tests/gmod/unit/path/to/File.lua` ("case name", "case name")
+**Problem:** What the page says versus what the engine does. One to three sentences.
+**Repro:**
+```lua
+string.PageName( input ) --> output            (per-branch outputs named when they differ)
+```
+**Edit to make:** where it goes (which `<arg>`, inside `<description>`, which `<example>` output), then the exact markup:
+```xml
+<note>...</note>
+```
 EOF
 )"
-```
+````
 
-Before posting, skim the existing comments on the issue for the same page so you don't file a duplicate. Post findings as you confirm them, not in a batch at the end of a long session — a finding that dies with the conversation is lost. Also mention the findings in the PR description so reviewers see them in context.
+Use wiki markup in the edit (`<note>`, `<warning>`, `<bug>`, `<page>Name</page>`), and say exactly where it goes; "add a note" is not an edit. Post findings as you confirm them, not in a batch at the end of a long session — a finding that dies with the conversation is lost. Also mention the findings in the PR description so reviewers see them in context.
 
 ## Running your tests
 
