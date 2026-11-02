@@ -18,7 +18,12 @@ return {
                 local b = a:Angle()
 
                 expect( b[1] ).to.aboutEqual( 306.69921  )
-                expect( b[2] ).to.aboutEqual( 63.43494 )
+                if IS_BASE_BRANCH and VERSION >= 260706 then
+                    -- RaphaelIT7: GMod switched to SteamRT4 on the main branch which changed glibc & abi stuff and it seems like this result changed because of that
+                    expect( b[2] ).to.aboutEqual( 63.43495 )
+                else
+                    expect( b[2] ).to.aboutEqual( 63.43494 )
+                end
                 expect( b[3] ).to.equal( 0 )
             end
         },
