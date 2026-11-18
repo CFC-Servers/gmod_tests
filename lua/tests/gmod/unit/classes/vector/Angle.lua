@@ -25,8 +25,9 @@ return {
         },
 
         {
-            name = "Returns the right value",
+            name = "Returns the right value (newer dev builds)",
             -- RaphaelIT7: GMod switched to SteamRT4 on the main branch which changed glibc & abi stuff and it seems like this result changed because of that
+            -- This test should replace the version above once the next GMod update releases
             when = IS_BASE_BRANCH and VERSION >= 260706,
             func = function()
                 local a = Vector( 1, 2, 3 )
