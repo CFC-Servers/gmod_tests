@@ -57,7 +57,7 @@ return {
 
         {
             name = "FCVAR_AVAILABLE2 is present (x86-64)",
-            when = IS_64BIT_BRANCH,
+            when = IS_X86_64_BRANCH,
             func = function()
                 local a = GetTestConVar()
                 local flags = a:GetFlags()
