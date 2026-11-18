@@ -1,4 +1,5 @@
 AddCSLuaFile()
 
 IS_BASE_BRANCH = BRANCH ~= "x86-64"
-IS_64BIT_BRANCH = BRANCH == "x86-64"
+IS_64BIT_BRANCH = jitVersion == "LuaJIT 2.1.0-beta3"
+IS_X86_64_BRANCH = BRANCH == "x86-64"

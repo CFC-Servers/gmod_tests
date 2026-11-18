@@ -53,7 +53,7 @@ return {
 
         {
             name = "FCVAR_AVAILABLE2 is present (x86-64)",
-            when = IS_64BIT_BRANCH,
+            when = IS_X86_64_BRANCH,
             func = function()
                 local a = GetTestConVar()
                 expect( a:IsFlagSet( FCVAR_AVAILABLE2 ) ).to.beTrue()
