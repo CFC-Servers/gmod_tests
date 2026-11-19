@@ -39,9 +39,9 @@ function TestMap:ParseNodes()
 end
 
 if game.GetWorld() ~= NULL then
-	TestMap:ParseNodes()
+    TestMap:ParseNodes()
 end
 
-hook.Add("InitPostEntity", "TestMap:ParseNodes", function()
-	TestMap:ParseNodes()
-end)
+hook.Add( "InitPostEntity", "TestMap:ParseNodes", function()
+    TestMap:ParseNodes()
+end )
