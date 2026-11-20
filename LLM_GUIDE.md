@@ -253,6 +253,7 @@ Use `state` for fixtures and for anything `cleanup` must undo. Do not pass data 
 - **Cover three kinds of cases** for each function: expected inputs, edge inputs (`nil`, `0`, negative, empty string/table, huge values), and failure paths asserted with `errWith` and the exact message.
 - **Research the function before writing cases**: look up the function's documentation first (for example via the gmodwiki MCP server, if available) and turn every Warning, Note, Bug, or deprecation callout into a test case or a documented decision to skip it — realm differences, entities that are invalid for a tick after creation, functions that silently no-op on bad input, prediction quirks. The docs' notes sections are where GMod's divergences from stock Lua and other surprises live.
 - **Probe for unexpected behavior**: don't assume a function matches stock Lua or its own documentation. GMod overrides many builtins (e.g. `type` is a Lua function that no longer errors on missing arguments), and engine functions have quirks the docs may not mention: returning `nil` instead of erroring, silent no-ops on invalid entities, case-sensitivity, string trimming, numeric precision, and behavior at exact boundaries (`0`, the documented max, one past it). When a test fails against your expectation, first consider that the *engine's actual behavior* is the fact to pin down — write the case to assert what GMod really does, named after the surprise.
+- **Experiment first when the docs run out**: for thinly documented or surprising functions, don't guess — run experiments against the real server and let the results drive the tests. Write a temporary probe file (a normal test group whose cases feed the function edge inputs and assert obviously-wrong values like `expect( result ).to.equal( "???" )`), run it with the Docker runner, and read the failure output to learn the actual return values, error messages, and side effects. Iterate until you can predict the function's behavior across the whole input space, then delete the probes and write real cases asserting everything you learned. This discovery work is a primary goal of the project: documenting edge cases and undocumented behavior is how these tests improve the wiki, so every quirk you uncover should become a clearly named test case — even (especially) when the behavior is weird — and be reported as a wiki finding (see "Reporting wiki findings").
 - **Split work into intentional steps**: call the function under test, assign the result to a named local, then assert the local. Don't bury the call inside `expect( ... )`:
 
   ```lua
@@ -292,6 +293,42 @@ Use `state` for fixtures and for anything `cleanup` must undo. Do not pass data 
 5. Use `async` + `done()` + a tight `timeout` only where the code is actually asynchronous.
 6. Before finishing, verify every field and expectation you wrote appears in the tables above, and that every case calls `expect`.
 7. If Docker is available, prove the suite passes by running it (see "Running your tests" below). Reading tests is not running them: a real run catches load errors, typo'd expectation names, async cases that never call `done()`, and behavior you guessed wrong.
+8. Report every wiki improvement opportunity you discovered along the way (see "Reporting wiki findings" below). Do this even for findings you decided not to write a test for.
+
+## Reporting wiki findings
+
+Improving the wiki is a primary goal of this project, and test-writing is how the raw material gets discovered. Findings must be recorded somewhere that persists across branches and conversations, so they are collected as comments on a dedicated GitHub issue: [#42 — Wiki improvement opportunities](https://github.com/CFC-Servers/gmod_tests/issues/42).
+
+Whenever a test or experiment reveals behavior the wiki documents incorrectly, incompletely, or not at all — a wrong return value, an undocumented error message, a silent no-op, a surprising edge case, a missing Warning — file it on that issue. Each comment must be a ready-to-apply wiki edit: a maintainer opens the page's edit link, pastes what the comment says, and is done, without re-running anything or reading the rest of the issue.
+
+Before you write anything:
+
+1. **Search the issue for the page name.** One wiki page per comment. If a comment for the page already exists, edit it in place (`gh api -X PATCH repos/CFC-Servers/gmod_tests/issues/comments/<id> -F body=@file`) so it stays the single source of truth. Never post a "correction to the comment above".
+2. **Read the live markup.** `https://wiki.facepunch.com/gmod/<Page>~edit` shows the raw `<function>`/`<arg>`/`<description>`/`<example>` source without a login. Confirm the gap is still there and write the edit against that text. gmodwiki.com is a mirror and can lag.
+3. **Only use values you have actually observed.** Every line in Repro comes from a passing test or a run you did. Name the branch whenever branches disagree (x86-64 versus the 32-bit dev/prerelease/public branches). Label anything you derived but did not run.
+
+Then post one comment per page in this shape:
+
+````sh
+gh issue comment 42 --repo CFC-Servers/gmod_tests --body "$(cat <<'EOF'
+### string.PageName
+**Edit:** https://wiki.facepunch.com/gmod/string.PageName~edit
+**Verified:** YYYY-MM-DD on <branches> (link to the CI run, or "local x86-64 server"); matches <engine Lua file> when the function is Lua
+**Tests:** `lua/tests/gmod/unit/path/to/File.lua` ("case name", "case name")
+**Problem:** What the page says versus what the engine does. One to three sentences.
+**Repro:**
+```lua
+string.PageName( input ) --> output            (per-branch outputs named when they differ)
+```
+**Edit to make:** where it goes (which `<arg>`, inside `<description>`, which `<example>` output), then the exact markup:
+```xml
+<note>...</note>
+```
+EOF
+)"
+````
+
+Use wiki markup in the edit (`<note>`, `<warning>`, `<bug>`, `<page>Name</page>`), and say exactly where it goes; "add a note" is not an edit. Post findings as you confirm them, not in a batch at the end of a long session — a finding that dies with the conversation is lost. Also mention the findings in the PR description so reviewers see them in context.
 
 ## Running your tests
 

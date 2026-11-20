@@ -1,3 +1,4 @@
+--- @type GLuaTest_TestGroup
 return {
     groupName = "string.lower",
 
@@ -12,11 +13,25 @@ return {
         {
             name = "Lowercases all English letters",
             func = function()
-                expect( string.lower( "ABCDEFG" ) ).to.equal( "abcdefg" )
-                expect( string.lower( "AbCdefG" ) ).to.equal( "abcdefg" )
-                expect( string.lower( "abcdefg" ) ).to.equal( "abcdefg" )
-                expect( string.lower( "1234567890" ) ).to.equal( "1234567890" )
-                expect( string.lower( "!@#$%^&*()-+{}[]" ) ).to.equal( "!@#$%^&*()-+{}[]" )
+                local fromUpper = string.lower( "ABCDEFG" )
+                expect( fromUpper ).to.equal( "abcdefg" )
+
+                local fromMixed = string.lower( "AbCdefG" )
+                expect( fromMixed ).to.equal( "abcdefg" )
+
+                local alreadyLower = string.lower( "abcdefg" )
+                expect( alreadyLower ).to.equal( "abcdefg" )
+            end
+        },
+
+        {
+            name = "Leaves digits and punctuation unchanged",
+            func = function()
+                local digits = string.lower( "1234567890" )
+                expect( digits ).to.equal( "1234567890" )
+
+                local punctuation = string.lower( "!@#$%^&*()-+{}[]" )
+                expect( punctuation ).to.equal( "!@#$%^&*()-+{}[]" )
             end
         },
 
@@ -24,7 +39,27 @@ return {
             -- https://github.com/Facepunch/garrysmod-issues/issues/2988
             name = "Fails for non-English UTF-8 letters",
             func = function()
-                expect( string.lower( "ÜÄÖ" ) ).to.equal( "ÜÄÖ" )
+                local unchanged = string.lower( "ÜÄÖ" )
+                expect( unchanged ).to.equal( "ÜÄÖ" )
+            end
+        },
+
+        {
+            name = "Coerces number arguments to strings",
+            func = function()
+                local digits = string.lower( 123 )
+                expect( digits ).to.equal( "123" )
+            end
+        },
+
+        {
+            name = "Errors when given nil instead of a string",
+            func = function()
+                local subject = function()
+                    string.lower( nil )
+                end
+
+                expect( subject ).to.errWith( "bad argument #1 to 'lower' (string expected, got nil)" )
             end
         }
     }
