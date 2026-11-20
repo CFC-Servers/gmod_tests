@@ -22,6 +22,7 @@ jobs:
           - "x86-64"
           - "prerelease"
           - "dev"
+          - "network_test"
       fail-fast: false
 
     uses: CFC-Servers/GLuaTest/.github/workflows/run_tests.yml@main
